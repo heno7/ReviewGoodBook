@@ -25,5 +25,8 @@ module.exports = {
 
   getReviewCreator: function (req, res, next) {},
 
-  createReview: async function (req, res, next) {},
+  createReview: async function (req, res, next) {
+    console.log(req.signedCookies);
+    console.log(req.body);
+  },
 };

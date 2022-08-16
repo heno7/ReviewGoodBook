@@ -12,6 +12,23 @@ markdownContent.addEventListener("keyup", function () {
 //   document.body.innerHTML = html;
 // });
 
+const fillBookInfoBtn = document.querySelector("#fill-info");
+const hideInfo = document.querySelector("#modal");
+const cancleBtn = document.querySelector("#cancle-btn");
+const doneBtn = document.querySelector("#done-btn");
+
+fillBookInfoBtn.addEventListener("click", function (event) {
+  hideInfo.style.display = "block";
+});
+
+cancleBtn.addEventListener("click", function (event) {
+  hideInfo.style.display = "none";
+});
+
+doneBtn.addEventListener("click", function (event) {
+  hideInfo.style.display = "none";
+});
+
 const formImage = document.querySelector("#image-upload");
 const fileInput = document.querySelector("#getFile");
 const displayInfo = document.querySelector("#md-editor > #display-info");
@@ -79,9 +96,9 @@ const publishBtn = document.querySelector("#publish");
 saveBtn.addEventListener("click", function (event) {
   const review = {};
   review.book = {
-    name: document.getElementById("book-name").textContent.trim(),
-    author: document.getElementById("book-author").textContent.trim(),
-    genre: document.getElementById("book-genre").textContent.trim(),
+    name: document.getElementById("book-name").value.trim(),
+    author: document.getElementById("book-author").value.trim(),
+    genre: document.getElementById("book-genre").value.trim(),
   };
   review.content = markdownContent.textContent.trim();
   review.publish = false;

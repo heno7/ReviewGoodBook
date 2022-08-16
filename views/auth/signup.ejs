@@ -8,27 +8,17 @@
     <link rel="stylesheet" href="/static/auth/signup.css" />
   </head>
   <body>
-    <h2>Modal Signup Form</h2>
-
-    <button
-      onclick="document.getElementById('id01').style.display='block'"
-      style="width: auto"
-    >
-      Sign Up
-    </button>
-
-    <div id="id01" class="modal">
-      <span
-        onclick="document.getElementById('id01').style.display='none'"
-        class="close"
-        title="Close Modal"
-        >&times;</span
+    <div id="signup-container">
+      <form
+        action="/users/auth/register"
+        method="post"
+        style="border: 1px solid #ccc"
       >
-      <form class="modal-content" action="/users/auth/register" method="post">
         <div class="container">
           <h1>Sign Up</h1>
           <p>Please fill in this form to create an account.</p>
           <hr />
+
           <label for="username"><b>Username</b></label>
           <input
             type="text"
@@ -40,7 +30,7 @@
           <label for="email"><b>Email</b></label>
           <input type="text" placeholder="Enter Email" name="email" required />
 
-          <label for="psw"><b>Password</b></label>
+          <label for="password"><b>Password</b></label>
           <input
             type="password"
             placeholder="Enter Password"
@@ -48,7 +38,7 @@
             required
           />
 
-          <label for="psw-repeat"><b>Repeat Password</b></label>
+          <label for="repeat_password"><b>Repeat Password</b></label>
           <input
             type="password"
             placeholder="Repeat Password"
@@ -62,18 +52,12 @@
           </p>
 
           <div class="clearfix">
-            <button
-              type="button"
-              onclick="document.getElementById('id01').style.display='none'"
-              class="cancelbtn"
-            >
-              Cancel
-            </button>
+            <button type="button" class="cancelbtn">Cancel</button>
             <button type="submit" class="signupbtn">Sign Up</button>
           </div>
         </div>
       </form>
     </div>
-    <script src="/static/auth/signup.css"></script>
+    <!-- <script src="/static/auth/signup.css"></script> -->
   </body>
 </html>
