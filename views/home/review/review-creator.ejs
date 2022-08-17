@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Md to Html</title>
+    <link rel="stylesheet" href="/static/home/review/review-creator.css" />
+  </head>
+  <body>
+    <div id="header">
+      <p>Review Generator</p>
+    </div>
+    <div id="info-container">
+      <div id="book-info">
+        <button id="fill-book-info">
+          Click here to enter infomation of the book you want to review
+        </button>
+        <div class="modal">
+          <div class="modal-content">
+            <p>Infomation Of Book</p>
+            <div id="choose-book" class="field">
+              <label for="name">Book name</label>
+              <input type="text" name="name" id="book-name" class="info" />
+            </div>
+            <div id="choose-author" class="field">
+              <label for="author">Author</label>
+              <input type="text" id="book-author" name="author" class="info" />
+              <div id="choose-genre" class="field">
+                <label for="genre">Genre</label>
+                <input type="text" id="book-genre" name="genre" class="info" />
+              </div>
+              <div>
+                <button id="book-done-btn">Done</button>
+                <button id="book-cancle-btn">Cancle</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="review-title">
+        <button id="fill-review-title">
+          Click here to enter your title of review
+        </button>
+        <div class="modal">
+          <div class="modal-content">
+            <label for="review-title-name">Review Title</label>
+            <!-- <input type="text" name="review-title-name" id="review-title-input" class="info"/> -->
+            <textarea
+              name="review-title-name"
+              id="review-title-input"
+            ></textarea>
+            <div>
+              <button id="review-done-btn">Done</button>
+              <button id="review-cancle-btn">Cancle</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div id="review-title">
+        <button>Click here to</button>
+    </div> -->
+    <div id="create-review">
+      <button id="save">Save Progress</button>
+      <button id="publish">Publish</button>
+    </div>
+    <div id="content-container">
+      <div id="md-container">
+        <div id="md-features">
+          <div class="label">Markdown Editor</div>
+          <div id="choose-images" class="label">
+            <button onclick="document.getElementById('getFile').click()">
+              Select Images
+            </button>
+            <form id="image-upload" enctype="multipart/form-data">
+              <input
+                type="file"
+                id="getFile"
+                style="display: none"
+                name="images"
+                multiple="multiple"
+              />
+            </form>
+          </div>
+          <div class="label" id="images-URL">Get Images URL</div>
+        </div>
+        <div id="md-editor" contenteditable="true">
+          <div id="display-info"></div>
+          <!-- '![The San Juan Mountains are beautiful!](/images/tiger-1.jpg "San
+          Juan Mountains")' -->
+        </div>
+      </div>
+      <div id="html-container">
+        <div id="html-options">
+          <div class="label">HTML Preview</div>
+          <div class="label" id="publish-mode">Publish Mode</div>
+        </div>
+        <div id="html-display"></div>
+      </div>
+    </div>
+    <script src="/static/libs/showdown.min.js"></script>
+    <script src="/static/home/review/review-creator.js"></script>
+  </body>
+</html>

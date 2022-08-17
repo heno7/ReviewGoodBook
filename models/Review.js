@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const reviewSchema = new Schema({
-  book: {
+  bookInfo: {
     type: Schema.Types.ObjectId,
     required: true,
     ref: "Book",
@@ -24,9 +24,10 @@ const reviewSchema = new Schema({
     type: String,
     required: true,
   },
-  isPublished: {
-    type: Boolean,
-    default: false,
+  status: {
+    type: String,
+    required: true,
+    enum: ["In Progress", "Publish", "Hide"],
   },
   stars: {
     type: Number,

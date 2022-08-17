@@ -6,23 +6,6 @@ const authRoutes = require("./routes/auth/auth");
 const homeRouter = require("./routes/home");
 const worldRouter = require("./routes/world");
 
-const multer = require("multer");
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/");
-  },
-  filename: function (req, file, cb) {
-    cb(
-      null,
-      Date.now() +
-        Math.round(Math.random() * 1e9) +
-        path.extname(file.originalname)
-    );
-  },
-});
-
-const upload = multer({ storage: storage });
 const cors = require("cors");
 
 const cookieParser = require("cookie-parser");
@@ -41,8 +24,7 @@ app.set("view engine", "ejs");
 app.set("views", "./views");
 
 app.use("/static", express.static(path.join(__dirname, "public")));
-app.use("/upload", express.static(path.join(__dirname, "markdownToHtml")));
-app.use("/images", express.static(path.join(__dirname, "uploads")));
+app.use("/images", express.static(path.join(__dirname, "images_store")));
 
 app.get("/", (req, res) => {
   res.render("index", { title: "Personal Library" });
@@ -57,11 +39,6 @@ app.use("/home/discussions", homeRouter.discussions);
 app.use("/world", worldRouter.world);
 app.use("/world/reviews", worldRouter.reviews);
 app.use("/world/discussions", worldRouter.discussions);
-
-app.post("/images/upload", upload.array("images"), function (req, res, next) {
-  console.log(req.files);
-  res.send(req.files);
-});
 
 app.use((err, req, res, next) => {
   console.log(err);
