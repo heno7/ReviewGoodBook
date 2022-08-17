@@ -9,28 +9,52 @@
   </head>
   <body>
     <div id="header">
-        <p>Review Generator</p>
+      <p>Review Generator</p>
     </div>
-    <div id="book-info">
-      <button id="fill-info">Click here to enter infomation of the book you want to review</button>
-      <div id="modal">
-        <div id="modal-content">
+    <div id="info-container">
+      <div id="book-info">
+        <button id="fill-book-info">
+          Click here to enter infomation of the book you want to review
+        </button>
+        <div class="modal">
+          <div class="modal-content">
             <p>Infomation Of Book</p>
             <div id="choose-book" class="field">
               <label for="name">Book name</label>
-              <input type="text" name="name" id="book-name" />
+              <input type="text" name="name" id="book-name" class="info" />
             </div>
             <div id="choose-author" class="field">
               <label for="author">Author</label>
-              <input type="text" id="book-author" name="author">
-            <div id="choose-genre" class="field">
-              <label for="genre">Genre</label>
-              <input type="text" id="book-genre" name="genre"></input>
+              <input type="text" id="book-author" name="author" class="info" />
+              <div id="choose-genre" class="field">
+                <label for="genre">Genre</label>
+                <input type="text" id="book-genre" name="genre" class="info" />
+              </div>
+              <div>
+                <button id="book-done-btn">Done</button>
+                <button id="book-cancle-btn">Cancle</button>
+              </div>
             </div>
+          </div>
+        </div>
+      </div>
+      <div id="review-title">
+        <button id="fill-review-title">
+          Click here to enter your title of review
+        </button>
+        <div class="modal">
+          <div class="modal-content">
+            <label for="review-title-name">Review Title</label>
+            <!-- <input type="text" name="review-title-name" id="review-title-input" class="info"/> -->
+            <textarea
+              name="review-title-name"
+              id="review-title-input"
+            ></textarea>
             <div>
-                <button id="done-btn">Done</button>
-                <button id="cancle-btn">Cancle</button>
+              <button id="review-done-btn">Done</button>
+              <button id="review-cancle-btn">Cancle</button>
             </div>
+          </div>
         </div>
       </div>
     </div>

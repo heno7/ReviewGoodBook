@@ -12,21 +12,38 @@ markdownContent.addEventListener("keyup", function () {
 //   document.body.innerHTML = html;
 // });
 
-const fillBookInfoBtn = document.querySelector("#fill-info");
-const hideInfo = document.querySelector("#modal");
-const cancleBtn = document.querySelector("#cancle-btn");
-const doneBtn = document.querySelector("#done-btn");
+const fillBookInfoBtn = document.querySelector("#fill-book-info");
+const hideBookInfo = document.querySelector("#book-info .modal");
+const cancleBtn = document.querySelector("#book-cancle-btn");
+const doneBtn = document.querySelector("#book-done-btn");
 
 fillBookInfoBtn.addEventListener("click", function (event) {
-  hideInfo.style.display = "block";
+  hideBookInfo.style.display = "block";
 });
 
 cancleBtn.addEventListener("click", function (event) {
-  hideInfo.style.display = "none";
+  hideBookInfo.style.display = "none";
 });
 
 doneBtn.addEventListener("click", function (event) {
-  hideInfo.style.display = "none";
+  hideBookInfo.style.display = "none";
+});
+
+const fillTitleBtn = document.querySelector("#fill-review-title");
+const hideTitleInfo = document.querySelector("#review-title .modal");
+const reviewCancleBtn = document.querySelector("#review-cancle-btn");
+const reviewDoneBtn = document.querySelector("#review-done-btn");
+
+fillTitleBtn.addEventListener("click", function (event) {
+  hideTitleInfo.style.display = "block";
+});
+
+reviewCancleBtn.addEventListener("click", function (event) {
+  hideTitleInfo.style.display = "none";
+});
+
+reviewDoneBtn.addEventListener("click", function (event) {
+  hideTitleInfo.style.display = "none";
 });
 
 const formImage = document.querySelector("#image-upload");
@@ -100,6 +117,7 @@ saveBtn.addEventListener("click", function (event) {
     author: document.getElementById("book-author").value.trim(),
     genre: document.getElementById("book-genre").value.trim(),
   };
+  review.title = document.getElementById("review-title-input").value;
   review.content = markdownContent.textContent.trim();
   review.publish = false;
   console.log(review);

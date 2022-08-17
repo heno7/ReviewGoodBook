@@ -69,13 +69,23 @@
   text-align: center;
 }
 
-#book-info {
-  margin-top: 5vh;
-  /* display: flex;
-  flex-direction: column; */
+#info-container {
+  display: flex;
+  width: 100%;
+  height: 5vh;
+  margin-left: 2%;
+  margin-right: 2%;
 }
 
-#book-info #modal {
+#book-info {
+  width: 24%;
+}
+
+#review-title {
+  width: 23%;
+}
+
+.modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
@@ -89,30 +99,37 @@
   padding-top: 60px;
 }
 
-#book-info #modal #modal-content {
+.modal-content {
   background-color: #fefefe;
   margin: 5px auto; /* 15% from the top and centered */
   border: 1px solid #888;
   width: 80%; /* Could be more or less, depending on screen size */
 }
 
-#fill-info {
+#fill-book-info {
+  width: 100%;
   height: 5vh;
-  width: 30%;
-  background-color: blue;
+  background-color: gray;
 }
 
-#book-info .hidden {
-  display: none;
-  position: fixed;
-  top: 50vh;
-  left: 50%;
+#fill-review-title {
+  width: 100%;
+  height: 5vh;
+  background-color: gray;
 }
 
-#book-info input {
+#review-title-input {
+  display: block;
+  width: 100%;
+  min-height: 20vh;
+  padding: 5px;
+}
+
+.info {
   display: block;
   width: 100%;
   height: 5vh;
+  padding: 5px;
 }
 
 #book-info .field {
