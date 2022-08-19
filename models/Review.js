@@ -12,6 +12,10 @@ const reviewSchema = new Schema({
     required: true,
     ref: "User",
   },
+  title: {
+    type: String,
+    required: true,
+  },
   createdAt: {
     type: Date,
     default: Date.now,
@@ -27,7 +31,7 @@ const reviewSchema = new Schema({
   status: {
     type: String,
     required: true,
-    enum: ["In Progress", "Publish", "Hide"],
+    enum: ["In Progress", "Publish", "Hide", "Complete"],
   },
   stars: {
     type: Number,

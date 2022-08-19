@@ -50,7 +50,7 @@ module.exports = {
     try {
       const { error, value } = loginValidation(req.body);
       if (error) {
-        res.status(400).json({ message: error.message });
+        return res.status(400).json({ message: error.message });
       }
       const user = await User.findOne({ email: value.email });
       if (user) {

@@ -1,3 +1,7 @@
+window.addEventListener("load", function (event) {
+  sessionStorage.clear();
+});
+
 const converter = new showdown.Converter();
 
 const markdownContent = document.querySelector("#md-editor");
@@ -111,6 +115,14 @@ const saveBtn = document.querySelector("#save");
 const publishBtn = document.querySelector("#publish");
 
 saveBtn.addEventListener("click", function (event) {
+  const reviewId = sessionStorage.getItem("review_id");
+  if (reviewId) {
+    return updateReview(reviewId);
+  }
+  return createReview();
+});
+
+function createReview() {
   const review = {};
   review.book = {
     name: document.getElementById("book-name").value.trim(),
@@ -129,5 +141,34 @@ saveBtn.addEventListener("click", function (event) {
     },
   })
     .then((response) => response.json())
-    .then((data) => console.log(data));
-});
+    .then((data) => {
+      console.log(data);
+      sessionStorage.setItem("review_id", data.review_id);
+    })
+    .catch((error) => console.error(error));
+}
+
+function updateReview(reviewId) {
+  const review = {};
+  review.book = {
+    name: document.getElementById("book-name").value.trim(),
+    author: document.getElementById("book-author").value.trim(),
+    genre: document.getElementById("book-genre").value.trim(),
+  };
+  review.title = document.getElementById("review-title-input").value;
+  review.content = markdownContent.textContent.trim();
+  review.status = "In Progress";
+  console.log(review);
+  fetch(`/home/reviews/${reviewId}`, {
+    method: "PUT",
+    body: JSON.stringify(review),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((error) => console.error(error));
+}

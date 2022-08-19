@@ -16,4 +16,6 @@ router.get("/:id", reviews.getReview);
 
 router.post("/", reviews.createReview);
 
+router.put("/:id", reviews.updateReview);
+
 module.exports = router;
