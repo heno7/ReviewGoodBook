@@ -100,7 +100,9 @@ module.exports = {
         return res
           .status(400)
           .json({ message: "The review with given Id is not exist." });
-      const review = await Review.findById(req.params.id);
+      const review = await Review.findById(req.params.id)
+        .populate({ path: "bookInfo" })
+        .exec();
       return res.status(200).json(review);
     } catch (error) {
       next(error);
@@ -202,6 +204,17 @@ module.exports = {
       await review.save();
 
       return res.status(200).json({ message: "Updated" });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  updateReviewStatus: async function (req, res, next) {
+    try {
+      const review = await Review.findById(req.params.id);
+      review.status = req.body.status;
+      await review.save();
+      return res.status(200).json({ message: "Status updated" });
     } catch (error) {
       next(error);
     }

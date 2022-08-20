@@ -68,9 +68,12 @@
         <div class="content">
           <p><%= review.bookInfo.name %></p>
           <p><%= review.title %></p>
+          <p>Stars: <%= review.stars %></p>
           <p>Status: <%= review.status %></p>
         </div>
         <div class="action">
+          <p style="display: none"><%= review._id %></p>
+          <button>View</button>
           <button>Hide</button>
           <button>Publish</button>
           <button>Edit</button>
@@ -87,6 +90,6 @@
       error saepe quisquam debitis modi, optio officia culpa molestiae,
       doloremque necessitatibus commodi.
     </div>
-    <!-- <script src="/static/home/home.js"></script> -->
+    <script src="/static/home/review/show-reviews.js"></script>
   </body>
 </html>

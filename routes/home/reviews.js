@@ -6,7 +6,11 @@ const { upload } = require("../../uploads/upload");
 
 router.use(checkAuth.checkUser);
 
+router.get("/review-creator", reviews.getReviewCreator);
+
 router.get("/", reviews.getAllReviews);
+
+router.get("/:id", reviews.getReview);
 
 router.get("/status/in-progress", reviews.getAllInProgressReviews);
 
@@ -16,14 +20,12 @@ router.get("/status/publish", reviews.getAllPublishReviews);
 
 router.get("/status/complete", reviews.getAllCompleteReviews);
 
-router.get("/review-creator", reviews.getReviewCreator);
-
 router.post("/images/upload", upload.array("images"), reviews.uploadImages);
-
-router.get("/:id", reviews.getReview);
 
 router.post("/", reviews.createReview);
 
 router.put("/:id", reviews.updateReview);
+
+router.put("/:id/status", reviews.updateReviewStatus);
 
 module.exports = router;
