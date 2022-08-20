@@ -174,3 +174,19 @@
 #create-review {
   float: right;
 }
+
+/* Show notify */
+
+#notify-container {
+  width: 80%;
+  height: 5vh;
+  background-color: green;
+  margin: 40vh auto;
+}
+
+#notify-container #button-container {
+  margin: 20px auto;
+  background-color: red;
+  display: flex;
+  justify-content: space-evenly;
+}

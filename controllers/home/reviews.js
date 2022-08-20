@@ -120,6 +120,7 @@ module.exports = {
       await oldBook.save();
 
       review.title = req.body.title;
+      review.status = req.body.status;
       await fs.writeFile(review.pathToContent, req.body.content);
 
       await review.save();

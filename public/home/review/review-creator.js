@@ -111,28 +111,60 @@ getImageURL.addEventListener("click", () => {
   formImage.dispatchEvent(new Event("submit"));
 });
 
-const saveBtn = document.querySelector("#save");
-const publishBtn = document.querySelector("#publish");
+const saveBtn = document.querySelector("#save-review");
+const completeBtn = document.querySelector("#complete-review");
 
 saveBtn.addEventListener("click", function (event) {
-  const reviewId = sessionStorage.getItem("review_id");
-  if (reviewId) {
-    return updateReview(reviewId);
+  function yesHandler() {
+    const reviewId = sessionStorage.getItem("review_id");
+    if (reviewId) {
+      return updateReview(reviewId);
+    }
+    return createReview();
   }
-  return createReview();
+
+  showNotify("This is a in progress message", yesHandler);
 });
 
-function createReview() {
-  const review = {};
-  review.book = {
-    name: document.getElementById("book-name").value.trim(),
-    author: document.getElementById("book-author").value.trim(),
-    genre: document.getElementById("book-genre").value.trim(),
+completeBtn.addEventListener("click", function (event) {
+  function yesHandler() {
+    const reviewId = sessionStorage.getItem("review_id");
+    if (!reviewId) {
+      return createReview("Complete");
+    }
+    return updateReview(reviewId, "Complete");
+  }
+
+  showNotify("This is a complete message", yesHandler);
+});
+
+function showNotify(message, handler) {
+  const hideNotify = document.querySelector("#show-notify .modal");
+  const messageNotify = document.querySelector("#show-notify #notify-message");
+  const yesNotify = document.querySelector("#show-notify #yes");
+  const noNotify = document.querySelector("#show-notify #no");
+
+  messageNotify.textContent = message;
+  hideNotify.style.display = "block";
+
+  const handleYes = function (event) {
+    hideNotify.style.display = "none";
+    handler();
   };
-  review.title = document.getElementById("review-title-input").value;
-  review.content = markdownContent.textContent.trim();
-  review.status = "In Progress";
+  yesNotify.addEventListener("click", handleYes);
+
+  noNotify.addEventListener("click", function (event) {
+    yesNotify.removeEventListener("click", handleYes);
+    hideNotify.style.display = "none";
+  });
+}
+
+// console.log(showNotify("This is a test message"));
+
+function createReview(status = "In Progress") {
+  const review = generateReview(status);
   console.log(review);
+
   fetch("/home/reviews/", {
     method: "POST",
     body: JSON.stringify(review),
@@ -148,17 +180,10 @@ function createReview() {
     .catch((error) => console.error(error));
 }
 
-function updateReview(reviewId) {
-  const review = {};
-  review.book = {
-    name: document.getElementById("book-name").value.trim(),
-    author: document.getElementById("book-author").value.trim(),
-    genre: document.getElementById("book-genre").value.trim(),
-  };
-  review.title = document.getElementById("review-title-input").value;
-  review.content = markdownContent.textContent.trim();
-  review.status = "In Progress";
+function updateReview(reviewId, status = "In Progress") {
+  const review = generateReview(status);
   console.log(review);
+
   fetch(`/home/reviews/${reviewId}`, {
     method: "PUT",
     body: JSON.stringify(review),
@@ -171,4 +196,17 @@ function updateReview(reviewId) {
       console.log(data);
     })
     .catch((error) => console.error(error));
+}
+
+function generateReview(status) {
+  const review = {};
+  review.book = {
+    name: document.getElementById("book-name").value.trim(),
+    author: document.getElementById("book-author").value.trim(),
+    genre: document.getElementById("book-genre").value.trim(),
+  };
+  review.title = document.getElementById("review-title-input").value;
+  review.content = markdownContent.textContent.trim();
+  review.status = status;
+  return review;
 }
