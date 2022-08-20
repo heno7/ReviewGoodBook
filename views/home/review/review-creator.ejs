@@ -11,6 +11,9 @@
     <div id="header">
       <p>Review Generator</p>
     </div>
+    <% if (review) { %>
+    <p id="review-id" style="display: none"><%= review._id %></p>
+    <% } %>
     <div id="info-container">
       <div id="book-info">
         <button id="fill-book-info">

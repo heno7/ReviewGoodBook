@@ -8,6 +8,8 @@ router.use(checkAuth.checkUser);
 
 router.get("/review-creator", reviews.getReviewCreator);
 
+router.get("/:id/review-creator", reviews.getReviewEditor);
+
 router.get("/", reviews.getAllReviews);
 
 router.get("/:id", reviews.getReview);

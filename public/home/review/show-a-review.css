@@ -69,13 +69,13 @@
 /* Main */
 
 /* #main {
-        width: 65%;
-        height: 70vh;
-        margin-top: 12vh;
-        margin-left: 30%;
-        margin-right: 5%;
-        background-color: rgb(196 196 196);
-      } */
+          width: 65%;
+          height: 70vh;
+          margin-top: 12vh;
+          margin-left: 30%;
+          margin-right: 5%;
+          background-color: rgb(196 196 196);
+        } */
 
 #main-navigation {
   position: fixed;
@@ -107,68 +107,4 @@
   height: 18vh;
   z-index: 1;
   background-color: white;
-}
-
-/* Review Card */
-
-.review-card {
-  display: flex;
-  flex-direction: row;
-  width: 80%;
-  max-height: 20%;
-  margin: 5px auto;
-  border: 2px solid gray;
-}
-
-.review-card .content {
-  min-width: 90%;
-  border-right: 2px solid gray;
-}
-
-.review-card .action {
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-}
-
-.review-card .action button {
-  display: block;
-  width: 100%;
-}
-
-/* Notify */
-
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 101; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0); /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-  padding-top: 60px;
-}
-
-.modal-content {
-  background-color: #fefefe;
-  margin: 5px auto; /* 15% from the top and centered */
-  border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
-}
-
-#notify-container {
-  width: 80%;
-  height: 5vh;
-  background-color: green;
-  margin: 40vh auto;
-}
-
-#notify-container #button-container {
-  margin: 20px auto;
-  background-color: red;
-  display: flex;
-  justify-content: space-evenly;
 }

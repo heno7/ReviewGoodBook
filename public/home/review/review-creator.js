@@ -1,5 +1,10 @@
 window.addEventListener("load", function (event) {
   sessionStorage.clear();
+  const existReview = document.querySelector("#review-id");
+  if (existReview) {
+    sessionStorage.setItem("review_id", existReview.textContent);
+    fillReviewContent();
+  }
 });
 
 const converter = new showdown.Converter();

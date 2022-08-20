@@ -1,6 +1,7 @@
 const fs = require("fs/promises");
 const { existsSync } = require("fs");
 const path = require("path");
+const showdown = require("showdown");
 const Book = require("../../models/Book");
 const Review = require("../../models/Review");
 const User = require("../../models/User");
@@ -103,7 +104,19 @@ module.exports = {
       const review = await Review.findById(req.params.id)
         .populate({ path: "bookInfo" })
         .exec();
-      return res.status(200).json(review);
+
+      // return res.status(200).json(review);
+
+      const converter = new showdown.Converter();
+      review.content = converter.makeHtml(
+        await fs.readFile(review.pathToContent, {
+          encoding: "utf8",
+        })
+      );
+      return res.render("home/review/show-a-review", {
+        user: req.user,
+        review: review,
+      });
     } catch (error) {
       next(error);
     }
@@ -111,6 +124,25 @@ module.exports = {
 
   getReviewCreator: function (req, res, next) {
     res.render("home/review/review-creator.ejs");
+  },
+
+  getReviewEditor: async function (req, res, next) {
+    try {
+      const isValidId = checkId(req.params.id);
+      if (!isValidId)
+        return res
+          .status(400)
+          .json({ message: "The review with given Id is not exist." });
+      const review = await Review.findById(req.params.id);
+      if (!review)
+        return res
+          .status(400)
+          .json({ message: "The review with given Id is not exist." });
+
+      res.render("home/review/review-creator.ejs", { review: review });
+    } catch (error) {
+      next(error);
+    }
   },
 
   uploadImages: function (req, res, next) {
