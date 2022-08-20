@@ -8,6 +8,14 @@ router.use(checkAuth.checkUser);
 
 router.get("/", reviews.getAllReviews);
 
+router.get("/status/in-progress", reviews.getAllInProgressReviews);
+
+router.get("/status/hide", reviews.getAllHideReviews);
+
+router.get("/status/publish", reviews.getAllPublishReviews);
+
+router.get("/status/complete", reviews.getAllCompleteReviews);
+
 router.get("/review-creator", reviews.getReviewCreator);
 
 router.post("/images/upload", upload.array("images"), reviews.uploadImages);

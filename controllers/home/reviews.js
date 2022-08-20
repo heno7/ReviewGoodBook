@@ -6,15 +6,91 @@ const Review = require("../../models/Review");
 const User = require("../../models/User");
 const checkId = require("../../validations/id.validation");
 
-module.exports = {
-  getAllReviews: function (req, res, next) {
-    User.findById(req.user.id)
-      .populate("listReviews")
+async function getReviewsByStatus(userId, statusInfo) {
+  try {
+    const reviews = await User.findById(userId)
+      .populate({
+        path: "listReviews",
+        populate: { path: "bookInfo", select: "name" },
+      })
       .select("listReviews")
-      .exec((err, reviews) => {
-        if (err) return next(err);
-        res.status(200).json(reviews);
+      .exec();
+    if (!statusInfo) return reviews.listReviews;
+    filterReviews = reviews.listReviews.filter(function (review) {
+      return review.status === statusInfo;
+    });
+
+    return filterReviews;
+  } catch (error) {
+    throw error;
+  }
+}
+
+module.exports = {
+  getAllReviews: async function (req, res, next) {
+    try {
+      const allReviews = await getReviewsByStatus(req.user.id);
+      // res.status(200).json(reviews);
+      res.render("home/review/show-reviews", {
+        user: req.user,
+        reviews: allReviews,
       });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  getAllInProgressReviews: async function (req, res, next) {
+    try {
+      const inProgressReviews = await getReviewsByStatus(
+        req.user.id,
+        "In Progress"
+      );
+      res.render("home/review/show-reviews", {
+        user: req.user,
+        reviews: inProgressReviews,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  getAllHideReviews: async function (req, res, next) {
+    try {
+      const hideReviews = await getReviewsByStatus(req.user.id, "Hide");
+      res.render("home/review/show-reviews", {
+        user: req.user,
+        reviews: hideReviews,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  getAllPublishReviews: async function (req, res, next) {
+    try {
+      const publishReviews = await getReviewsByStatus(req.user.id, "Publish");
+
+      res.render("home/review/show-reviews", {
+        user: req.user,
+        reviews: publishReviews,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  getAllCompleteReviews: async function (req, res, next) {
+    try {
+      const completeReviews = await getReviewsByStatus(req.user.id, "Complete");
+
+      res.render("home/review/show-reviews", {
+        user: req.user,
+        reviews: completeReviews,
+      });
+    } catch (error) {
+      next(error);
+    }
   },
 
   getReview: async function (req, res, next) {

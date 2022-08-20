@@ -150,6 +150,7 @@ function showNotify(message, handler) {
   const handleYes = function (event) {
     hideNotify.style.display = "none";
     handler();
+    yesNotify.removeEventListener("click", handleYes);
   };
   yesNotify.addEventListener("click", handleYes);
 

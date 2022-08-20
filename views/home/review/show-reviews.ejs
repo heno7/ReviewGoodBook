@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home</title>
-    <link rel="stylesheet" href="/static/home/home.css" />
+    <link rel="stylesheet" href="/static/home/review/show-reviews.css" />
   </head>
   <body>
     <!-- Header -->
@@ -26,7 +26,7 @@
           />
         </div>
         <div id="auth">
-          <div id="username"><%= userName %></div>
+          <div id="username"><%= user.userName %></div>
           <button><a href="/users/auth/logout">Log out</a></button>
         </div>
       </div>
@@ -40,9 +40,9 @@
       <div>
         <a href="/home/reviews/status/in-progress">In progress reviews</a>
       </div>
-      <div>Complete reviews</div>
-      <div>Publish reviews</div>
-      <div>Hide reviews</div>
+      <div><a href="/home/reviews/status/complete">Complete reviews</a></div>
+      <div><a href="/home/reviews/status/publish">Publish reviews</a></div>
+      <div><a href="/home/reviews/status/hide">Hide reviews</a></div>
       <hr />
       <div style="text-align: center">My Discussions</div>
       <div>Best Discussions of Week</div>
@@ -63,8 +63,21 @@
       <div>Home</div>
     </div>
     <div id="main-display">
-      Welcome to ReviewGoodBook. Here you can read reviews of all people about
-      their books and you can raise a discussion with all people
+      <% reviews.forEach(function(review){ %>
+      <div class="review-card">
+        <div class="content">
+          <p><%= review.bookInfo.name %></p>
+          <p><%= review.title %></p>
+          <p>Status: <%= review.status %></p>
+        </div>
+        <div class="action">
+          <button>Hide</button>
+          <button>Publish</button>
+          <button>Edit</button>
+          <button>Delete</button>
+        </div>
+      </div>
+      <% }); %>
     </div>
 
     <!-- Footer -->
