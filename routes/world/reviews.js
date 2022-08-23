@@ -18,6 +18,6 @@ router.get("/best-of-year", reviews.getBestReviewsOfYear);
 
 router.get("/:id", reviews.getReview);
 
-router.patch(":/id/stars", reviews.giveStar);
+router.patch("/:id/stars", reviews.giveStar);
 
 module.exports = router;

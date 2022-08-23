@@ -18,6 +18,9 @@ module.exports = {
     // const token = req.cookies;
 
     // console.log(token);
+    // console.log(req.originalUrl);
+    // console.log(req.baseUrl);
+    // console.log(req.path);
     if (!token)
       return res.status(403).json({ message: "you do not have permission" });
     JWT.verify(
@@ -32,8 +35,8 @@ module.exports = {
             return res.render("index", { userName: null });
           }
 
-          if (req.baseUrl === "world") {
-            req.user.userName = null;
+          if (req.originalUrl.startsWith("/world")) {
+            req.user = { userName: null };
             return next();
           }
 
