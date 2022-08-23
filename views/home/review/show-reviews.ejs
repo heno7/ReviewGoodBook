@@ -73,9 +73,20 @@
         </div>
         <div class="action">
           <p style="display: none"><%= review._id %></p>
+
           <button>View</button>
+          <% if (review.status === 'Hide') { %>
+          <button disabled>Hide</button>
+          <% } else { %>
           <button>Hide</button>
+          <% } %>
+          <!-- <button>Hide</button> -->
+          <% if (review.status === 'Publish') { %>
+          <button disabled>Publish</button>
+          <% } else { %>
           <button>Publish</button>
+          <% } %>
+          <!-- <button>Publish</button> -->
           <button>Edit</button>
           <button>Delete</button>
         </div>

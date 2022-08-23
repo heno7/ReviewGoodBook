@@ -6,6 +6,8 @@ const { upload } = require("../../uploads/upload");
 
 router.use(checkAuth.checkUser);
 
+router.get("/api/:id", reviews.getReviewAPI);
+
 router.get("/review-creator", reviews.getReviewCreator);
 
 router.get("/:id/review-creator", reviews.getReviewEditor);
@@ -29,5 +31,7 @@ router.post("/", reviews.createReview);
 router.put("/:id", reviews.updateReview);
 
 router.put("/:id/status", reviews.updateReviewStatus);
+
+router.delete("/:id", reviews.deleteReview);
 
 module.exports = router;

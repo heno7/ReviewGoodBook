@@ -7,7 +7,9 @@ reviews.forEach((review) => {
     // console.log(this.previousElementSibling);
     // console.log(event.target);
     // console.log(this.firstElementChild.textContent);
+    // console.log(this.parentElement);
     const reviewId = this.firstElementChild.textContent;
+    const reviewCard = this.parentElement;
     const statusDisplay = this.previousElementSibling.lastElementChild;
     if (event.target.textContent === "View") viewHandler(reviewId);
     if (event.target.textContent === "Hide") {
@@ -17,7 +19,7 @@ reviews.forEach((review) => {
         event.target.disabled = true;
       }
 
-      showNotify("Do you want hide this review from world?", yesHandler);
+      showNotify("Do you really want hide this review from world?", yesHandler);
     }
     if (event.target.textContent === "Publish") {
       function yesHandler() {
@@ -26,16 +28,24 @@ reviews.forEach((review) => {
         event.target.disabled = true;
       }
 
-      showNotify("Do you want to share this review with world?", yesHandler);
+      showNotify(
+        "Do you really want to share this review with world?",
+        yesHandler
+      );
     }
     if (event.target.textContent === "Edit") {
       function yesHandler() {
         editHandler(reviewId);
       }
-      showNotify("Do you want to share this review with world?", yesHandler);
+      showNotify("Do you really want to edit this review?", yesHandler);
     }
 
-    if (event.target.textContent === "Delete") deleteHandler();
+    if (event.target.textContent === "Delete") {
+      function yesHandler() {
+        deleteHandler(reviewId, reviewCard);
+      }
+      showNotify("Do you really want to delete this review?", yesHandler);
+    }
   });
 });
 
@@ -82,4 +92,14 @@ function changeStatusHandler(id, status, statusDisplay) {
 
 function editHandler(id) {
   window.location.href = `/home/reviews/${id}/review-creator`;
+}
+
+function deleteHandler(id, reviewCard) {
+  fetch(`/home/reviews/${id}`, {
+    method: "DELETE",
+  }).then((response) => {
+    if (response.status === 200) {
+      reviewCard.remove();
+    }
+  });
 }

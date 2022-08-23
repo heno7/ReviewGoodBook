@@ -28,6 +28,27 @@ async function getReviewsByStatus(userId, statusInfo) {
 }
 
 module.exports = {
+  getReviewAPI: async function (req, res, next) {
+    try {
+      const isValidId = checkId(req.params.id);
+      if (!isValidId)
+        return res
+          .status(400)
+          .json({ message: "The review with given Id is not exist." });
+      const review = await Review.findById(req.params.id)
+        .populate({ path: "bookInfo" })
+        .lean()
+        .exec();
+
+      review.content = await fs.readFile(review.pathToContent, {
+        encoding: "utf8",
+      });
+
+      return res.status(200).json(review);
+    } catch (error) {
+      next(error);
+    }
+  },
   getAllReviews: async function (req, res, next) {
     try {
       const allReviews = await getReviewsByStatus(req.user.id);
@@ -123,7 +144,7 @@ module.exports = {
   },
 
   getReviewCreator: function (req, res, next) {
-    res.render("home/review/review-creator.ejs");
+    res.render("home/review/review-creator.ejs", { review: false });
   },
 
   getReviewEditor: async function (req, res, next) {
@@ -250,5 +271,37 @@ module.exports = {
     } catch (error) {
       next(error);
     }
+  },
+
+  deleteReview: async function (req, res, next) {
+    const isValidId = checkId(req.params.id);
+    if (!isValidId) {
+      return res
+        .status(400)
+        .json({ message: "The review with given Id is not exist." });
+    }
+
+    const review = await Review.findById(req.params.id);
+    if (!review) {
+      return res
+        .status(400)
+        .json({ message: "The review with given Id is not exist." });
+    }
+
+    // await review.remove()
+    const bookId = review.bookInfo;
+    const book = await Book.findById(bookId);
+    book.listReviews.splice(book.listReviews.indexOf(review._id), 1);
+
+    const user = await User.findById(req.user.id);
+    user.listReviews.splice(user.listReviews.indexOf(review._id), 1);
+
+    await Review.deleteOne(review._id);
+    await book.save();
+    await user.save();
+
+    // console.log(review, book);
+
+    res.status(200).send();
   },
 };

@@ -67,9 +67,14 @@ img.avatar {
   padding: 16px;
 }
 
+#footer {
+  display: flex;
+  justify-content: space-around;
+}
+
 /* The "Forgot password" text */
 span.psw {
-  float: right;
+  /* float: right; */
   padding-top: 16px;
 }
 

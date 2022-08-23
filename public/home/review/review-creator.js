@@ -1,11 +1,20 @@
 window.addEventListener("load", function (event) {
   sessionStorage.clear();
   const existReview = document.querySelector("#review-id");
+  const reviewId = existReview.textContent;
   if (existReview) {
-    sessionStorage.setItem("review_id", existReview.textContent);
-    fillReviewContent();
+    sessionStorage.setItem("review_id", reviewId);
+    getReviewContent(reviewId, fillReviewContent);
   }
 });
+
+function getReviewContent(id, callback) {
+  fetch(`/home/reviews/api/${id}`, {
+    method: "GET",
+  })
+    .then((response) => response.json())
+    .then(callback);
+}
 
 const converter = new showdown.Converter();
 
@@ -15,6 +24,16 @@ markdownContent.addEventListener("keyup", function () {
   html = converter.makeHtml(this.innerText);
   htmlDisplay.innerHTML = html;
 });
+
+function fillReviewContent(review) {
+  console.log(review.content);
+  document.getElementById("book-name").value = review.bookInfo.name;
+  document.getElementById("book-author").value = review.bookInfo.author;
+  document.getElementById("book-genre").value = review.bookInfo.genre;
+  document.getElementById("review-title-input").value = review.title;
+  markdownContent.textContent = review.content;
+  markdownContent.dispatchEvent(new Event("keyup"));
+}
 
 // const publishMode = document.querySelector("#publish-mode");
 // publishMode.addEventListener("click", function () {
@@ -128,7 +147,7 @@ saveBtn.addEventListener("click", function (event) {
     return createReview();
   }
 
-  showNotify("This is a in progress message", yesHandler);
+  showNotify("Do you want to save this upadate review", yesHandler);
 });
 
 completeBtn.addEventListener("click", function (event) {
@@ -140,7 +159,7 @@ completeBtn.addEventListener("click", function (event) {
     return updateReview(reviewId, "Complete");
   }
 
-  showNotify("This is a complete message", yesHandler);
+  showNotify("Do you want to complete this review", yesHandler);
 });
 
 function showNotify(message, handler) {
