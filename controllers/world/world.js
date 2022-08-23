@@ -1,5 +1,7 @@
 module.exports = {
   getWorld: function (req, res, next) {
-    res.send("world page");
+    res.render("world/world", {
+      userName: req.user.userName,
+    });
   },
 };

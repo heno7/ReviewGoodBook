@@ -4,8 +4,9 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Home</title>
-    <link rel="stylesheet" href="/static/home/home.css" />
+    <title>Landing Page</title>
+    <!-- <link rel="stylesheet" href="/static/auth/login.css" /> -->
+    <link rel="stylesheet" href="/static/world/world.css" />
   </head>
   <body>
     <!-- Header -->
@@ -26,8 +27,16 @@
           />
         </div>
         <div id="auth">
+          <% if(userName) { %>
           <div id="username"><%= userName %></div>
           <button><a href="/users/auth/logout">Log out</a></button>
+          <% } else { %>
+          <button><a href="/users/auth/login">Log in</a></button>
+          <button><a href="/users/auth/register">Sign up</a></button>
+          <% } %>
+
+          <!-- <button><a href="/users/auth/login">Log in</a></button> -->
+          <!-- <button><a href="/users/auth/register">Sign up</a></button> -->
         </div>
       </div>
     </div>
@@ -35,23 +44,15 @@
     <div id="right-side-bar">
       <div>Discover</div>
       <hr />
-      <div style="text-align: center">My Reviews</div>
-      <div><a href="/home/reviews">All reviews</a></div>
-      <div>
-        <a href="/home/reviews/status/in-progress">In progress reviews</a>
-      </div>
-      <div><a href="/home/reviews/status/complete">Complete reviews</a></div>
-      <div><a href="/home/reviews/status/publish">Publish reviews</a></div>
-      <div><a href="/home/reviews/status/hide">Hide reviews</a></div>
+      <div style="text-align: center">Review</div>
+      <div>Best Reviews of Week</div>
+      <div>Best Reviews of Month</div>
+      <div>Best Reviews Of Year</div>
       <hr />
-      <div style="text-align: center">My Discussions</div>
+      <div style="text-align: center">Discussion</div>
       <div>Best Discussions of Week</div>
       <div>Best Discussions of Month</div>
       <div>Best Discussions Of Year</div>
-      <hr />
-      <a href="/home/reviews/review-creator">Create Review</a>
-      <hr />
-      <div>Create Discussion</div>
     </div>
 
     <!-- Space -->
@@ -60,7 +61,7 @@
     <!-- Main -->
     <div id="main-navigation">
       <div><a href="/world">World</a></div>
-      <div>Home</div>
+      <div><a href="/home">Home</a></div>
     </div>
     <div id="main-display">
       Welcome to ReviewGoodBook. Here you can read reviews of all people about
@@ -74,6 +75,6 @@
       error saepe quisquam debitis modi, optio officia culpa molestiae,
       doloremque necessitatibus commodi.
     </div>
-    <!-- <script src="/static/home/home.js"></script> -->
+    <!-- <script src="/static/auth/login.js"></script> -->
   </body>
 </html>

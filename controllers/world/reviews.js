@@ -3,7 +3,17 @@ const User = require("../../models/User");
 const checkId = require("../../validations/id.validation");
 
 module.exports = {
-  getAllReviews: function (req, res, next) {},
+  getAllReviews: async function (req, res, next) {
+    try {
+      const publishReviews = await Review.find({ status: "Publish" })
+        .populate({
+          path: "bookInfo",
+        })
+        .exec();
+    } catch (error) {
+      next(error);
+    }
+  },
 
   getReview: async function (req, res, next) {
     const isValidId = checkId(req.params.id);

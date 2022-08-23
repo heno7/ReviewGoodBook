@@ -2,6 +2,8 @@ require("dotenv").config();
 const path = require("path");
 const express = require("express");
 const app = express();
+
+const indexRoute = require("./routes/index");
 const authRoutes = require("./routes/auth/auth");
 const homeRouter = require("./routes/home");
 const worldRouter = require("./routes/world");
@@ -26,9 +28,7 @@ app.set("views", "./views");
 app.use("/static", express.static(path.join(__dirname, "public")));
 app.use("/images", express.static(path.join(__dirname, "images_store")));
 
-app.get("/", (req, res) => {
-  res.render("index", { title: "Personal Library" });
-});
+app.use("/", indexRoute);
 
 app.use("/users/auth", authRoutes);
 
