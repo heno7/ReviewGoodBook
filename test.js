@@ -1,4 +1,11 @@
-const moonLanding = new Date("2022-04-20T04:07:26.834+00:00");
+const moment = require("moment");
 
-console.log(moonLanding.getMonth()); // (January gives 0)
-// expected output: 6
+const today = moment().startOf("day");
+
+const start = moment().startOf("day").toDate();
+const end = moment().endOf("day").toDate();
+
+const stackStart = today.toDate();
+const stackEnd = moment(today).endOf("day").toDate();
+console.log(start, end);
+console.log(stackStart, stackEnd);
