@@ -41,20 +41,30 @@
     </div>
     <!-- Side Bar -->
     <div id="right-side-bar">
-      <div>Discover</div>
-      <hr />
-      <div style="text-align: center">Review</div>
-      <div><a href="/world/reviews/best-of-day">Best Reviews of Day</a></div>
-      <div><a href="/world/reviews/best-of-week">Best Reviews of Week</a></div>
-      <div>
-        <a href="/world/reviews/best-of-month">Best Reviews of Month</a>
+      <div id="title">Discover</div>
+
+      <div id="review">
+        <div>Reviews</div>
+        <div class="criteria">
+          <a href="/world/reviews/best-of-day">Best Reviews of Day</a>
+        </div>
+        <div class="criteria">
+          <a href="/world/reviews/best-of-week">Best Reviews of Week</a>
+        </div>
+        <div class="criteria">
+          <a href="/world/reviews/best-of-month">Best Reviews of Month</a>
+        </div>
+        <div class="criteria">
+          <a href="/world/reviews/best-of-year">Best Reviews of Year</a>
+        </div>
       </div>
-      <div><a href="/world/reviews/best-of-year">Best Reviews of Year</a></div>
-      <hr />
-      <div style="text-align: center">Discussion</div>
-      <div>Best Discussions of Week</div>
-      <div>Best Discussions of Month</div>
-      <div>Best Discussions Of Year</div>
+
+      <div id="discussion">
+        <div>Discussions</div>
+        <div>Best Discussions of Week</div>
+        <div>Best Discussions of Month</div>
+        <div>Best Discussions Of Year</div>
+      </div>
     </div>
 
     <!-- Space -->
@@ -62,8 +72,9 @@
 
     <!-- Main -->
     <div id="main-navigation">
-      <div>World</div>
-      <div><a href="/home">Home</a></div>
+      <div id="world" class="active"><a href="/world">World</a></div>
+      <div id="sperator"></div>
+      <div id="home"><a href="/home">Home</a></div>
     </div>
     <div id="main-display">
       Welcome to ReviewGoodBook. Here you can read reviews of all people about
