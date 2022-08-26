@@ -12,10 +12,12 @@
     <!-- Header -->
     <div id="header">
       <div id="left">
-        <div id="logo">
-          <span>Review</span><span>Good</span><span>Boook</span>
-        </div>
-        <div>About</div>
+        <a href="/">
+          <div id="logo">
+            <span>Review</span><span>Good</span><span>Boook</span>
+          </div>
+        </a>
+        <!-- <div id="about">About</div> -->
       </div>
       <div id="right">
         <div id="search">
@@ -29,14 +31,11 @@
         <div id="auth">
           <% if(userName) { %>
           <div id="username"><%= userName %></div>
-          <button><a href="/users/auth/logout">Log out</a></button>
+          <a href="/users/auth/logout">Log out</a>
           <% } else { %>
-          <button><a href="/users/auth/login">Log in</a></button>
-          <button><a href="/users/auth/register">Sign up</a></button>
+          <a href="/users/auth/login">Log in</a>
+          <a href="/users/auth/register">Sign up</a>
           <% } %>
-
-          <!-- <button><a href="/users/auth/login">Log in</a></button> -->
-          <!-- <button><a href="/users/auth/register">Sign up</a></button> -->
         </div>
       </div>
     </div>

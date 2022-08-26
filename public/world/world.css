@@ -2,7 +2,17 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
 }
+
+a {
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+}
+
 /* Header CSS */
 #header {
   display: flex;
@@ -12,39 +22,109 @@
   right: 0;
   left: 0;
   height: 7vh;
-  padding: 3px 0 3px 0;
-  background-color: rgb(196 196 196);
+  padding: 9px 0 9px 0;
+  background-color: rgb(244 244 244);
 }
 
 #header #left {
   display: flex;
-  justify-content: space-around;
-  width: 30%;
+  justify-content: space-between;
+  align-items: center;
+  width: 20%;
   margin-left: 5%;
+}
+
+#header #left #logo {
+  font-size: 27px;
+}
+
+#header #left #logo span:nth-child(1) {
+  color: red;
+}
+
+#header #left #logo span:nth-child(2) {
+  color: green;
+}
+
+#header #left #logo span:nth-child(3) {
+  color: blue;
 }
 
 #header #right {
   display: flex;
-  width: 70%;
+  width: 80%;
   margin-right: 5%;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 
 #header #right * {
   display: block;
+  height: 100%;
 }
 
 #header #right #search {
   display: flex;
-  width: 70%;
+  width: 86%;
+  justify-content: flex-end;
+}
+
+#header #right #search #search-btn {
+  width: 7%;
+  padding: 4px;
+  border: 1px solid blue;
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px;
+  background-color: rgba(0, 0, 255, 0.7);
+  color: white;
+}
+
+#header #right #search #search-btn:hover {
+  background-color: rgba(0, 0, 255, 0.3);
 }
 
 #header #right #search #search-input {
   width: 90%;
+  padding-left: 5px;
+  border: 1px solid blue;
+  border-left: 0;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+#header #right #search #search-input:focus {
+  outline: none;
+  border-color: red;
 }
 
 #header #right #auth {
   display: flex;
+  width: 12%;
+  justify-content: space-between;
+}
+
+/* #header #right #auth button {
+  width: 49%;
+  height: 100%;
+  border: 0;
+  border-radius: 2px;
+  line-height: 100%;
+  background-color: rgb(10, 149, 255);
+} */
+
+#header #right #auth a {
+  display: flex;
+  width: 49%;
+  height: 100%;
+  padding: 4px;
+  border-radius: 2px;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 255, 0.7);
+  color: white;
+}
+
+#header #right #auth a:hover {
+  background-color: rgba(0, 0, 255, 0.3);
 }
 
 /* Right Side Bar CSS */
@@ -67,15 +147,6 @@
 }
 
 /* Main */
-
-/* #main {
-      width: 65%;
-      height: 70vh;
-      margin-top: 12vh;
-      margin-left: 30%;
-      margin-right: 5%;
-      background-color: rgb(196 196 196);
-    } */
 
 #main-navigation {
   position: fixed;
