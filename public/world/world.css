@@ -1,133 +1,3 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-a {
-  text-decoration: none;
-  color: black;
-}
-
-button {
-  cursor: pointer;
-}
-
-/* Header CSS */
-#header {
-  display: flex;
-  position: fixed;
-  z-index: 100;
-  top: 0;
-  right: 0;
-  left: 0;
-  height: 7vh;
-  padding: 9px 0 9px 0;
-  background-color: rgb(244 244 244);
-}
-
-#header #left {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 20%;
-  margin-left: 5%;
-}
-
-#header #left #logo {
-  font-size: 27px;
-}
-
-#header #left #logo span:nth-child(1) {
-  color: red;
-}
-
-#header #left #logo span:nth-child(2) {
-  color: green;
-}
-
-#header #left #logo span:nth-child(3) {
-  color: blue;
-}
-
-#header #right {
-  display: flex;
-  width: 80%;
-  margin-right: 5%;
-  justify-content: space-between;
-}
-
-#header #right * {
-  display: block;
-  height: 100%;
-}
-
-#header #right #search {
-  display: flex;
-  width: 86%;
-  justify-content: flex-end;
-}
-
-#header #right #search #search-btn {
-  width: 7%;
-  padding: 4px;
-  border: 1px solid blue;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
-  background-color: rgba(0, 0, 255, 0.7);
-  color: white;
-}
-
-#header #right #search #search-btn:hover {
-  background-color: rgba(0, 0, 255, 0.3);
-}
-
-#header #right #search #search-input {
-  width: 90%;
-  padding-left: 5px;
-  border: 1px solid blue;
-  border-left: 0;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-}
-
-#header #right #search #search-input:focus {
-  outline: none;
-  border-color: red;
-}
-
-#header #right #auth {
-  display: flex;
-  width: 12%;
-  justify-content: space-between;
-}
-
-/* #header #right #auth button {
-  width: 49%;
-  height: 100%;
-  border: 0;
-  border-radius: 2px;
-  line-height: 100%;
-  background-color: rgb(10, 149, 255);
-} */
-
-#header #right #auth a {
-  display: flex;
-  width: 49%;
-  height: 100%;
-  padding: 4px;
-  border-radius: 5px;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 255, 0.7);
-  color: white;
-}
-
-#header #right #auth a:hover {
-  background-color: rgba(0, 0, 255, 0.3);
-}
-
 /* Right Side Bar CSS */
 #right-side-bar {
   position: fixed;
@@ -152,20 +22,22 @@ button {
 }
 
 #right-side-bar #review {
-  margin-top: 1vh;
-  height: 33vh;
+  height: 34vh;
 }
 
 #right-side-bar #review div:first-of-type {
-  margin-bottom: 1vh;
+  height: 4vh;
+  line-height: 4vh;
   text-align: center;
+  background-color: rgb(177, 177, 177);
 }
 
 #right-side-bar #review .criteria a {
   display: flex;
-  height: 4vh;
-  justify-content: center;
+  height: 5vh;
+  justify-content: flex-start;
   align-items: center;
+  padding-left: 7%;
 }
 
 #right-side-bar #review .criteria a:hover {
@@ -173,96 +45,9 @@ button {
   color: white;
 }
 
-/* Footer CSS */
-#footer {
-  display: flex;
-  height: 10vh;
-  padding: 3px 0 3px 0;
-  background-color: rgb(196 196 196);
-}
-
-/* Main */
-
-#main-navigation {
-  position: fixed;
-  z-index: 98;
-  top: 12vh;
-  width: 74%;
-  height: 5vh;
-  border-radius: 5px;
-  margin-left: 21%;
-  margin-right: 5%;
-  display: flex;
-  background-color: rgb(244 244 244);
-}
-
-#main-navigation a {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-}
-
-#main-navigation #sperator {
-  width: 0.2%;
-  background-color: rgba(0, 0, 255, 0.3);
-}
-
-#main-navigation #world {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
-  width: 49.9%;
-  color: black;
-  cursor: pointer;
-}
-
-#main-navigation #world.active {
-  background-color: rgba(0, 0, 255, 0.7);
-}
+/* Main navigation world */
 
 #main-navigation #world.active a {
+  background-color: rgba(0, 0, 255, 0.7);
   color: white;
-}
-
-#main-navigation #world:hover {
-  background-color: rgba(0, 0, 255, 0.3);
-}
-
-#main-navigation #home {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-  width: 49.9%;
-  color: black;
-  cursor: pointer;
-}
-
-#main-navigation #home:hover a {
-  background-color: rgba(0, 0, 255, 0.3);
-  color: white;
-}
-
-#main-display {
-  width: 74%;
-  min-height: 72vh;
-  margin-top: 18vh;
-  margin-left: 21%;
-  margin-right: 5%;
-  background-color: rgb(196 196 196);
-}
-
-/* Space */
-#space {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  height: 18vh;
-  z-index: 1;
-  background-color: white;
 }

@@ -5,17 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Landing Page</title>
-    <!-- <link rel="stylesheet" href="/static/auth/login.css" /> -->
+    <link rel="stylesheet" href="/static/base.css" />
     <link rel="stylesheet" href="/static/index.css" />
   </head>
   <body>
     <!-- Header -->
     <div id="header">
       <div id="left">
-        <div id="logo">
-          <span>Review</span><span>Good</span><span>Boook</span>
-        </div>
-        <div>About</div>
+        <a href="/">
+          <div id="logo">
+            <span>Review</span><span>Good</span><span>Boook</span>
+          </div>
+        </a>
+        <!-- <div id="about">About</div> -->
       </div>
       <div id="right">
         <div id="search">
@@ -29,39 +31,23 @@
         <div id="auth">
           <% if(userName) { %>
           <div id="username"><%= userName %></div>
-          <button><a href="/users/auth/logout">Log out</a></button>
+          <a href="/users/auth/logout">Log out</a>
           <% } else { %>
-          <button><a href="/users/auth/login">Log in</a></button>
-          <button><a href="/users/auth/register">Sign up</a></button>
+          <a href="/users/auth/login">Log in</a>
+          <a href="/users/auth/register">Sign up</a>
           <% } %>
-
-          <!-- <button><a href="/users/auth/login">Log in</a></button> -->
-          <!-- <button><a href="/users/auth/register">Sign up</a></button> -->
         </div>
       </div>
     </div>
-    <!-- Side Bar -->
-    <!-- <div id="right-side-bar">
-      <div>Discover</div>
-      <hr />
-      <div style="text-align: center">Review</div>
-      <div>Best Reviews of Week</div>
-      <div>Best Reviews of Month</div>
-      <div>Best Reviews Of Year</div>
-      <hr />
-      <div style="text-align: center">Discussion</div>
-      <div>Best Discussions of Week</div>
-      <div>Best Discussions of Month</div>
-      <div>Best Discussions Of Year</div>
-    </div> -->
 
     <!-- Space -->
     <div id="space"></div>
 
     <!-- Main -->
     <div id="main-navigation">
-      <div><a href="/world">World</a></div>
-      <div><a href="/home">Home</a></div>
+      <div id="world"><a href="/world">World</a></div>
+      <div id="sperator"></div>
+      <div id="home"><a href="/home">Home</a></div>
     </div>
     <div id="main-display">
       Welcome to ReviewGoodBook. Here you can read reviews of all people about
