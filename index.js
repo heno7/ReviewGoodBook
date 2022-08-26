@@ -12,9 +12,9 @@ const cors = require("cors");
 
 const cookieParser = require("cookie-parser");
 
-// const connectDB = require("./Database/connect");
+const connectDB = require("./Database/connect");
 
-// connectDB();
+connectDB();
 
 app.use(cors());
 app.use(cookieParser(process.env.COOKIE_SECRECT));

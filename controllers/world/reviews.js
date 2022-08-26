@@ -18,6 +18,7 @@ async function getBestReviewIn(time) {
       },
     })
       .populate({ path: "bookInfo" })
+      .populate({ path: "author", select: "username" })
       .sort({
         stars: -1,
       })
@@ -38,6 +39,7 @@ module.exports = {
           path: "bookInfo",
         })
         .exec();
+      res.status(200).json(publishReviews);
     } catch (error) {
       next(error);
     }
@@ -46,12 +48,12 @@ module.exports = {
   getBestReviewsOfDay: async function (req, res, next) {
     try {
       const bestDayReviews = await getBestReviewIn("day");
-      // res.status(200).json(bestDayReviews);
+      res.status(200).json(bestDayReviews);
 
-      res.render("world/review/show-reviews", {
-        userName: req.user.userName,
-        reviews: bestDayReviews,
-      });
+      // res.render("world/review/show-reviews", {
+      //   userName: req.user.userName,
+      //   reviews: bestDayReviews,
+      // });
     } catch (error) {
       next(error);
     }
@@ -60,12 +62,12 @@ module.exports = {
   getBestReviewsOfWeek: async function (req, res, next) {
     try {
       const bestWeekReviews = await getBestReviewIn("week");
-      // res.status(200).json(bestWeekReviews);
+      res.status(200).json(bestWeekReviews);
 
-      res.render("world/review/show-reviews", {
-        userName: req.user.userName,
-        reviews: bestWeekReviews,
-      });
+      // res.render("world/review/show-reviews", {
+      //   userName: req.user.userName,
+      //   reviews: bestWeekReviews,
+      // });
     } catch (error) {
       next(error);
     }
@@ -74,12 +76,12 @@ module.exports = {
   getBestReviewsOfMonth: async function (req, res, next) {
     try {
       const bestMonthReviews = await getBestReviewIn("month");
-      // res.status(200).json(bestMonthReviews);
+      res.status(200).json(bestMonthReviews);
 
-      res.render("world/review/show-reviews", {
-        userName: req.user.userName,
-        reviews: bestMonthReviews,
-      });
+      // res.render("world/review/show-reviews", {
+      //   userName: req.user.userName,
+      //   reviews: bestMonthReviews,
+      // });
     } catch (error) {
       next(error);
     }
@@ -88,12 +90,12 @@ module.exports = {
   getBestReviewsOfYear: async function (req, res, next) {
     try {
       const bestYearReviews = await getBestReviewIn("year");
-      // res.status(200).json(bestYearReviews);
+      res.status(200).json(bestYearReviews);
 
-      res.render("world/review/show-reviews", {
-        userName: req.user.userName,
-        reviews: bestYearReviews,
-      });
+      // res.render("world/review/show-reviews", {
+      //   userName: req.user.userName,
+      //   reviews: bestYearReviews,
+      // });
     } catch (error) {
       next(error);
     }
