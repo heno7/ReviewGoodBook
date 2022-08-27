@@ -54,6 +54,7 @@
     </div>
     <div id="main-display">
       <div id="meta-info">
+        <p style="display: none" id="review-id"><%= review._id %></p>
         <div id="book-info">
           <p>Book: <%= review.bookInfo.name %></p>
           <p>Author: <%= review.bookInfo.author %></p>
@@ -61,7 +62,10 @@
         </div>
         <div id="review-info">
           <p>Reviewer: <%= review.author.username %></p>
-          <p>Stars: <%= review.stars %></p>
+          <div id="star">
+            <p>Stars: <span id="star-num"><%= review.stars %></span></p>
+            <button id="give-star">Give star</button>
+          </div>
         </div>
       </div>
       <div id="review-content" class="markdown-body"><%- review.content %></div>
@@ -74,6 +78,6 @@
       error saepe quisquam debitis modi, optio officia culpa molestiae,
       doloremque necessitatibus commodi.
     </div>
-    <!-- <script src="/static/home/review/show-a-review.js"></script> -->
+    <script src="/static/world/review/show-a-review.js"></script>
   </body>
 </html>

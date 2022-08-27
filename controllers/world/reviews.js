@@ -127,5 +127,24 @@ module.exports = {
     });
   },
 
-  giveStar: async function (req, res, next) {},
+  giveStar: async function (req, res, next) {
+    try {
+      const isValidId = checkId(req.params.id);
+      if (!isValidId)
+        return res
+          .status(400)
+          .json({ message: "The review with given Id is not exist." });
+      const review = await Review.findById(req.params.id);
+      if (!review) {
+        return res
+          .status(400)
+          .json({ message: "The review with given Id is not exist." });
+      }
+      review.stars += 1;
+      await review.save();
+      res.status(200).json({ message: "Received star" });
+    } catch (error) {
+      next(error);
+    }
+  },
 };

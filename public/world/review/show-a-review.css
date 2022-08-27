@@ -6,7 +6,7 @@
 }
 
 #main-display {
-  padding: 3vh 2% 3vh 2%;
+  padding: 3vh 10% 3vh 10%;
   background-color: white;
 }
 
@@ -27,4 +27,23 @@
 
 #review-content {
   margin-top: 2vh;
+}
+
+#meta-info #star {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+#meta-info #star button {
+  width: 15%;
+  background-color: rgba(0, 0, 255, 0.7);
+  color: white;
+  border: 1px solid red;
+  border-radius: 5px;
+}
+
+#meta-info #star button:hover {
+  background-color: rgba(0, 0, 255, 0.3);
 }
