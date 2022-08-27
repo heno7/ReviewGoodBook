@@ -60,7 +60,7 @@
     <!-- Main -->
     <div id="main-navigation">
       <div><a href="/world">World</a></div>
-      <div>Home</div>
+      <div><a href="/home">Home</a></div>
     </div>
     <div id="main-display">
       <% reviews.forEach(function(review){ %>
@@ -79,14 +79,11 @@
           <button disabled>Hide</button>
           <% } else { %>
           <button>Hide</button>
-          <% } %>
-          <!-- <button>Hide</button> -->
-          <% if (review.status === 'Publish') { %>
+          <% } %> <% if (review.status === 'Publish') { %>
           <button disabled>Publish</button>
           <% } else { %>
           <button>Publish</button>
           <% } %>
-          <!-- <button>Publish</button> -->
           <button>Edit</button>
           <button>Delete</button>
         </div>

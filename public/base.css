@@ -1,8 +1,9 @@
-* {
-  margin: 0;
-  padding: 0;
+body * {
+  /* margin: 0;
+  padding: 0; */
   box-sizing: border-box;
   font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
 }
 
 a {
@@ -35,7 +36,7 @@ button {
   margin-left: 5%;
 }
 
-#header #left #logo {
+#header #left #logo span {
   font-size: 27px;
 }
 

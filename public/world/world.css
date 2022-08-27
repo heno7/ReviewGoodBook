@@ -1,4 +1,5 @@
 /* Right Side Bar CSS */
+
 #right-side-bar {
   position: fixed;
   z-index: 99;
@@ -43,6 +44,12 @@
 #right-side-bar #review .criteria a:hover {
   background-color: rgba(0, 0, 255, 0.3);
   color: white;
+}
+
+/* Main display */
+
+#main-display {
+  background-color: white;
 }
 
 /* Main navigation world */

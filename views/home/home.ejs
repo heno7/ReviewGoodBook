@@ -5,8 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home</title>
+    <link rel="stylesheet" href="/static/reset.css" />
     <link rel="stylesheet" href="/static/base.css" />
     <link rel="stylesheet" href="/static/home/home.css" />
+    <link rel="stylesheet" href="/static/home/review/show-reviews.css" />
   </head>
   <body>
     <!-- Header -->
@@ -90,6 +92,20 @@
       error saepe quisquam debitis modi, optio officia culpa molestiae,
       doloremque necessitatibus commodi.
     </div>
+
+    <div id="show-notify">
+      <div class="modal">
+        <div id="notify-container">
+          <p id="notify-message"></p>
+          <div id="button-container">
+            <button id="yes">Yes</button>
+            <button id="no">No</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- <script src="/static/home/home.js"></script> -->
+    <script src="/static/home/review/show-reviews.js"></script>
   </body>
 </html>

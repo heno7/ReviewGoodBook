@@ -23,16 +23,18 @@ const markdownContent = document.querySelector("#md-editor");
 const htmlDisplay = document.querySelector("#html-display");
 markdownContent.addEventListener("keyup", function () {
   html = converter.makeHtml(this.innerText);
+  // console.log(html);
   htmlDisplay.innerHTML = html;
 });
 
 function fillReviewContent(review) {
-  console.log(review.content);
+  // console.log(review.content);
   document.getElementById("book-name").value = review.bookInfo.name;
   document.getElementById("book-author").value = review.bookInfo.author;
   document.getElementById("book-genre").value = review.bookInfo.genre;
   document.getElementById("review-title-input").value = review.title;
-  markdownContent.textContent = review.content;
+  // markdownContent.textContent = review.content;
+  markdownContent.innerText = review.content;
   markdownContent.dispatchEvent(new Event("keyup"));
 }
 
@@ -232,7 +234,11 @@ function generateReview(status) {
     genre: document.getElementById("book-genre").value.trim(),
   };
   review.title = document.getElementById("review-title-input").value;
-  review.content = markdownContent.textContent.trim();
+  // review.content = markdownContent.textContent.trim();
+  // review.content = markdownContent.textContent;
+  review.content = markdownContent.innerText;
+
+  // console.log(review.content);
   review.status = status;
   return review;
 }

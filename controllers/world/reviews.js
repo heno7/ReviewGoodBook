@@ -113,6 +113,7 @@ module.exports = {
       .exec();
 
     const converter = new showdown.Converter();
+    converter.setFlavor("github");
     review.content = converter.makeHtml(
       await fs.readFile(review.pathToContent, {
         encoding: "utf8",

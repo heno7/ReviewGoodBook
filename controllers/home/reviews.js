@@ -12,7 +12,7 @@ async function getReviewsByStatus(userId, statusInfo) {
     const reviews = await User.findById(userId)
       .populate({
         path: "listReviews",
-        populate: { path: "bookInfo", select: "name" },
+        populate: { path: "bookInfo" },
       })
       .select("listReviews")
       .exec();
@@ -52,11 +52,13 @@ module.exports = {
   getAllReviews: async function (req, res, next) {
     try {
       const allReviews = await getReviewsByStatus(req.user.id);
-      // res.status(200).json(reviews);
-      res.render("home/review/show-reviews", {
-        user: req.user,
-        reviews: allReviews,
-      });
+
+      res.status(200).json(allReviews);
+
+      // res.render("home/review/show-reviews", {
+      //   user: req.user,
+      //   reviews: allReviews,
+      // });
     } catch (error) {
       next(error);
     }
@@ -68,10 +70,13 @@ module.exports = {
         req.user.id,
         "In Progress"
       );
-      res.render("home/review/show-reviews", {
-        user: req.user,
-        reviews: inProgressReviews,
-      });
+
+      res.status(200).json(inProgressReviews);
+
+      // res.render("home/review/show-reviews", {
+      //   user: req.user,
+      //   reviews: inProgressReviews,
+      // });
     } catch (error) {
       next(error);
     }
@@ -80,10 +85,13 @@ module.exports = {
   getAllHideReviews: async function (req, res, next) {
     try {
       const hideReviews = await getReviewsByStatus(req.user.id, "Hide");
-      res.render("home/review/show-reviews", {
-        user: req.user,
-        reviews: hideReviews,
-      });
+
+      res.status(200).json(hideReviews);
+
+      // res.render("home/review/show-reviews", {
+      //   user: req.user,
+      //   reviews: hideReviews,
+      // });
     } catch (error) {
       next(error);
     }
@@ -93,10 +101,11 @@ module.exports = {
     try {
       const publishReviews = await getReviewsByStatus(req.user.id, "Publish");
 
-      res.render("home/review/show-reviews", {
-        user: req.user,
-        reviews: publishReviews,
-      });
+      res.status(200).json(publishReviews);
+      // res.render("home/review/show-reviews", {
+      //   user: req.user,
+      //   reviews: publishReviews,
+      // });
     } catch (error) {
       next(error);
     }
@@ -106,10 +115,11 @@ module.exports = {
     try {
       const completeReviews = await getReviewsByStatus(req.user.id, "Complete");
 
-      res.render("home/review/show-reviews", {
-        user: req.user,
-        reviews: completeReviews,
-      });
+      res.status(200).json(completeReviews);
+      // res.render("home/review/show-reviews", {
+      //   user: req.user,
+      //   reviews: completeReviews,
+      // });
     } catch (error) {
       next(error);
     }
