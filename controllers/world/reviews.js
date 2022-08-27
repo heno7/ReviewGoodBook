@@ -109,6 +109,7 @@ module.exports = {
         .json({ message: "The review with given Id is not exist." });
     const review = await Review.findById(req.params.id)
       .populate({ path: "bookInfo" })
+      .populate({ path: "author", select: "username" })
       .exec();
 
     const converter = new showdown.Converter();

@@ -30,22 +30,21 @@ function renderReview(reviews) {
     <div class="content">
       <div class="book-info">
         <p>Book: ${review.bookInfo.name}</p>
-        <p>Author Of Book: ${review.bookInfo.author}</p>
-        <p>Genre Of Book: ${review.bookInfo.genre}</p>
+        <p>Author: ${review.bookInfo.author}</p>
+        <p>Genre: ${review.bookInfo.genre}</p>
       </div>
       <div class="review-title">
         <p>${review.title}</p>
       </div>
       <div class="add-info">
-        <p>Author of review: ${review.author.username}</p>
+        <p>Reviewer: ${review.author.username}</p>
         <p>Stars: ${review.stars}</p>
-        </div>
       </div>
     </div>
     <div class="review-id">
       <p style="display: none">${review._id}</p>
     </div>
-  </div>
+    </div>
     `;
   });
   mainDisplay.innerHTML = reviewHtml;

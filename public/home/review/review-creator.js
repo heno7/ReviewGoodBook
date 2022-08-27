@@ -17,6 +17,7 @@ function getReviewContent(id, callback) {
 }
 
 const converter = new showdown.Converter();
+converter.setFlavor("github");
 
 const markdownContent = document.querySelector("#md-editor");
 const htmlDisplay = document.querySelector("#html-display");

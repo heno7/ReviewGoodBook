@@ -5,16 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home</title>
+    <link rel="stylesheet" href="/static/base.css" />
     <link rel="stylesheet" href="/static/world/review/show-a-review.css" />
   </head>
   <body>
     <!-- Header -->
     <div id="header">
       <div id="left">
-        <div id="logo">
-          <span>Review</span><span>Good</span><span>Boook</span>
-        </div>
-        <div>About</div>
+        <a href="/">
+          <div id="logo">
+            <span>Review</span><span>Good</span><span>Boook</span>
+          </div>
+        </a>
+        <!-- <div id="about">About</div> -->
       </div>
       <div id="right">
         <div id="search">
@@ -28,50 +31,36 @@
         <div id="auth">
           <% if(userName) { %>
           <div id="username"><%= userName %></div>
-          <button><a href="/users/auth/logout">Log out</a></button>
+          <a href="/users/auth/logout">Log out</a>
           <% } else { %>
-          <button><a href="/users/auth/login">Log in</a></button>
-          <button><a href="/users/auth/register">Sign up</a></button>
+          <a href="/users/auth/login">Log in</a>
+          <a href="/users/auth/register">Sign up</a>
           <% } %>
         </div>
       </div>
     </div>
     <!-- Side Bar -->
-    <!-- <div id="right-side-bar">
-      <div>Discover</div>
-      <hr />
-      <div style="text-align: center">My Reviews</div>
-      <div><a href="/home/reviews">All reviews</a></div>
-      <div>
-        <a href="/home/reviews/status/in-progress">In progress reviews</a>
-      </div>
-      <div><a href="/home/reviews/status/complete">Complete reviews</a></div>
-      <div><a href="/home/reviews/status/publish">Publish reviews</a></div>
-      <div><a href="/home/reviews/status/hide">Hide reviews</a></div>
-      <hr />
-      <div style="text-align: center">My Discussions</div>
-      <div>Best Discussions of Week</div>
-      <div>Best Discussions of Month</div>
-      <div>Best Discussions Of Year</div>
-      <hr />
-      <a href="/home/reviews/review-creator">Create Review</a>
-      <hr />
-      <div>Create Discussion</div>
-    </div> -->
 
     <!-- Space -->
     <div id="space"></div>
 
     <!-- Main -->
     <div id="main-navigation">
-      <div>World</div>
-      <div>Home</div>
+      <div id="world"><a href="/world" class="active">World</a></div>
+      <div id="sperator"></div>
+      <div id="home"><a href="/home">Home</a></div>
     </div>
     <div id="main-display">
-      <div id="book-info">
-        <p><%= review.bookInfo.name %></p>
-        <p><%= review.bookInfo.author %></p>
-        <p><%= review.bookInfo.genre %></p>
+      <div id="meta-info">
+        <div id="book-info">
+          <p>Book: <%= review.bookInfo.name %></p>
+          <p>Author: <%= review.bookInfo.author %></p>
+          <p>Genre: <%= review.bookInfo.genre %></p>
+        </div>
+        <div id="review-info">
+          <p>Reviewer: <%= review.author.username %></p>
+          <p>Stars: <%= review.stars %></p>
+        </div>
       </div>
       <div id="review-content"><%- review.content %></div>
     </div>
