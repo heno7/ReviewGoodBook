@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Md to Html</title>
+    <title>Review Generator</title>
     <link rel="stylesheet" href="/static/reset.css" />
     <link rel="stylesheet" href="/static/libs/github-markdown.min.css" />
     <link rel="stylesheet" href="/static/home/review/review-creator.css" />
@@ -44,7 +44,7 @@
             <div class="modal-content">
               <p>Infomation Of Book</p>
               <div id="choose-book" class="field">
-                <label for="name">Book name</label>
+                <label for="name">Name</label>
                 <input type="text" name="name" id="book-name" class="info" />
               </div>
               <div id="choose-author" class="field">
@@ -55,38 +55,38 @@
                   name="author"
                   class="info"
                 />
-                <div id="choose-genre" class="field">
-                  <label for="genre">Genre</label>
-                  <input
-                    type="text"
-                    id="book-genre"
-                    name="genre"
-                    class="info"
-                  />
-                </div>
-                <div>
-                  <button id="book-done-btn">Done</button>
-                  <button id="book-cancle-btn">Cancle</button>
-                </div>
+              </div>
+
+              <div id="choose-genre" class="field">
+                <label for="genre">Genre</label>
+                <input type="text" id="book-genre" name="genre" class="info" />
+              </div>
+              <div class="yes-no">
+                <button id="book-done-btn" class="done-btn">Done</button>
+                <button id="book-cancle-btn" class="cancle-btn">Cancle</button>
               </div>
             </div>
           </div>
         </div>
+
         <div id="review-title">
           <button id="fill-review-title">
             Click here to enter your title of review
           </button>
           <div class="modal">
             <div class="modal-content">
-              <label for="review-title-name">Review Title</label>
+              <p>Review Title</p>
+              <!-- <label for="review-title-name">Review Title</label> -->
               <!-- <input type="text" name="review-title-name" id="review-title-input" class="info"/> -->
               <textarea
                 name="review-title-name"
                 id="review-title-input"
               ></textarea>
-              <div>
-                <button id="review-done-btn">Done</button>
-                <button id="review-cancle-btn">Cancle</button>
+              <div class="yes-no">
+                <button id="review-done-btn" class="done-btn">Done</button>
+                <button id="review-cancle-btn" class="cancle-btn">
+                  Cancle
+                </button>
               </div>
             </div>
           </div>
@@ -135,17 +135,16 @@
 
     <div id="show-notify">
       <div class="modal">
-        <div class="model-content">
-          <div id="notify-container">
-            <p id="notify-message"></p>
-            <div id="button-container">
-              <button id="yes">Yes</button>
-              <button id="no">No</button>
-            </div>
+        <div id="notify-container">
+          <p id="notify-message"></p>
+          <div id="button-container">
+            <button id="yes">Yes</button>
+            <button id="no">No</button>
           </div>
         </div>
       </div>
     </div>
+
     <script src="/static/libs/showdown.min.js"></script>
     <script src="/static/home/review/review-creator.js"></script>
   </body>

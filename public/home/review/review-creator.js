@@ -1,8 +1,9 @@
 window.addEventListener("load", function (event) {
   sessionStorage.clear();
   const existReview = document.querySelector("#review-id");
-  const reviewId = existReview.textContent;
+  // const reviewId = existReview.textContent;
   if (existReview) {
+    const reviewId = existReview.textContent;
     sessionStorage.setItem("review_id", reviewId);
     getReviewContent(reviewId, fillReviewContent);
   }
@@ -49,15 +50,18 @@ const cancleBtn = document.querySelector("#book-cancle-btn");
 const doneBtn = document.querySelector("#book-done-btn");
 
 fillBookInfoBtn.addEventListener("click", function (event) {
-  hideBookInfo.style.display = "block";
+  // hideBookInfo.style.display = "block";
+  hideBookInfo.classList.add("active");
 });
 
 cancleBtn.addEventListener("click", function (event) {
-  hideBookInfo.style.display = "none";
+  // hideBookInfo.style.display = "none";
+  hideBookInfo.classList.remove("active");
 });
 
 doneBtn.addEventListener("click", function (event) {
-  hideBookInfo.style.display = "none";
+  // hideBookInfo.style.display = "none";
+  hideBookInfo.classList.remove("active");
 });
 
 const fillTitleBtn = document.querySelector("#fill-review-title");
@@ -66,16 +70,21 @@ const reviewCancleBtn = document.querySelector("#review-cancle-btn");
 const reviewDoneBtn = document.querySelector("#review-done-btn");
 
 fillTitleBtn.addEventListener("click", function (event) {
-  hideTitleInfo.style.display = "block";
+  // hideTitleInfo.style.display = "block";
+  hideTitleInfo.classList.add("active");
 });
 
 reviewCancleBtn.addEventListener("click", function (event) {
-  hideTitleInfo.style.display = "none";
+  // hideTitleInfo.style.display = "none";
+  hideTitleInfo.classList.remove("active");
 });
 
 reviewDoneBtn.addEventListener("click", function (event) {
-  hideTitleInfo.style.display = "none";
+  // hideTitleInfo.style.display = "none";
+  hideTitleInfo.classList.remove("active");
 });
+
+// handle select images
 
 const formImage = document.querySelector("#image-upload");
 const fileInput = document.querySelector("#getFile");
@@ -172,10 +181,12 @@ function showNotify(message, handler) {
   const noNotify = document.querySelector("#show-notify #no");
 
   messageNotify.textContent = message;
-  hideNotify.style.display = "block";
+  // hideNotify.style.display = "block";
+  hideNotify.classList.add("notify");
 
   const handleYes = function (event) {
-    hideNotify.style.display = "none";
+    // hideNotify.style.display = "none";
+    hideNotify.classList.remove("notify");
     handler();
     yesNotify.removeEventListener("click", handleYes);
   };
@@ -183,7 +194,8 @@ function showNotify(message, handler) {
 
   noNotify.addEventListener("click", function (event) {
     yesNotify.removeEventListener("click", handleYes);
-    hideNotify.style.display = "none";
+    // hideNotify.style.display = "none";
+    hideNotify.classList.remove("notify");
   });
 }
 
