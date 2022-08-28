@@ -38,6 +38,7 @@ button {
 
 #header #left #logo span {
   font-size: 27px;
+  font-weight: 700;
 }
 
 #header #left #logo span:nth-child(1) {

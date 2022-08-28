@@ -37,10 +37,11 @@
 }
 
 #meta-info #star button {
-  width: 15%;
+  width: 17%;
+  height: 5vh;
   background-color: rgba(0, 0, 255, 0.7);
   color: white;
-  border: 1px solid red;
+  border: 0;
   border-radius: 5px;
 }
 

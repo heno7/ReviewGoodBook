@@ -154,7 +154,10 @@ module.exports = {
   },
 
   getReviewCreator: function (req, res, next) {
-    res.render("home/review/review-creator.ejs", { review: false });
+    res.render("home/review/review-creator.ejs", {
+      review: false,
+      userName: req.user.userName,
+    });
   },
 
   getReviewEditor: async function (req, res, next) {
