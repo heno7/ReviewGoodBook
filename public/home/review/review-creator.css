@@ -122,6 +122,7 @@ button {
 }
 
 #md-container {
+  position: relative;
   width: 49%;
   height: 100%;
 }
@@ -164,7 +165,6 @@ button {
 }
 
 #md-editor {
-  position: relative;
   height: 95%;
   padding-left: 1%;
   padding-right: 1%;
@@ -421,9 +421,9 @@ button {
 #upload-images-info.active {
   display: block;
   position: absolute;
-  top: 1vh;
+  top: 5vh;
   left: 1vh;
-  width: 98%;
+  width: 96%;
 }
 
 #upload-images-info {
@@ -433,8 +433,22 @@ button {
 }
 
 #upload-images-info #display-info div {
+  display: flex;
+  justify-content: space-between;
   margin-bottom: 2%;
   color: rgba(0, 0, 255, 0.7);
+}
+
+#upload-images-info #display-info div .copy {
+  width: 15%;
+  border: none;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 255, 0.7);
+  color: white;
+}
+
+#upload-images-info #display-info div .copy:hover {
+  background-color: rgba(0, 0, 255, 0.3);
 }
 
 #upload-images-info #upload-action {
@@ -462,4 +476,12 @@ button {
 
 #upload-images-info #upload-action button:hover {
   opacity: 0.3;
+}
+
+#upload-images-info #upload-action #close-show-url {
+  background-color: rgba(255, 0, 0, 0.7);
+}
+
+#upload-images-info #display-info .image-url {
+  color: rgba(255, 0, 0, 0.7);
 }

@@ -180,7 +180,7 @@ module.exports = {
   },
 
   uploadImages: function (req, res, next) {
-    console.log(req.files);
+    // console.log(req.files);
     res.status(200).json(req.files);
   },
 

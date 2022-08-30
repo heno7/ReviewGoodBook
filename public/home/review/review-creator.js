@@ -88,6 +88,8 @@ reviewDoneBtn.addEventListener("click", function (event) {
 
 const formImage = document.querySelector("#image-upload");
 const fileInput = document.querySelector("#getFile");
+const getImageURL = document.querySelector("#images-URL");
+const uploadInfo = document.querySelector("#upload-images-info");
 const displayInfo = document.querySelector(
   "#upload-images-info > #display-info"
 );
@@ -120,11 +122,9 @@ formImage.addEventListener("submit", (e) => {
 
       console.log(filesName);
       console.log(filesURL);
-      filesURL.forEach((element) => {
-        let info = document.createElement("div");
-        info.textContent = `${element.fileName} has URL: ${element.fileURL}`;
-        displayInfo.append(info);
-      });
+
+      getImageURL.dispatchEvent(new Event("click"));
+
       fileInput.value = "";
       filesName = [];
       // filesURL = [];
@@ -137,24 +137,6 @@ fileInput.addEventListener("change", function (e) {
   // console.dir(this.files);
   // console.log(fileInput.files.length);
 
-  const uploadInfo = document.querySelector("#md-editor #upload-images-info");
-  displayInfo.innerHTML = "";
-  uploadInfo.classList.add("active");
-
-  // let closeBtn = document.createElement("button");
-  // closeBtn.textContent = "Close";
-  // closeBtn.addEventListener("click", function (e) {
-  //   displayInfo.innerHTML = "";
-  // });
-  // displayInfo.append(closeBtn);
-
-  for (let file of this.files) {
-    filesName.push(file.name);
-    let info = document.createElement("div");
-    info.textContent = `Image selected --- ${file.name}`;
-    displayInfo.append(info);
-  }
-
   const yesBtn = document.querySelector(
     "#upload-images-info #upload-action .yes"
   );
@@ -162,6 +144,21 @@ fileInput.addEventListener("change", function (e) {
   const noBtn = document.querySelector(
     "#upload-images-info #upload-action .no"
   );
+
+  const closeBtn = document.querySelector("#close-show-url");
+
+  displayInfo.innerHTML = "";
+  yesBtn.style.display = "inline-block";
+  noBtn.style.display = "inline-block";
+  closeBtn.style.display = "none";
+  uploadInfo.classList.add("active");
+
+  for (let file of this.files) {
+    filesName.push(file.name);
+    let info = document.createElement("div");
+    info.textContent = `Image selected --- ${file.name}`;
+    displayInfo.append(info);
+  }
 
   function uploadHandler(event) {
     function yesHandler() {
@@ -201,9 +198,57 @@ fileInput.addEventListener("change", function (e) {
   noBtn.addEventListener("click", noHandler);
 });
 
-const getImageURL = document.querySelector("#images-URL");
+function displayURL(filesURL) {
+  let info = "";
+  if (filesURL.length === 0) {
+    info = "No file chosen";
+  } else {
+    filesURL.forEach((element) => {
+      info += `<div><p>${element.fileName} URL --- <span class="image-url">${element.fileURL}</span></p><button class="copy">Copy URL</button></div>`;
+    });
+  }
+
+  displayInfo.innerHTML = info;
+}
+
 getImageURL.addEventListener("click", () => {
-  // formImage.dispatchEvent(new Event("submit"));
+  const yesBtn = document.querySelector(
+    "#upload-images-info #upload-action .yes"
+  );
+
+  const noBtn = document.querySelector(
+    "#upload-images-info #upload-action .no"
+  );
+
+  const closeBtn = document.querySelector("#close-show-url");
+
+  yesBtn.style.display = "none";
+  noBtn.style.display = "none";
+  closeBtn.style.display = "inline-block";
+
+  closeBtn.addEventListener("click", (e) => {
+    closeBtn.style.display = "none";
+    displayInfo.innerHTML = "";
+    uploadInfo.classList.remove("active");
+  });
+
+  displayInfo.innerHTML = "";
+  displayURL(filesURL);
+  uploadInfo.classList.add("active");
+
+  const copyBtns = displayInfo.querySelectorAll(".copy");
+  copyBtns.forEach((copyBtn) => {
+    copyBtn.addEventListener("click", function (event) {
+      this.textContent = "Copied";
+      let copyURL =
+        this.previousElementSibling.querySelector(".image-url").textContent;
+      navigator.clipboard.writeText(copyURL);
+
+      setTimeout(() => {
+        this.textContent = "Copy URL";
+      }, 1000);
+    });
+  });
 });
 
 // Create or update review
