@@ -88,13 +88,16 @@ reviewDoneBtn.addEventListener("click", function (event) {
 
 const formImage = document.querySelector("#image-upload");
 const fileInput = document.querySelector("#getFile");
-const displayInfo = document.querySelector("#md-editor > #display-info");
+const displayInfo = document.querySelector(
+  "#upload-images-info > #display-info"
+);
 let filesName = [];
 let filesURL = [];
 
 formImage.addEventListener("submit", (e) => {
   e.preventDefault();
   const form = e.currentTarget;
+  console.log(form);
   const url = "http://localhost:7777/home/reviews/images/upload";
 
   if (fileInput.files.length === 0) return;
@@ -114,6 +117,9 @@ formImage.addEventListener("submit", (e) => {
             fileURL: `/images/${file.filename}`,
           });
       });
+
+      console.log(filesName);
+      console.log(filesURL);
       filesURL.forEach((element) => {
         let info = document.createElement("div");
         info.textContent = `${element.fileName} has URL: ${element.fileURL}`;
@@ -127,25 +133,80 @@ formImage.addEventListener("submit", (e) => {
 });
 
 fileInput.addEventListener("change", function (e) {
-  console.dir(this.files);
-  let closeBtn = document.createElement("button");
-  closeBtn.textContent = "Close";
-  closeBtn.addEventListener("click", function (e) {
-    displayInfo.innerHTML = "";
-  });
-  displayInfo.append(closeBtn);
+  // console.dir(this);
+  // console.dir(this.files);
+  // console.log(fileInput.files.length);
+
+  const uploadInfo = document.querySelector("#md-editor #upload-images-info");
+  displayInfo.innerHTML = "";
+  uploadInfo.classList.add("active");
+
+  // let closeBtn = document.createElement("button");
+  // closeBtn.textContent = "Close";
+  // closeBtn.addEventListener("click", function (e) {
+  //   displayInfo.innerHTML = "";
+  // });
+  // displayInfo.append(closeBtn);
+
   for (let file of this.files) {
     filesName.push(file.name);
     let info = document.createElement("div");
-    info.textContent = `You selected ${file.name}`;
+    info.textContent = `Image selected --- ${file.name}`;
     displayInfo.append(info);
   }
+
+  const yesBtn = document.querySelector(
+    "#upload-images-info #upload-action .yes"
+  );
+
+  const noBtn = document.querySelector(
+    "#upload-images-info #upload-action .no"
+  );
+
+  function uploadHandler(event) {
+    function yesHandler() {
+      yesBtn.removeEventListener("click", uploadHandler);
+      // noBtn.removeEventListener("click", noHandler);
+      formImage.dispatchEvent(new Event("submit"));
+
+      // fileInput.value = "";
+      // filesName = [];
+      displayInfo.innerHTML = "";
+      uploadInfo.classList.remove("active");
+    }
+    console.log("Here");
+    // yesBtn.removeEventListener("click", uploadHandler);
+    // // noBtn.removeEventListener("click", noHandler);
+    // formImage.dispatchEvent(new Event("submit"));
+
+    showNotify(
+      `Do you want to upload ${
+        fileInput.files.length > 1 ? "these images" : "this image"
+      }`,
+      yesHandler
+    );
+  }
+  yesBtn.addEventListener("click", uploadHandler);
+
+  function noHandler(event) {
+    fileInput.value = "";
+    // console.log(fileInput.files);
+    // console.log(filesName);
+    filesName = [];
+    noBtn.removeEventListener("click", noHandler);
+    yesBtn.removeEventListener("click", uploadHandler);
+    displayInfo.innerHTML = "";
+    uploadInfo.classList.remove("active");
+  }
+  noBtn.addEventListener("click", noHandler);
 });
 
 const getImageURL = document.querySelector("#images-URL");
 getImageURL.addEventListener("click", () => {
-  formImage.dispatchEvent(new Event("submit"));
+  // formImage.dispatchEvent(new Event("submit"));
 });
+
+// Create or update review
 
 const saveBtn = document.querySelector("#save-review");
 const completeBtn = document.querySelector("#complete-review");

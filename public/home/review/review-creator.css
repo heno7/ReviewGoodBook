@@ -164,6 +164,7 @@ button {
 }
 
 #md-editor {
+  position: relative;
   height: 95%;
   padding-left: 1%;
   padding-right: 1%;
@@ -325,6 +326,12 @@ button {
   height: 5vh;
   padding: 5px;
   border-radius: 5px;
+  border-color: black;
+}
+
+#action div > .info:focus {
+  border-color: red;
+  /* box-shadow: 1px 1px 1px 1px blue; */
 }
 
 #book-info .field {
@@ -403,4 +410,56 @@ button {
 
 #notify-container #button-container #no:hover {
   background-color: rgba(255, 0, 0, 0.3);
+}
+
+/* Notiy images info */
+
+#upload-images-info {
+  display: none;
+}
+
+#upload-images-info.active {
+  display: block;
+  position: absolute;
+  top: 1vh;
+  left: 1vh;
+  width: 98%;
+}
+
+#upload-images-info {
+  padding: 3%;
+  background-color: rgb(222 222 222);
+  border-radius: 5px;
+}
+
+#upload-images-info #display-info div {
+  margin-bottom: 2%;
+  color: rgba(0, 0, 255, 0.7);
+}
+
+#upload-images-info #upload-action {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2%;
+}
+
+#upload-images-info #upload-action button {
+  width: 15%;
+  height: 5vh;
+  border: 0;
+  border-radius: 5px;
+  color: white;
+  margin-left: 5%;
+}
+
+#upload-images-info #upload-action button.yes {
+  background-color: rgba(0, 0, 255, 0.7);
+}
+
+#upload-images-info #upload-action button.no {
+  background-color: rgba(255, 0, 0, 0.7);
+}
+
+#upload-images-info #upload-action button:hover {
+  opacity: 0.3;
 }
