@@ -1,12 +1,14 @@
 window.addEventListener("load", function (event) {
-  sessionStorage.clear();
+  // sessionStorage.clear();
   const existReview = document.querySelector("#review-id");
   // const reviewId = existReview.textContent;
   if (existReview) {
     const reviewId = existReview.textContent;
     sessionStorage.setItem("review_id", reviewId);
     getReviewContent(reviewId, fillReviewContent);
+    return;
   }
+  sessionStorage.clear();
 });
 
 function getReviewContent(id, callback) {
@@ -36,6 +38,7 @@ function fillReviewContent(review) {
   document.getElementById("review-title-input").value = review.title;
   // markdownContent.textContent = review.content;
   markdownContent.innerText = review.content;
+  sessionStorage.setItem("filesURL", review.images);
   markdownContent.dispatchEvent(new Event("keyup"));
 }
 
@@ -50,17 +53,14 @@ const cancleBtn = document.querySelector("#book-cancle-btn");
 const doneBtn = document.querySelector("#book-done-btn");
 
 fillBookInfoBtn.addEventListener("click", function (event) {
-  // hideBookInfo.style.display = "block";
   hideBookInfo.classList.add("active");
 });
 
 cancleBtn.addEventListener("click", function (event) {
-  // hideBookInfo.style.display = "none";
   hideBookInfo.classList.remove("active");
 });
 
 doneBtn.addEventListener("click", function (event) {
-  // hideBookInfo.style.display = "none";
   hideBookInfo.classList.remove("active");
 });
 
@@ -70,21 +70,18 @@ const reviewCancleBtn = document.querySelector("#review-cancle-btn");
 const reviewDoneBtn = document.querySelector("#review-done-btn");
 
 fillTitleBtn.addEventListener("click", function (event) {
-  // hideTitleInfo.style.display = "block";
   hideTitleInfo.classList.add("active");
 });
 
 reviewCancleBtn.addEventListener("click", function (event) {
-  // hideTitleInfo.style.display = "none";
   hideTitleInfo.classList.remove("active");
 });
 
 reviewDoneBtn.addEventListener("click", function (event) {
-  // hideTitleInfo.style.display = "none";
   hideTitleInfo.classList.remove("active");
 });
 
-// handle select images
+// handle images upload
 
 const formImage = document.querySelector("#image-upload");
 const fileInput = document.querySelector("#getFile");
@@ -100,7 +97,7 @@ formImage.addEventListener("submit", (e) => {
   e.preventDefault();
   const form = e.currentTarget;
   console.log(form);
-  const url = "http://localhost:7777/home/reviews/images/upload";
+  const url = "/home/reviews/images/upload";
 
   if (fileInput.files.length === 0) return;
 
@@ -111,6 +108,10 @@ formImage.addEventListener("submit", (e) => {
   })
     .then((response) => response.json())
     .then((files) => {
+      const reviewId = sessionStorage.getItem("review_id");
+      if (reviewId) {
+        filesURL = JSON.parse(sessionStorage.getItem("filesURL"));
+      }
       console.log(files);
       files.forEach((file) => {
         if (filesName.includes(file.originalname))
@@ -122,6 +123,25 @@ formImage.addEventListener("submit", (e) => {
 
       console.log(filesName);
       console.log(filesURL);
+      console.log(JSON.stringify({ images: filesURL }));
+
+      if (reviewId) {
+        fetch(`/home/reviews/${reviewId}/images`, {
+          method: "PUT",
+          body: JSON.stringify({ images: filesURL }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+          });
+      }
+
+      sessionStorage.setItem("filesURL", JSON.stringify(filesURL));
+      // const images = JSON.parse(sessionStorage.getItem("filesURL"));
+      // console.log(images);
 
       getImageURL.dispatchEvent(new Event("click"));
 
@@ -233,6 +253,8 @@ getImageURL.addEventListener("click", () => {
   });
 
   displayInfo.innerHTML = "";
+  const imagesURL = sessionStorage.getItem("filesURL");
+  const filesURL = imagesURL ? JSON.parse(imagesURL) : [];
   displayURL(filesURL);
   uploadInfo.classList.add("active");
 
@@ -287,11 +309,10 @@ function showNotify(message, handler) {
   const noNotify = document.querySelector("#show-notify #no");
 
   messageNotify.textContent = message;
-  // hideNotify.style.display = "block";
+
   hideNotify.classList.add("notify");
 
   const handleYes = function (event) {
-    // hideNotify.style.display = "none";
     hideNotify.classList.remove("notify");
     handler();
     yesNotify.removeEventListener("click", handleYes);
@@ -300,7 +321,7 @@ function showNotify(message, handler) {
 
   noNotify.addEventListener("click", function (event) {
     yesNotify.removeEventListener("click", handleYes);
-    // hideNotify.style.display = "none";
+
     hideNotify.classList.remove("notify");
   });
 }
@@ -355,6 +376,9 @@ function generateReview(status) {
   // review.content = markdownContent.textContent.trim();
   // review.content = markdownContent.textContent;
   review.content = markdownContent.innerText;
+
+  const images = sessionStorage.getItem("filesURL");
+  review.images = images ? images : "";
 
   // console.log(review.content);
   review.status = status;

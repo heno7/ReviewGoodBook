@@ -173,7 +173,10 @@ module.exports = {
           .status(400)
           .json({ message: "The review with given Id is not exist." });
 
-      res.render("home/review/review-creator.ejs", { review: review });
+      res.render("home/review/review-creator.ejs", {
+        review: review,
+        userName: req.user.userName,
+      });
     } catch (error) {
       next(error);
     }
@@ -211,6 +214,7 @@ module.exports = {
         bookInfo: book._id,
         author: req.user.id,
         title: req.body.title,
+        images: req.body.images,
         status: req.body.status,
       });
 
@@ -265,6 +269,7 @@ module.exports = {
 
       review.title = req.body.title;
       review.status = req.body.status;
+      review.images = req.body.images;
       await fs.writeFile(review.pathToContent, req.body.content);
 
       await review.save();
@@ -281,6 +286,18 @@ module.exports = {
       review.status = req.body.status;
       await review.save();
       return res.status(200).json({ message: "Status updated" });
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  updateReviewImages: async function (req, res, next) {
+    try {
+      const review = await Review.findById(req.params.id);
+      // console.log(req.body.images);
+      review.images = JSON.stringify(req.body.images);
+      await review.save();
+      return res.status(200).json({ message: "Images updated" });
     } catch (error) {
       next(error);
     }

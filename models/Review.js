@@ -29,6 +29,9 @@ const reviewSchema = new Schema(
       type: String,
       required: true,
     },
+    images: {
+      type: String,
+    },
     status: {
       type: String,
       required: true,

@@ -32,6 +32,8 @@ router.put("/:id", reviews.updateReview);
 
 router.put("/:id/status", reviews.updateReviewStatus);
 
+router.put("/:id/images", reviews.updateReviewImages);
+
 router.delete("/:id", reviews.deleteReview);
 
 module.exports = router;
