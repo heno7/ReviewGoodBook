@@ -247,6 +247,7 @@ module.exports = {
 
   updateReview: async function (req, res, next) {
     try {
+      console.log(req.body.book);
       let review = await Review.findById(req.params.id);
       let oldBook = await Book.findById(review.bookInfo);
       let newBook = await Book.findOne({

@@ -1,3 +1,5 @@
+sessionStorage.clear();
+
 const mainDisplay = document.querySelector("#main-display");
 const reviewNav = document.querySelectorAll("#review .criteria");
 

@@ -8,7 +8,11 @@ window.addEventListener("load", function (event) {
     getReviewContent(reviewId, fillReviewContent);
     return;
   }
-  sessionStorage.clear();
+  const reviewId = sessionStorage.getItem("review_id");
+  if (!reviewId) {
+    return createDraftReview();
+  }
+  getReviewContent(reviewId, fillReviewContent);
 });
 
 function getReviewContent(id, callback) {
@@ -32,10 +36,14 @@ markdownContent.addEventListener("keyup", function () {
 
 function fillReviewContent(review) {
   // console.log(review.content);
-  document.getElementById("book-name").value = review.bookInfo.name;
-  document.getElementById("book-author").value = review.bookInfo.author;
-  document.getElementById("book-genre").value = review.bookInfo.genre;
-  document.getElementById("review-title-input").value = review.title;
+  document.getElementById("book-name").value =
+    review.bookInfo.name === "draft book" ? "" : review.bookInfo.name;
+  document.getElementById("book-author").value =
+    review.bookInfo.author === "draft author" ? "" : review.bookInfo.author;
+  document.getElementById("book-genre").value =
+    review.bookInfo.genre === "draft genre" ? "" : review.bookInfo.genre;
+  document.getElementById("review-title-input").value =
+    review.title === "draft title" ? "" : review.title;
   // markdownContent.textContent = review.content;
   markdownContent.innerText = review.content;
   sessionStorage.setItem("filesURL", review.images);
@@ -110,7 +118,10 @@ formImage.addEventListener("submit", (e) => {
     .then((files) => {
       const reviewId = sessionStorage.getItem("review_id");
       if (reviewId) {
-        filesURL = JSON.parse(sessionStorage.getItem("filesURL"));
+        const imagesURL = sessionStorage.getItem("filesURL");
+
+        filesURL = imagesURL.trim() ? JSON.parse(imagesURL) : [];
+        // filesURL = JSON.parse(sessionStorage.getItem("filesURL"));
       }
       console.log(files);
       files.forEach((file) => {
@@ -254,7 +265,8 @@ getImageURL.addEventListener("click", () => {
 
   displayInfo.innerHTML = "";
   const imagesURL = sessionStorage.getItem("filesURL");
-  const filesURL = imagesURL ? JSON.parse(imagesURL) : [];
+
+  const filesURL = imagesURL.trim() ? JSON.parse(imagesURL) : [];
   displayURL(filesURL);
   uploadInfo.classList.add("active");
 
@@ -281,22 +293,24 @@ const completeBtn = document.querySelector("#complete-review");
 saveBtn.addEventListener("click", function (event) {
   function yesHandler() {
     const reviewId = sessionStorage.getItem("review_id");
-    if (reviewId) {
-      return updateReview(reviewId);
-    }
-    return createReview();
+    // if (reviewId) {
+    //   return updateReview(reviewId);
+    // }
+    // return createReview();
+    return saveProgressReview(reviewId);
   }
 
-  showNotify("Do you want to save this upadate review", yesHandler);
+  showNotify("Do you want to save the progress review", yesHandler);
 });
 
 completeBtn.addEventListener("click", function (event) {
   function yesHandler() {
     const reviewId = sessionStorage.getItem("review_id");
-    if (!reviewId) {
-      return createReview("Complete");
-    }
-    return updateReview(reviewId, "Complete");
+    // if (!reviewId) {
+    //   return createReview("Complete");
+    // }
+    // return updateReview(reviewId, "Complete");
+    return completeReview(reviewId);
   }
 
   showNotify("Do you want to complete this review", yesHandler);
@@ -326,12 +340,27 @@ function showNotify(message, handler) {
   });
 }
 
-// console.log(showNotify("This is a test message"));
+// function createReview(status = "In Progress", type) {
+//   const review = generateReview(status, type);
+//   console.log(review);
 
-function createReview(status = "In Progress") {
-  const review = generateReview(status);
-  console.log(review);
+//   fetch("/home/reviews/", {
+//     method: "POST",
+//     body: JSON.stringify(review),
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//   })
+//     .then((response) => response.json())
+//     .then((data) => {
+//       console.log(data);
+//       sessionStorage.setItem("review_id", data.review_id);
+//     })
+//     .catch((error) => console.error(error));
+// }
 
+function createDraftReview() {
+  const review = generateReview();
   fetch("/home/reviews/", {
     method: "POST",
     body: JSON.stringify(review),
@@ -347,8 +376,26 @@ function createReview(status = "In Progress") {
     .catch((error) => console.error(error));
 }
 
-function updateReview(reviewId, status = "In Progress") {
-  const review = generateReview(status);
+// function updateReview(reviewId, status = "In Progress") {
+//   const review = generateReview(status);
+//   console.log(review);
+
+//   fetch(`/home/reviews/${reviewId}`, {
+//     method: "PUT",
+//     body: JSON.stringify(review),
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//   })
+//     .then((response) => response.json())
+//     .then((data) => {
+//       console.log(data);
+//     })
+//     .catch((error) => console.error(error));
+// }
+
+function saveProgressReview(reviewId) {
+  const review = generateReview();
   console.log(review);
 
   fetch(`/home/reviews/${reviewId}`, {
@@ -365,22 +412,67 @@ function updateReview(reviewId, status = "In Progress") {
     .catch((error) => console.error(error));
 }
 
-function generateReview(status) {
+function completeReview(reviewId) {}
+
+// function generateReview(status, type) {
+//   const review = {};
+//   if (type === "empty") {
+//     review.book = {
+//       name: " ",
+//       author: " ",
+//       genre: " ",
+//     };
+
+//     review.title = " ";
+//     review.content = " ";
+//     review.images = " ";
+//     review.status = status;
+//     return review;
+//   }
+
+//   review.book = {
+//     name: document.getElementById("book-name").value.trim(),
+//     author: document.getElementById("book-author").value.trim(),
+//     genre: document.getElementById("book-genre").value.trim(),
+//   };
+//   review.title = document.getElementById("review-title-input").value;
+//   // review.content = markdownContent.textContent.trim();
+//   // review.content = markdownContent.textContent;
+//   review.content = markdownContent.innerText;
+
+//   const images = sessionStorage.getItem("filesURL");
+//   review.images = images ? images : "";
+
+//   // console.log(review.content);
+//   review.status = status;
+//   return review;
+// }
+
+function generateReview() {
+  function isEmpty(value) {
+    return value.trim() === "";
+  }
   const review = {};
+  const bookName = document.getElementById("book-name").value.trim();
+  const bookAuthor = document.getElementById("book-author").value.trim();
+  const bookGenre = document.getElementById("book-genre").value.trim();
+  const reviewTitle = document
+    .getElementById("review-title-input")
+    .value.trim();
+
   review.book = {
-    name: document.getElementById("book-name").value.trim(),
-    author: document.getElementById("book-author").value.trim(),
-    genre: document.getElementById("book-genre").value.trim(),
+    name: isEmpty(bookName) ? "draft book" : bookName,
+    author: isEmpty(bookAuthor) ? "draft author" : bookAuthor,
+    genre: isEmpty(bookGenre) ? "draft genre" : bookGenre,
   };
-  review.title = document.getElementById("review-title-input").value;
-  // review.content = markdownContent.textContent.trim();
-  // review.content = markdownContent.textContent;
+
+  review.title = isEmpty(reviewTitle) ? "draft title" : reviewTitle;
   review.content = markdownContent.innerText;
+  review.images = " ";
+  review.status = "In Progress";
 
   const images = sessionStorage.getItem("filesURL");
-  review.images = images ? images : "";
+  review.images = images ? images : "[]";
 
-  // console.log(review.content);
-  review.status = status;
   return review;
 }
