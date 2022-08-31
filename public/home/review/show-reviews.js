@@ -17,6 +17,7 @@ async function hanldeClick(event) {
     event.target.classList.add("active");
     const url = event.target.href;
     const reviews = await getReviews(url);
+    console.log(reviews);
     renderReview(reviews);
     actionHandler();
   } catch (error) {

@@ -1,20 +1,21 @@
 const express = require("express");
 const checkAuth = require("../../Auth/checkAuth");
+const checkReviewExist = require("../../middlewares/checkReviewExist");
 const router = express.Router();
 const { reviews } = require("../../controllers/home");
 const { upload } = require("../../uploads/upload");
 
 router.use(checkAuth.checkUser);
 
-router.get("/api/:id", reviews.getReviewAPI);
+router.get("/api/:id", checkReviewExist, reviews.getReviewAPI);
 
 router.get("/review-creator", reviews.getReviewCreator);
 
-router.get("/:id/review-creator", reviews.getReviewEditor);
+router.get("/:id/review-creator", checkReviewExist, reviews.getReviewEditor);
 
 router.get("/", reviews.getAllReviews);
 
-router.get("/:id", reviews.getReview);
+router.get("/:id", checkReviewExist, reviews.getReview);
 
 router.get("/status/in-progress", reviews.getAllInProgressReviews);
 
@@ -28,12 +29,12 @@ router.post("/images/upload", upload.array("images"), reviews.uploadImages);
 
 router.post("/", reviews.createReview);
 
-router.put("/:id", reviews.updateReview);
+router.put("/:id", checkReviewExist, reviews.updateReview);
 
-router.put("/:id/status", reviews.updateReviewStatus);
+router.put("/:id/status", checkReviewExist, reviews.updateReviewStatus);
 
-router.put("/:id/images", reviews.updateReviewImages);
+router.put("/:id/images", checkReviewExist, reviews.updateReviewImages);
 
-router.delete("/:id", reviews.deleteReview);
+router.delete("/:id", checkReviewExist, reviews.deleteReview);
 
 module.exports = router;

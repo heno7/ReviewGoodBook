@@ -1,4 +1,4 @@
-window.addEventListener("load", function (event) {
+window.addEventListener("load", async function (event) {
   // sessionStorage.clear();
   const existReview = document.querySelector("#review-id");
   // const reviewId = existReview.textContent;
@@ -8,11 +8,12 @@ window.addEventListener("load", function (event) {
     getReviewContent(reviewId, fillReviewContent);
     return;
   }
-  const reviewId = sessionStorage.getItem("review_id");
+  let reviewId = sessionStorage.getItem("review_id");
   if (!reviewId) {
-    return createDraftReview();
+    await createReview();
+    reviewId = sessionStorage.getItem("review_id");
   }
-  getReviewContent(reviewId, fillReviewContent);
+  return getReviewContent(reviewId, fillReviewContent);
 });
 
 function getReviewContent(id, callback) {
@@ -297,7 +298,7 @@ saveBtn.addEventListener("click", function (event) {
     //   return updateReview(reviewId);
     // }
     // return createReview();
-    return saveProgressReview(reviewId);
+    return updateReview(reviewId, "In Progress");
   }
 
   showNotify("Do you want to save the progress review", yesHandler);
@@ -310,7 +311,7 @@ completeBtn.addEventListener("click", function (event) {
     //   return createReview("Complete");
     // }
     // return updateReview(reviewId, "Complete");
-    return completeReview(reviewId);
+    return updateReview(reviewId, "Complete");
   }
 
   showNotify("Do you want to complete this review", yesHandler);
@@ -359,21 +360,22 @@ function showNotify(message, handler) {
 //     .catch((error) => console.error(error));
 // }
 
-function createDraftReview() {
-  const review = generateReview();
-  fetch("/home/reviews/", {
-    method: "POST",
-    body: JSON.stringify(review),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      sessionStorage.setItem("review_id", data.review_id);
-    })
-    .catch((error) => console.error(error));
+async function createReview() {
+  try {
+    const review = generateReview("In Progress");
+    const response = await fetch("/home/reviews/", {
+      method: "POST",
+      body: JSON.stringify(review),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    console.log(data);
+    sessionStorage.setItem("review_id", data.review_id);
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 // function updateReview(reviewId, status = "In Progress") {
@@ -394,8 +396,8 @@ function createDraftReview() {
 //     .catch((error) => console.error(error));
 // }
 
-function saveProgressReview(reviewId) {
-  const review = generateReview();
+function updateReview(reviewId, status) {
+  const review = generateReview(status);
   console.log(review);
 
   fetch(`/home/reviews/${reviewId}`, {
@@ -411,8 +413,6 @@ function saveProgressReview(reviewId) {
     })
     .catch((error) => console.error(error));
 }
-
-function completeReview(reviewId) {}
 
 // function generateReview(status, type) {
 //   const review = {};
@@ -448,7 +448,7 @@ function completeReview(reviewId) {}
 //   return review;
 // }
 
-function generateReview() {
+function generateReview(status) {
   function isEmpty(value) {
     return value.trim() === "";
   }
@@ -468,8 +468,7 @@ function generateReview() {
 
   review.title = isEmpty(reviewTitle) ? "draft title" : reviewTitle;
   review.content = markdownContent.innerText;
-  review.images = " ";
-  review.status = "In Progress";
+  review.status = status;
 
   const images = sessionStorage.getItem("filesURL");
   review.images = images ? images : "[]";

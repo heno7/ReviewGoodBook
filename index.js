@@ -42,7 +42,8 @@ app.use("/world/discussions", worldRouter.discussions);
 
 app.use((err, req, res, next) => {
   console.log(err);
-  res.status(500).json({ message: "Sập con mịa nó Server rồi" });
+  console.log(err.message);
+  res.status(500).json({ message: err.message });
 });
 
 const PORT = process.env.PORT || 3000;

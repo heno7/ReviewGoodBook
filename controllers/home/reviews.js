@@ -6,6 +6,8 @@ const Book = require("../../models/Book");
 const Review = require("../../models/Review");
 const User = require("../../models/User");
 const checkId = require("../../validations/id.validation");
+const checkCompleteReview = require("../../validations/completeReview.validation");
+const httpError = require("../../ultils/httpErrors");
 
 async function getReviewsByStatus(userId, statusInfo) {
   try {
@@ -22,6 +24,77 @@ async function getReviewsByStatus(userId, statusInfo) {
     });
 
     return filterReviews;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function updateProgress(reviewId, data) {
+  try {
+    let review = await Review.findById(reviewId);
+    let book = await Book.findById(review.bookInfo);
+
+    book.name = data.book.name;
+    book.author = data.book.author;
+    book.genre = data.book.genre;
+    await book.save();
+
+    review.title = data.title;
+    review.status = data.status;
+    review.images = data.images;
+    await fs.writeFile(review.pathToContent, data.content);
+
+    await review.save();
+
+    return "Done";
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function completeUpdate(reviewId, data) {
+  try {
+    const { error } = checkCompleteReview(data);
+    if (error) {
+      throw error;
+    }
+    let review = await Review.findById(reviewId);
+
+    review.title = data.title;
+    review.status = data.status;
+    review.images = data.images;
+    await fs.writeFile(review.pathToContent, data.content);
+
+    let currentBook = await Book.findById(review.bookInfo);
+    let existPreviousBook = await Book.findOne(data.book);
+    if (existPreviousBook) {
+      if (currentBook._id.equals(existPreviousBook._id)) {
+        currentBook.listReviews.push(review._id);
+        await currentBook.save();
+        await review.save();
+        return "Done";
+      }
+
+      review.bookInfo = existPreviousBook._id;
+      existPreviousBook.listReviews.push(review._id);
+      await Book.deleteOne({ _id: currentBook._id });
+      await existPreviousBook.save();
+
+      await review.save();
+      return "Done";
+    }
+
+    console.log(data);
+    console.log(currentBook);
+
+    currentBook.name = data.book.name;
+    currentBook.author = data.book.author;
+    currentBook.genre = data.book.genre;
+    currentBook.listReviews.push(review._id);
+    await currentBook.save();
+
+    await review.save();
+    return "Done";
   } catch (error) {
     throw error;
   }
@@ -195,20 +268,13 @@ module.exports = {
       // console.log(req.signedCookies);
       // console.log(req.body);
       let review;
-      let book = await Book.findOne({
+
+      const book = new Book({
         name: req.body.book.name,
         author: req.body.book.author,
         genre: req.body.book.genre,
       });
-
-      if (!book) {
-        book = new Book({
-          name: req.body.book.name,
-          author: req.body.book.author,
-          genre: req.body.book.genre,
-        });
-        await book.save();
-      }
+      await book.save();
 
       review = new Review({
         bookInfo: book._id,
@@ -232,8 +298,8 @@ module.exports = {
       // await book.save();
       await review.save();
 
-      book.listReviews.push(review._id);
-      await book.save();
+      // book.listReviews.push(review._id);
+      // await book.save();
 
       const user = await User.findById(req.user.id);
       user.listReviews.push(review._id);
@@ -247,35 +313,19 @@ module.exports = {
 
   updateReview: async function (req, res, next) {
     try {
-      console.log(req.body.book);
-      let review = await Review.findById(req.params.id);
-      let oldBook = await Book.findById(review.bookInfo);
-      let newBook = await Book.findOne({
-        name: req.body.book.name,
-        author: req.body.book.author,
-        genre: req.body.book.genre,
-      });
-
-      if (newBook && !newBook._id.equals(oldBook._id)) {
-        review.bookInfo = newBook._id;
-        oldBook.listReviews.splice(oldBook.listReviews.indexOf(review._id), 1);
-        newBook.listReviews.push(review._id);
-        await newBook.save();
+      if (req.body.status === "Complete") {
+        const done = await completeUpdate(req.reviewId, req.body);
+        console.log(done instanceof httpError);
+        if (done) {
+          return res.status(200).json({ message: "Completed" });
+        }
       }
-
-      oldBook.name = req.body.book.name;
-      oldBook.author = req.body.book.author;
-      oldBook.genre = req.body.book.genre;
-      await oldBook.save();
-
-      review.title = req.body.title;
-      review.status = req.body.status;
-      review.images = req.body.images;
-      await fs.writeFile(review.pathToContent, req.body.content);
-
-      await review.save();
-
-      return res.status(200).json({ message: "Updated" });
+      if (req.body.status === "In Progress") {
+        const done = await updateProgress(req.reviewId, req.body);
+        if (done) {
+          return res.status(200).json({ message: "Updated" });
+        }
+      }
     } catch (error) {
       next(error);
     }
@@ -327,7 +377,7 @@ module.exports = {
     const user = await User.findById(req.user.id);
     user.listReviews.splice(user.listReviews.indexOf(review._id), 1);
 
-    await Review.deleteOne(review._id);
+    await Review.deleteOne({ _id: review._id });
     await book.save();
     await user.save();
 
