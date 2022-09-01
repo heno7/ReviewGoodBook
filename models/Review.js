@@ -25,6 +25,10 @@ const reviewSchema = new Schema(
     //   type: Date,
     //   default: Date.now,
     // },
+    publishedAt: {
+      type: Date,
+      default: new Date("2022-08-31T17:00:00.000Z"),
+    },
     pathToContent: {
       type: String,
       required: true,

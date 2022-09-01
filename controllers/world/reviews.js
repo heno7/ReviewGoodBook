@@ -12,7 +12,7 @@ async function getBestReviewIn(time) {
 
     const reviews = await Review.find({
       status: "Publish",
-      createdAt: {
+      publishedAt: {
         $gte: start,
         $lte: end,
       },

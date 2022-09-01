@@ -13,14 +13,17 @@
   font-size: 15px;
 }
 
-.review-card:hover {
-  background-color: rgba(0, 0, 255, 0.3);
-  color: white;
-}
-
 .review-card .content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 90%;
   padding: 1%;
+}
+
+.review-card .content:hover {
+  background-color: rgba(0, 0, 255, 0.3);
+  color: white;
 }
 
 .review-card .action {
@@ -39,24 +42,26 @@
 .review-card .content .book-info p {
   width: 33.33%;
   padding-left: 1%;
-  border-right: 1px solid;
+  border-left: 1px solid;
 }
 
-.review-card .content .book-info p:first-child {
+/* .review-card .content .book-info p:first-child {
   padding-left: 0;
-}
+} */
 
-.review-card .content .book-info p:last-child {
+/* .review-card .content .book-info p:last-child {
   border-right: 0;
-}
+} */
 
 .review-card .content .review-title {
+  height: 100%;
   margin-top: 1vh;
   margin-bottom: 1vh;
 }
 
 .review-card .content .add-info {
-  width: 66.66%;
+  /* width: 66.66%; */
+  width: 100%;
   margin-left: auto;
   display: flex;
   justify-content: flex-end;
@@ -65,7 +70,7 @@
 .review-card .content .add-info p {
   display: flex;
   justify-content: flex-start;
-  width: 50%;
+  width: 33.33%;
   padding-left: 1%;
   border-left: 1px solid;
 }

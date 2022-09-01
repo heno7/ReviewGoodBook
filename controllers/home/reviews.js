@@ -6,7 +6,6 @@ const Book = require("../../models/Book");
 const Review = require("../../models/Review");
 const User = require("../../models/User");
 const checkCompleteReview = require("../../validations/completeReview.validation");
-const httpError = require("../../ultils/httpErrors");
 const { default: mongoose } = require("mongoose");
 
 async function getReviewsByStatus(userId, statusInfo) {
@@ -290,7 +289,7 @@ module.exports = {
     try {
       if (req.body.status === "Complete") {
         const done = await completeUpdate(req.reviewId, req.body);
-        console.log(done instanceof httpError);
+
         if (done) {
           return res.status(200).json({ message: "Completed" });
         }
@@ -308,7 +307,18 @@ module.exports = {
 
   updateReviewStatus: async function (req, res, next) {
     try {
+      const defaultPublishTime = new Date("2022-08-31T17:00:00.000Z");
+
       const review = await Review.findById(req.params.id);
+
+      // console.log(defaultPublishTime.toString());
+      // console.log(review.publishAt.toString());
+      if (
+        req.body.status === "Publish" &&
+        review.publishedAt.toString() === defaultPublishTime.toString()
+      ) {
+        review.publishedAt = review.updatedAt;
+      }
       review.status = req.body.status;
       await review.save();
       return res.status(200).json({ message: "Status updated" });
@@ -338,14 +348,18 @@ module.exports = {
       // await review.remove()
       const bookId = review.bookInfo;
       const book = await Book.findById(bookId).session(session);
-      book.listReviews.splice(book.listReviews.indexOf(review._id), 1);
+      if (book.listReviews.length > 1) {
+        book.listReviews.splice(book.listReviews.indexOf(review._id), 1);
+        await book.save();
+      } else {
+        await Book.deleteOne({ _id: book._id }).session(session);
+      }
 
       const user = await User.findById(req.user.id).session(session);
       user.listReviews.splice(user.listReviews.indexOf(review._id), 1);
+      await user.save();
 
       await Review.deleteOne({ _id: review._id }).session(session);
-      await book.save();
-      await user.save();
 
       // console.log(review, book);
       await session.commitTransaction();

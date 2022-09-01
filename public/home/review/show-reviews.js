@@ -1,5 +1,18 @@
 sessionStorage.clear();
 
+window.addEventListener("load", () => {
+  const inProgressCriteria = document.querySelector(
+    "#review .criteria .active"
+  );
+  inProgressCriteria.addEventListener("click", function handler(event) {
+    hanldeClick(event);
+
+    inProgressCriteria.removeEventListener("click", handler);
+  });
+
+  inProgressCriteria.dispatchEvent(new Event("click"));
+});
+
 const mainDisplay = document.querySelector("#main-display");
 const reviewNav = document.querySelectorAll("#review .criteria");
 
@@ -17,7 +30,7 @@ async function hanldeClick(event) {
     event.target.classList.add("active");
     const url = event.target.href;
     const reviews = await getReviews(url);
-    console.log(reviews);
+    // console.log(reviews);
     renderReview(reviews);
     actionHandler();
   } catch (error) {
@@ -41,6 +54,9 @@ function renderReview(reviews) {
       </div>
       <div class="add-info">
         <p>Status: ${review.status}</p>
+        <p>Updated-at: ${new Date(review.updatedAt)
+          .toString()
+          .slice(0, 24)}</p>   
         <p>Stars: ${review.stars}</p>
       </div>
     </div>
@@ -59,9 +75,18 @@ function renderReview(reviews) {
               ? "<button disabled>Publish</button>"
               : "<button>Publish</button>"
           }  
-      
-          <button>Edit</button>
-          <button>Delete</button>
+
+          ${
+            review.status === "Publish"
+              ? "<button disabled>Edit</button>"
+              : "<button>Edit</button>"
+          }
+
+          ${
+            review.status === "Publish"
+              ? "<button disabled>Delete</button>"
+              : "<button>Delete</button>"
+          }
         </div>
     </div>
     `;
@@ -78,6 +103,7 @@ async function getReviews(url) {
 
     const reviews = await response.json();
 
+    console.log(reviews[1]);
     return reviews;
   } catch (error) {
     console.log(error);
