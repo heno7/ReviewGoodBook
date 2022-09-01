@@ -5,9 +5,9 @@ const showdown = require("showdown");
 const Book = require("../../models/Book");
 const Review = require("../../models/Review");
 const User = require("../../models/User");
-const checkId = require("../../validations/id.validation");
 const checkCompleteReview = require("../../validations/completeReview.validation");
 const httpError = require("../../ultils/httpErrors");
+const { default: mongoose } = require("mongoose");
 
 async function getReviewsByStatus(userId, statusInfo) {
   try {
@@ -30,9 +30,11 @@ async function getReviewsByStatus(userId, statusInfo) {
 }
 
 async function updateProgress(reviewId, data) {
+  const session = await mongoose.startSession();
+  session.startTransaction();
   try {
-    let review = await Review.findById(reviewId);
-    let book = await Book.findById(review.bookInfo);
+    let review = await Review.findById(reviewId).session(session);
+    let book = await Book.findById(review.bookInfo).session(session);
 
     book.name = data.book.name;
     book.author = data.book.author;
@@ -46,27 +48,33 @@ async function updateProgress(reviewId, data) {
 
     await review.save();
 
+    await session.commitTransaction();
+    session.endSession();
     return "Done";
   } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
     throw error;
   }
 }
 
 async function completeUpdate(reviewId, data) {
+  const session = await mongoose.startSession();
+  session.startTransaction();
   try {
     const { error } = checkCompleteReview(data);
     if (error) {
       throw error;
     }
-    let review = await Review.findById(reviewId);
+    let review = await Review.findById(reviewId).session(session);
 
     review.title = data.title;
     review.status = data.status;
     review.images = data.images;
     await fs.writeFile(review.pathToContent, data.content);
 
-    let currentBook = await Book.findById(review.bookInfo);
-    let existPreviousBook = await Book.findOne(data.book);
+    let currentBook = await Book.findById(review.bookInfo).session(session);
+    let existPreviousBook = await Book.findOne(data.book).session(session);
     if (existPreviousBook) {
       if (currentBook._id.equals(existPreviousBook._id)) {
         currentBook.listReviews.push(review._id);
@@ -77,10 +85,13 @@ async function completeUpdate(reviewId, data) {
 
       review.bookInfo = existPreviousBook._id;
       existPreviousBook.listReviews.push(review._id);
-      await Book.deleteOne({ _id: currentBook._id });
+      await Book.deleteOne({ _id: currentBook._id }).session(session);
       await existPreviousBook.save();
 
       await review.save();
+
+      await session.commitTransaction();
+      session.endSession();
       return "Done";
     }
 
@@ -94,8 +105,12 @@ async function completeUpdate(reviewId, data) {
     await currentBook.save();
 
     await review.save();
+    await session.commitTransaction();
+    session.endSession();
     return "Done";
   } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
     throw error;
   }
 }
@@ -103,11 +118,6 @@ async function completeUpdate(reviewId, data) {
 module.exports = {
   getReviewAPI: async function (req, res, next) {
     try {
-      const isValidId = checkId(req.params.id);
-      if (!isValidId)
-        return res
-          .status(400)
-          .json({ message: "The review with given Id is not exist." });
       const review = await Review.findById(req.params.id)
         .populate({ path: "bookInfo" })
         .lean()
@@ -127,11 +137,6 @@ module.exports = {
       const allReviews = await getReviewsByStatus(req.user.id);
 
       res.status(200).json(allReviews);
-
-      // res.render("home/review/show-reviews", {
-      //   user: req.user,
-      //   reviews: allReviews,
-      // });
     } catch (error) {
       next(error);
     }
@@ -145,11 +150,6 @@ module.exports = {
       );
 
       res.status(200).json(inProgressReviews);
-
-      // res.render("home/review/show-reviews", {
-      //   user: req.user,
-      //   reviews: inProgressReviews,
-      // });
     } catch (error) {
       next(error);
     }
@@ -160,11 +160,6 @@ module.exports = {
       const hideReviews = await getReviewsByStatus(req.user.id, "Hide");
 
       res.status(200).json(hideReviews);
-
-      // res.render("home/review/show-reviews", {
-      //   user: req.user,
-      //   reviews: hideReviews,
-      // });
     } catch (error) {
       next(error);
     }
@@ -175,10 +170,6 @@ module.exports = {
       const publishReviews = await getReviewsByStatus(req.user.id, "Publish");
 
       res.status(200).json(publishReviews);
-      // res.render("home/review/show-reviews", {
-      //   user: req.user,
-      //   reviews: publishReviews,
-      // });
     } catch (error) {
       next(error);
     }
@@ -189,10 +180,6 @@ module.exports = {
       const completeReviews = await getReviewsByStatus(req.user.id, "Complete");
 
       res.status(200).json(completeReviews);
-      // res.render("home/review/show-reviews", {
-      //   user: req.user,
-      //   reviews: completeReviews,
-      // });
     } catch (error) {
       next(error);
     }
@@ -200,11 +187,6 @@ module.exports = {
 
   getReview: async function (req, res, next) {
     try {
-      const isValidId = checkId(req.params.id);
-      if (!isValidId)
-        return res
-          .status(400)
-          .json({ message: "The review with given Id is not exist." });
       const review = await Review.findById(req.params.id)
         .populate({ path: "bookInfo" })
         .exec();
@@ -226,7 +208,7 @@ module.exports = {
     }
   },
 
-  getReviewCreator: function (req, res, next) {
+  getReviewGenerator: function (req, res, next) {
     res.render("home/review/review-creator.ejs", {
       review: false,
       userName: req.user.userName,
@@ -235,16 +217,7 @@ module.exports = {
 
   getReviewEditor: async function (req, res, next) {
     try {
-      const isValidId = checkId(req.params.id);
-      if (!isValidId)
-        return res
-          .status(400)
-          .json({ message: "The review with given Id is not exist." });
       const review = await Review.findById(req.params.id);
-      if (!review)
-        return res
-          .status(400)
-          .json({ message: "The review with given Id is not exist." });
 
       res.render("home/review/review-creator.ejs", {
         review: review,
@@ -261,6 +234,8 @@ module.exports = {
   },
 
   createReview: async function (req, res, next) {
+    // const session = await mongoose.startSession();
+    // session.startTransaction();
     try {
       const pathStore = path.join(process.cwd(), "reviews_store", req.user.id);
       const fileContent = req.user.id + Date.now() + ".md";
@@ -355,34 +330,31 @@ module.exports = {
   },
 
   deleteReview: async function (req, res, next) {
-    const isValidId = checkId(req.params.id);
-    if (!isValidId) {
-      return res
-        .status(400)
-        .json({ message: "The review with given Id is not exist." });
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    try {
+      const review = await Review.findById(req.params.id).session(session);
+
+      // await review.remove()
+      const bookId = review.bookInfo;
+      const book = await Book.findById(bookId).session(session);
+      book.listReviews.splice(book.listReviews.indexOf(review._id), 1);
+
+      const user = await User.findById(req.user.id).session(session);
+      user.listReviews.splice(user.listReviews.indexOf(review._id), 1);
+
+      await Review.deleteOne({ _id: review._id }).session(session);
+      await book.save();
+      await user.save();
+
+      // console.log(review, book);
+      await session.commitTransaction();
+      session.endSession();
+      res.status(200).json({ message: "Deleted" });
+    } catch (error) {
+      await session.abortTransaction();
+      session.endSession();
+      next(error);
     }
-
-    const review = await Review.findById(req.params.id);
-    if (!review) {
-      return res
-        .status(400)
-        .json({ message: "The review with given Id is not exist." });
-    }
-
-    // await review.remove()
-    const bookId = review.bookInfo;
-    const book = await Book.findById(bookId);
-    book.listReviews.splice(book.listReviews.indexOf(review._id), 1);
-
-    const user = await User.findById(req.user.id);
-    user.listReviews.splice(user.listReviews.indexOf(review._id), 1);
-
-    await Review.deleteOne({ _id: review._id });
-    await book.save();
-    await user.save();
-
-    // console.log(review, book);
-
-    res.status(200).send();
   },
 };

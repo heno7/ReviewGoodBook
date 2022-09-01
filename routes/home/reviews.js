@@ -9,9 +9,9 @@ router.use(checkAuth.checkUser);
 
 router.get("/api/:id", checkReviewExist, reviews.getReviewAPI);
 
-router.get("/review-creator", reviews.getReviewCreator);
+router.get("/review-generator", reviews.getReviewGenerator);
 
-router.get("/:id/review-creator", checkReviewExist, reviews.getReviewEditor);
+router.get("/:id/review-generator", checkReviewExist, reviews.getReviewEditor);
 
 router.get("/", reviews.getAllReviews);
 

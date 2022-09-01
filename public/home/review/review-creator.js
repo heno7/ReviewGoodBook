@@ -1,7 +1,7 @@
 window.addEventListener("load", async function (event) {
   // sessionStorage.clear();
   const existReview = document.querySelector("#review-id");
-  // const reviewId = existReview.textContent;
+
   if (existReview) {
     const reviewId = existReview.textContent;
     sessionStorage.setItem("review_id", reviewId);
@@ -294,10 +294,7 @@ const completeBtn = document.querySelector("#complete-review");
 saveBtn.addEventListener("click", function (event) {
   function yesHandler() {
     const reviewId = sessionStorage.getItem("review_id");
-    // if (reviewId) {
-    //   return updateReview(reviewId);
-    // }
-    // return createReview();
+
     return updateReview(reviewId, "In Progress");
   }
 
@@ -307,10 +304,7 @@ saveBtn.addEventListener("click", function (event) {
 completeBtn.addEventListener("click", function (event) {
   function yesHandler() {
     const reviewId = sessionStorage.getItem("review_id");
-    // if (!reviewId) {
-    //   return createReview("Complete");
-    // }
-    // return updateReview(reviewId, "Complete");
+
     return updateReview(reviewId, "Complete");
   }
 
@@ -341,25 +335,6 @@ function showNotify(message, handler) {
   });
 }
 
-// function createReview(status = "In Progress", type) {
-//   const review = generateReview(status, type);
-//   console.log(review);
-
-//   fetch("/home/reviews/", {
-//     method: "POST",
-//     body: JSON.stringify(review),
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//   })
-//     .then((response) => response.json())
-//     .then((data) => {
-//       console.log(data);
-//       sessionStorage.setItem("review_id", data.review_id);
-//     })
-//     .catch((error) => console.error(error));
-// }
-
 async function createReview() {
   try {
     const review = generateReview("In Progress");
@@ -378,24 +353,6 @@ async function createReview() {
   }
 }
 
-// function updateReview(reviewId, status = "In Progress") {
-//   const review = generateReview(status);
-//   console.log(review);
-
-//   fetch(`/home/reviews/${reviewId}`, {
-//     method: "PUT",
-//     body: JSON.stringify(review),
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//   })
-//     .then((response) => response.json())
-//     .then((data) => {
-//       console.log(data);
-//     })
-//     .catch((error) => console.error(error));
-// }
-
 function updateReview(reviewId, status) {
   const review = generateReview(status);
   console.log(review);
@@ -413,40 +370,6 @@ function updateReview(reviewId, status) {
     })
     .catch((error) => console.error(error));
 }
-
-// function generateReview(status, type) {
-//   const review = {};
-//   if (type === "empty") {
-//     review.book = {
-//       name: " ",
-//       author: " ",
-//       genre: " ",
-//     };
-
-//     review.title = " ";
-//     review.content = " ";
-//     review.images = " ";
-//     review.status = status;
-//     return review;
-//   }
-
-//   review.book = {
-//     name: document.getElementById("book-name").value.trim(),
-//     author: document.getElementById("book-author").value.trim(),
-//     genre: document.getElementById("book-genre").value.trim(),
-//   };
-//   review.title = document.getElementById("review-title-input").value;
-//   // review.content = markdownContent.textContent.trim();
-//   // review.content = markdownContent.textContent;
-//   review.content = markdownContent.innerText;
-
-//   const images = sessionStorage.getItem("filesURL");
-//   review.images = images ? images : "";
-
-//   // console.log(review.content);
-//   review.status = status;
-//   return review;
-// }
 
 function generateReview(status) {
   function isEmpty(value) {

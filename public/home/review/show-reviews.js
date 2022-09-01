@@ -189,7 +189,7 @@ function changeStatusHandler(id, status, statusDisplay) {
 }
 
 function editHandler(id) {
-  window.location.href = `/home/reviews/${id}/review-creator`;
+  window.location.href = `/home/reviews/${id}/review-generator`;
 }
 
 function deleteHandler(id, reviewCard) {
