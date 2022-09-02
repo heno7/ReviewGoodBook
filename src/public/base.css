@@ -215,5 +215,6 @@ button {
   display: flex;
   height: 10vh;
   padding: 3px 0 3px 0;
+  margin-top: 10vh;
   background-color: rgb(244 244 244);
 }

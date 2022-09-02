@@ -208,7 +208,7 @@ fileInput.addEventListener("change", function (e) {
     // // noBtn.removeEventListener("click", noHandler);
     // formImage.dispatchEvent(new Event("submit"));
 
-    showNotify(
+    showDecision(
       `Do you want to upload ${
         fileInput.files.length > 1 ? "these images" : "this image"
       }`,
@@ -288,17 +288,17 @@ getImageURL.addEventListener("click", () => {
 
 // Create or update review
 
-const saveBtn = document.querySelector("#save-review");
+const saveProgressBtn = document.querySelector("#save-review");
 const completeBtn = document.querySelector("#complete-review");
 
-saveBtn.addEventListener("click", function (event) {
+saveProgressBtn.addEventListener("click", function (event) {
   function yesHandler() {
     const reviewId = sessionStorage.getItem("review_id");
 
     return updateReview(reviewId, "In Progress");
   }
 
-  showNotify("Do you want to save the progress review", yesHandler);
+  showDecision("Do you want to save the progress review", yesHandler);
 });
 
 completeBtn.addEventListener("click", function (event) {
@@ -308,32 +308,8 @@ completeBtn.addEventListener("click", function (event) {
     return updateReview(reviewId, "Complete");
   }
 
-  showNotify("Do you want to complete this review", yesHandler);
+  showDecision("Do you want to complete this review", yesHandler);
 });
-
-function showNotify(message, handler) {
-  const hideNotify = document.querySelector("#show-notify .modal");
-  const messageNotify = document.querySelector("#show-notify #notify-message");
-  const yesNotify = document.querySelector("#show-notify #yes");
-  const noNotify = document.querySelector("#show-notify #no");
-
-  messageNotify.textContent = message;
-
-  hideNotify.classList.add("notify");
-
-  const handleYes = function (event) {
-    hideNotify.classList.remove("notify");
-    handler();
-    yesNotify.removeEventListener("click", handleYes);
-  };
-  yesNotify.addEventListener("click", handleYes);
-
-  noNotify.addEventListener("click", function (event) {
-    yesNotify.removeEventListener("click", handleYes);
-
-    hideNotify.classList.remove("notify");
-  });
-}
 
 async function createReview() {
   try {
@@ -367,8 +343,11 @@ async function updateReview(reviewId, status) {
     });
     const data = await response.json();
     console.log(data);
+    if (response === 500) throw Error();
+    return showNotify(data.message);
   } catch (error) {
-    console.error(error);
+    // console.error(error);
+    showNotify("Failed To Save Progress");
   }
 }
 
@@ -398,4 +377,56 @@ function generateReview(status) {
   review.images = images ? images : "[]";
 
   return review;
+}
+
+// Display decision or notify
+
+function showDecision(message, handler) {
+  const hideNotify = document.querySelector("#show-notify .modal");
+  const messageNotify = document.querySelector("#show-notify #notify-message");
+  const yesNotify = document.querySelector("#show-notify #yes");
+  const noNotify = document.querySelector("#show-notify #no");
+
+  messageNotify.textContent = message;
+
+  hideNotify.classList.add("notify");
+
+  const handleYes = function (event) {
+    hideNotify.classList.remove("notify");
+    handler();
+    yesNotify.removeEventListener("click", handleYes);
+  };
+  yesNotify.addEventListener("click", handleYes);
+
+  noNotify.addEventListener("click", function (event) {
+    yesNotify.removeEventListener("click", handleYes);
+
+    hideNotify.classList.remove("notify");
+  });
+}
+
+function showNotify(message) {
+  const hideNotify = document.querySelector("#show-notify .modal");
+  const messageNotify = document.querySelector("#show-notify #notify-message");
+  const buttonContainer = document.querySelector(
+    "#show-notify #button-container"
+  );
+
+  messageNotify.textContent = message;
+
+  hideNotify.classList.add("notify");
+
+  buttonContainer.classList.add("hidden");
+
+  messageNotify.classList.add("full-height");
+
+  function closeNotify() {
+    hideNotify.classList.remove("notify");
+
+    buttonContainer.classList.remove("hidden");
+
+    messageNotify.classList.remove("full-height");
+  }
+
+  hideNotify.addEventListener("click", closeNotify);
 }

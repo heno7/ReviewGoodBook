@@ -64,7 +64,7 @@ async function completeUpdate(reviewId, data) {
   try {
     const { error } = checkCompleteReview(data);
     if (error) {
-      throw error;
+      throw createError(400, error.message);
     }
     let review = await Review.findById(reviewId).session(session);
 
@@ -111,7 +111,11 @@ async function completeUpdate(reviewId, data) {
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
-    throw createError(500, error);
+    if (error.statusCode) {
+      throw error;
+    } else {
+      throw createError(500, error);
+    }
   }
 }
 
@@ -127,13 +131,12 @@ module.exports = {
         encoding: "utf8",
       });
 
-      // throw Error("Hello Homie");
-
       return res.status(200).json(review);
     } catch (error) {
-      next(createError(500, error, { message: "Change Hello world" }));
+      next(createError(500, error));
     }
   },
+
   getAllReviews: async function (req, res, next) {
     try {
       const allReviews = await getReviewsByStatus(req.user.id);
@@ -206,15 +209,19 @@ module.exports = {
         review: review,
       });
     } catch (error) {
-      next(error);
+      next(createError(500, error));
     }
   },
 
   getReviewGenerator: function (req, res, next) {
-    res.render("home/review/review-creator.ejs", {
-      review: false,
-      userName: req.user.userName,
-    });
+    try {
+      res.render("home/review/review-creator.ejs", {
+        review: false,
+        userName: req.user.userName,
+      });
+    } catch (error) {
+      next(createError(500, error));
+    }
   },
 
   getReviewEditor: async function (req, res, next) {
@@ -226,7 +233,7 @@ module.exports = {
         userName: req.user.userName,
       });
     } catch (error) {
-      next(error);
+      next(createError(500, error));
     }
   },
 
@@ -300,7 +307,7 @@ module.exports = {
       if (req.body.status === "In Progress") {
         const done = await updateProgress(req.reviewId, req.body);
         if (done) {
-          return res.status(200).json({ message: "Updated" });
+          return res.status(200).json({ message: "Progress Saved" });
         }
       }
     } catch (error) {
@@ -326,7 +333,7 @@ module.exports = {
       await review.save();
       return res.status(200).json({ message: "Status updated" });
     } catch (error) {
-      next(error);
+      next(createError(500, error));
     }
   },
 
@@ -338,7 +345,7 @@ module.exports = {
       await review.save();
       return res.status(200).json({ message: "Images updated" });
     } catch (error) {
-      next(error);
+      next(createError(500, error));
     }
   },
 
@@ -366,6 +373,9 @@ module.exports = {
 
       await Review.deleteOne({ _id: review._id }).session(session);
 
+      // console.log(review, book);
+      await session.commitTransaction();
+      session.endSession();
       await fs.unlink(pathToContent);
 
       await Promise.all(
@@ -380,14 +390,11 @@ module.exports = {
         })
       );
 
-      // console.log(review, book);
-      await session.commitTransaction();
-      session.endSession();
       res.status(200).json({ message: "Deleted" });
     } catch (error) {
       await session.abortTransaction();
       session.endSession();
-      next(error);
+      next(createError(500, error));
     }
   },
 };

@@ -40,9 +40,14 @@ app.use("/world", worldRouter.world);
 app.use("/world/reviews", worldRouter.reviews);
 app.use("/world/discussions", worldRouter.discussions);
 
-app.use((err, req, res, next) => {
-  console.log(err);
-  res.status(err.statusCode).json({ message: err.message });
+app.use((error, req, res, next) => {
+  const statusCode = error.statusCode || 500;
+  let message = "Internal Server Error";
+
+  if (statusCode >= 500) console.log(error);
+
+  if (statusCode === 400) message = error.message;
+  res.status(statusCode).json({ message });
 });
 
 const PORT = process.env.PORT || 3000;
