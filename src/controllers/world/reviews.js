@@ -49,11 +49,6 @@ module.exports = {
     try {
       const bestDayReviews = await getBestReviewIn("day");
       res.status(200).json(bestDayReviews);
-
-      // res.render("world/review/show-reviews", {
-      //   userName: req.user.userName,
-      //   reviews: bestDayReviews,
-      // });
     } catch (error) {
       next(error);
     }
@@ -63,11 +58,6 @@ module.exports = {
     try {
       const bestWeekReviews = await getBestReviewIn("week");
       res.status(200).json(bestWeekReviews);
-
-      // res.render("world/review/show-reviews", {
-      //   userName: req.user.userName,
-      //   reviews: bestWeekReviews,
-      // });
     } catch (error) {
       next(error);
     }
@@ -77,11 +67,6 @@ module.exports = {
     try {
       const bestMonthReviews = await getBestReviewIn("month");
       res.status(200).json(bestMonthReviews);
-
-      // res.render("world/review/show-reviews", {
-      //   userName: req.user.userName,
-      //   reviews: bestMonthReviews,
-      // });
     } catch (error) {
       next(error);
     }
@@ -91,11 +76,6 @@ module.exports = {
     try {
       const bestYearReviews = await getBestReviewIn("year");
       res.status(200).json(bestYearReviews);
-
-      // res.render("world/review/show-reviews", {
-      //   userName: req.user.userName,
-      //   reviews: bestYearReviews,
-      // });
     } catch (error) {
       next(error);
     }
@@ -121,8 +101,9 @@ module.exports = {
     );
 
     // res.status(200).json(review);
+
     res.render("world/review/show-a-review", {
-      userName: req.user.userName,
+      user: req.user,
       review: review,
     });
   },

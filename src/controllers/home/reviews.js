@@ -233,7 +233,7 @@ module.exports = {
     try {
       res.render("home/review/review-creator.ejs", {
         review: false,
-        userName: req.user.userName,
+        user: req.user,
       });
     } catch (error) {
       next(createError(500, error));
@@ -246,7 +246,7 @@ module.exports = {
 
       res.render("home/review/review-creator.ejs", {
         review: review,
-        userName: req.user.userName,
+        user: req.user,
       });
     } catch (error) {
       next(createError(500, error));

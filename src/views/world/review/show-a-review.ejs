@@ -31,8 +31,11 @@
           />
         </div>
         <div id="auth">
-          <% if(userName) { %>
-          <div id="username"><%= userName %></div>
+          <% if(user) { %>
+          <div id="avatar">
+            <p><%= user.avatar %></p>
+            <img src="" alt="" />
+          </div>
           <a href="/users/auth/logout">Log out</a>
           <% } else { %>
           <a href="/users/auth/login">Log in</a>
@@ -78,6 +81,7 @@
       error saepe quisquam debitis modi, optio officia culpa molestiae,
       doloremque necessitatibus commodi.
     </div>
+    <script src="/static/common/avatar.js"></script>
     <script src="/static/world/review/show-a-review.js"></script>
   </body>
 </html>

@@ -27,7 +27,10 @@
 
       <div id="right">
         <div id="auth">
-          <div id="username"><%= userName %></div>
+          <div id="avatar">
+            <p><%= user.avatar %></p>
+            <img src="" alt="" />
+          </div>
         </div>
       </div>
     </div>
@@ -155,6 +158,7 @@
       </div>
     </div>
 
+    <script src="/static/common/avatar.js"></script>
     <script src="/static/libs/showdown.min.js"></script>
     <script src="/static/home/review/review-creator.js"></script>
   </body>

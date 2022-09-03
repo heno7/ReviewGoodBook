@@ -1,4 +1,5 @@
 const JWT = require("jsonwebtoken");
+const User = require("../models/User");
 
 module.exports = {
   checkAdmin: function (req, res, next) {
@@ -15,14 +16,9 @@ module.exports = {
 
   checkUser: function (req, res, next) {
     const token = req.signedCookies;
-    // const token = req.cookies;
 
-    // console.log(token);
-    // console.log(req.originalUrl);
-    // console.log(req.baseUrl);
-    // console.log(req.path);
     if (!token)
-      return res.status(403).json({ message: "you do not have permission" });
+      return res.status(401).json({ message: "you do not have permission" });
     JWT.verify(
       token.access_token,
       process.env.JWT_SECRECT,
@@ -44,8 +40,12 @@ module.exports = {
         }
 
         if (decoded) {
-          req.user = decoded;
-          return next();
+          User.findById(decoded.id, (error, user) => {
+            if (user) {
+              req.user = user;
+              return next();
+            }
+          });
         }
       }
     );

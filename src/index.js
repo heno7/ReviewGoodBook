@@ -26,7 +26,14 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 app.use("/static", express.static(path.join(__dirname, "public")));
-app.use("/images", express.static(path.join(process.cwd(), "images_store")));
+app.use(
+  "/images",
+  express.static(path.join(process.cwd(), "review_images_store"))
+);
+app.use(
+  "/users/avatar",
+  express.static(path.join(process.cwd(), "avatar_images_store"))
+);
 
 app.use("/", indexRoute);
 

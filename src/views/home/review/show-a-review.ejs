@@ -31,7 +31,10 @@
           />
         </div>
         <div id="auth">
-          <div id="username"><%= user.userName %></div>
+          <div id="avatar">
+            <p><%= user.avatar %></p>
+            <img src="" alt="" />
+          </div>
           <a href="/users/auth/logout">Log out</a>
         </div>
       </div>
@@ -55,7 +58,7 @@
           <p>Genre: <%= review.bookInfo.genre %></p>
         </div>
         <div id="review-info">
-          <p>Reviewer: <%= user.userName %></p>
+          <p>Reviewer: <%= user.username %></p>
           <p>Stars: <%= review.stars %></p>
         </div>
       </div>
@@ -69,6 +72,7 @@
       error saepe quisquam debitis modi, optio officia culpa molestiae,
       doloremque necessitatibus commodi.
     </div>
+    <script src="/static/common/avatar.js"></script>
     <!-- <script src="/static/world/review/show-a-review.js"></script> -->
   </body>
 </html>

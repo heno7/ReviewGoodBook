@@ -31,7 +31,10 @@
           />
         </div>
         <div id="auth">
-          <div id="username"><%= userName %></div>
+          <div id="avatar">
+            <p><%= user.avatar %></p>
+            <img src="" alt="" />
+          </div>
           <a href="/users/auth/logout">Log out</a>
         </div>
       </div>
@@ -115,6 +118,7 @@
     </div>
 
     <!-- <script src="/static/home/home.js"></script> -->
+    <script src="/static/common/avatar.js"></script>
     <script src="/static/home/review/show-reviews.js"></script>
   </body>
 </html>

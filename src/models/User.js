@@ -24,6 +24,9 @@ const userSchema = new Schema({
     required: true,
     unique: true,
   },
+  avatar: {
+    type: String,
+  },
   admin: {
     type: Boolean,
     default: false,

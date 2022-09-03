@@ -4,6 +4,15 @@ const registerValidation = require("../../validations/register.validation");
 const bcrypt = require("bcrypt");
 const JWT = require("jsonwebtoken");
 
+// const randomDefaultImages = [
+//   "default-image-1.png",
+//   "default-image-1.png",
+//   "default-image-1.png",
+//   "default-image-1.png",
+//   "default-image-1.png",
+//   "default-image-1.png",
+// ];
+
 module.exports = {
   register: async (req, res, next) => {
     try {
@@ -33,10 +42,11 @@ module.exports = {
           username: value.username,
           email: value.email,
           password: hash,
+          avatar: "/users/avatar/default-dragon.png",
         });
         await user.save();
         const token = JWT.sign(
-          { id: user._id, admin: user.admin },
+          { id: user._id, userName: user.username, admin: user.admin },
           process.env.JWT_SECRECT
         );
         return res.status(200).json({ token });
