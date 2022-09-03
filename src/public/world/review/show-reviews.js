@@ -37,6 +37,9 @@ function renderReview(reviews) {
         <p>${review.title}</p>
       </div>
       <div class="add-info">
+       <p>Published-At: ${new Date(review.publishedAt)
+         .toString()
+         .slice(0, 16)}</p>
         <p>Reviewer: ${review.author.username}</p>
         <p>Stars: ${review.stars}</p>
       </div>

@@ -18,6 +18,8 @@ async function getReviewsByStatus(userId, statusInfo) {
       })
       .select("listReviews")
       .exec();
+
+    // console.log(reviews);
     if (!statusInfo) return reviews.listReviews;
     filterReviews = reviews.listReviews.filter(function (review) {
       return review.status === statusInfo;
@@ -45,6 +47,17 @@ async function updateProgress(reviewId, data) {
     review.status = data.status;
     review.images = data.images;
     await fs.writeFile(review.pathToContent, data.content);
+
+    review = await Review.findOneAndUpdate(
+      { _id: review._id },
+      { updatedAt: new Date() },
+      {
+        new: true,
+        timestamps: false,
+      }
+    ).session(session);
+
+    // console.log(review);
 
     await review.save();
 
@@ -319,23 +332,30 @@ module.exports = {
   },
 
   updateReviewStatus: async function (req, res, next) {
+    const session = await mongoose.startSession();
+    session.startTransaction();
     try {
       const defaultPublishTime = new Date("2022-08-31T17:00:00.000Z");
 
-      const review = await Review.findById(req.params.id);
+      const review = await Review.findById(req.params.id).session(session);
 
-      // console.log(defaultPublishTime.toString());
-      // console.log(review.publishAt.toString());
+      review.status = req.body.status;
+      await review.save();
       if (
         req.body.status === "Publish" &&
         review.publishedAt.toString() === defaultPublishTime.toString()
       ) {
         review.publishedAt = review.updatedAt;
+        await review.save();
       }
-      review.status = req.body.status;
-      await review.save();
+
+      await session.commitTransaction();
+      session.endSession();
+
       return res.status(200).json({ message: "Status updated" });
     } catch (error) {
+      await session.abortTransaction();
+      session.endSession();
       next(createError(500, error));
     }
   },

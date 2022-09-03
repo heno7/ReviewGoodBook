@@ -45,14 +45,6 @@
   border-left: 1px solid;
 }
 
-/* .review-card .content .book-info p:first-child {
-  padding-left: 0;
-} */
-
-/* .review-card .content .book-info p:last-child {
-  border-right: 0;
-} */
-
 .review-card .content .review-title {
   height: 100%;
   margin-top: 1vh;
@@ -60,7 +52,6 @@
 }
 
 .review-card .content .add-info {
-  /* width: 66.66%; */
   width: 100%;
   margin-left: auto;
   display: flex;

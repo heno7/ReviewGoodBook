@@ -17,14 +17,12 @@ const reviewSchema = new Schema(
       type: String,
       required: true,
     },
-    // createdAt: {
-    //   type: Date,
-    //   default: Date.now,
-    // },
-    // updatedAt: {
-    //   type: Date,
-    //   default: Date.now,
-    // },
+    createdAt: {
+      type: Date,
+    },
+    updatedAt: {
+      type: Date,
+    },
     publishedAt: {
       type: Date,
       default: new Date("2022-08-31T17:00:00.000Z"),
