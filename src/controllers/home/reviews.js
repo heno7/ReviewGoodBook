@@ -80,6 +80,9 @@ async function completeUpdate(reviewId, data) {
         currentBook.listReviews.push(review._id);
         await currentBook.save();
         await review.save();
+
+        await session.commitTransaction();
+        session.endSession();
         return "Done";
       }
 
@@ -95,8 +98,8 @@ async function completeUpdate(reviewId, data) {
       return "Done";
     }
 
-    console.log(data);
-    console.log(currentBook);
+    // console.log(data);
+    // console.log(currentBook);
 
     currentBook.name = data.book.name;
     currentBook.author = data.book.author;
@@ -301,7 +304,7 @@ module.exports = {
         const done = await completeUpdate(req.reviewId, req.body);
 
         if (done) {
-          return res.status(200).json({ message: "Completed" });
+          return res.status(200).json({ message: "Complete Review Saved" });
         }
       }
       if (req.body.status === "In Progress") {

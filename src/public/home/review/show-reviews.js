@@ -1,16 +1,30 @@
 sessionStorage.clear();
 
 window.addEventListener("load", () => {
-  const inProgressCriteria = document.querySelector(
-    "#review .criteria .active"
+  let currentLoad = localStorage.getItem("current-load") || "in-progress";
+  // console.log(currentLoad);
+  // const inProgressCriteria = document.querySelector(
+  //   "#review .criteria .active"
+  // );
+  // inProgressCriteria.addEventListener("click", function handler(event) {
+  //   hanldeClick(event);
+
+  //   inProgressCriteria.removeEventListener("click", handler);
+  // });
+
+  // inProgressCriteria.dispatchEvent(new Event("click"));
+
+  const loadCriteria = document.querySelector(
+    `#review .criteria #${currentLoad}`
   );
-  inProgressCriteria.addEventListener("click", function handler(event) {
+  loadCriteria.addEventListener("click", function handler(event) {
     hanldeClick(event);
 
-    inProgressCriteria.removeEventListener("click", handler);
+    loadCriteria.removeEventListener("click", handler);
+    localStorage.removeItem("current-load");
   });
 
-  inProgressCriteria.dispatchEvent(new Event("click"));
+  loadCriteria.dispatchEvent(new Event("click"));
 });
 
 const mainDisplay = document.querySelector("#main-display");
@@ -28,7 +42,9 @@ async function hanldeClick(event) {
     const activeEle = document.querySelector("#review .criteria .active");
     activeEle.classList.remove("active");
     event.target.classList.add("active");
+    // console.log(event.target);
     const url = event.target.href;
+    // console.log(url);
     const reviews = await getReviews(url);
     // console.log(reviews);
     renderReview(reviews);

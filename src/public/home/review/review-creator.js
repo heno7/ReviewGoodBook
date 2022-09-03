@@ -59,6 +59,33 @@ function fillReviewContent(review) {
   markdownContent.dispatchEvent(new Event("keyup"));
 }
 
+// Back home
+
+const homeLink = document.querySelector("#header #left a[href='/home']");
+homeLink.addEventListener("click", (event) => {
+  event.preventDefault();
+
+  function yesHandler() {
+    const reviewId = sessionStorage.getItem("review_id");
+
+    return updateReview(
+      reviewId,
+      "In Progress",
+      changePlaceTo("home", "in-progress")
+    );
+  }
+
+  function noHandler() {
+    location.href = "/home";
+  }
+
+  showDecision(
+    "Do you want to save progress before back to home",
+    yesHandler,
+    noHandler
+  );
+});
+
 // const publishMode = document.querySelector("#publish-mode");
 // publishMode.addEventListener("click", function () {
 //   document.body.innerHTML = html;
@@ -329,7 +356,7 @@ async function createReview() {
   }
 }
 
-async function updateReview(reviewId, status) {
+async function updateReview(reviewId, status, callback) {
   try {
     const review = generateReview(status);
     console.log(review);
@@ -344,6 +371,12 @@ async function updateReview(reviewId, status) {
     const data = await response.json();
     console.log(data);
     if (response === 500) throw Error();
+    if (data.message === "Complete Review Saved") {
+      return showNotify(data.message, changePlaceTo("home", "complete"));
+    }
+    if (data.message === "Progress Saved" && callback) {
+      return showNotify(data.message, callback);
+    }
     return showNotify(data.message);
   } catch (error) {
     // console.error(error);
@@ -381,7 +414,7 @@ function generateReview(status) {
 
 // Display decision or notify
 
-function showDecision(message, handler) {
+function showDecision(message, yesHandler, noHandler) {
   const hideNotify = document.querySelector("#show-notify .modal");
   const messageNotify = document.querySelector("#show-notify #notify-message");
   const yesNotify = document.querySelector("#show-notify #yes");
@@ -391,21 +424,32 @@ function showDecision(message, handler) {
 
   hideNotify.classList.add("notify");
 
+  const handleNo = function (event) {
+    hideNotify.classList.remove("notify");
+    if (noHandler) {
+      noHandler();
+    }
+    yesNotify.removeEventListener("click", handleYes);
+    noNotify.removeEventListener("click", handleNo);
+  };
+  noNotify.addEventListener("click", handleNo);
+
+  // noNotify.addEventListener("click", function handleNo(event) {
+  //   yesNotify.removeEventListener("click", handleYes);
+  //   noNotify.removeEventListener("click", handleNo);
+  //   hideNotify.classList.remove("notify");
+  // });
+
   const handleYes = function (event) {
     hideNotify.classList.remove("notify");
-    handler();
+    yesHandler();
     yesNotify.removeEventListener("click", handleYes);
+    noNotify.removeEventListener("click", handleNo);
   };
   yesNotify.addEventListener("click", handleYes);
-
-  noNotify.addEventListener("click", function (event) {
-    yesNotify.removeEventListener("click", handleYes);
-
-    hideNotify.classList.remove("notify");
-  });
 }
 
-function showNotify(message) {
+function showNotify(message, callback) {
   const hideNotify = document.querySelector("#show-notify .modal");
   const messageNotify = document.querySelector("#show-notify #notify-message");
   const buttonContainer = document.querySelector(
@@ -426,7 +470,16 @@ function showNotify(message) {
     buttonContainer.classList.remove("hidden");
 
     messageNotify.classList.remove("full-height");
+
+    if (callback) callback();
   }
 
   hideNotify.addEventListener("click", closeNotify);
+}
+
+function changePlaceTo(place, currentLoad) {
+  return () => {
+    localStorage.setItem("current-load", currentLoad);
+    location.href = `/${place}`;
+  };
 }
