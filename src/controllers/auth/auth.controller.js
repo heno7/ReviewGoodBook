@@ -95,4 +95,19 @@ module.exports = {
       })
       .redirect("/");
   },
+
+  uploadAvatar: async function (req, res, next) {
+    try {
+      if (req.file) {
+        const user = await User.findById(req.user.id);
+        const url = "/users/avatar/" + req.file.filename;
+        user.avatar = url;
+        await user.save();
+
+        return res.status(200).json({ url });
+      }
+    } catch (error) {
+      next(error);
+    }
+  },
 };

@@ -5,34 +5,82 @@ window.addEventListener("load", (event) => {
   avatar.setAttribute("src", imageSrc.textContent);
 });
 
-function showNotify(message, handler) {
-  const hideNotify = document.querySelector("#show-notify .modal");
+const avatarInfo = document.querySelector("#auth #avatar");
+avatarInfo.addEventListener("click", handleUpload);
+
+function handleUpload(event) {
+  function yesHandler() {
+    avatarForm.dispatchEvent(new Event("submit"));
+  }
+  function noHandler(event) {
+    inputFile.value = "";
+  }
+  showUpload(yesHandler, noHandler);
+}
+
+function showUpload(yesHandler, noHandler) {
+  const hideNotify = document.querySelector("#show-upload .modal");
   //   const messageNotify = document.querySelector("#show-notify #notify-message");
-  const yesNotify = document.querySelector("#show-notify #yes");
-  const noNotify = document.querySelector("#show-notify #no");
+  const yesUpload = document.querySelector(
+    "#show-upload #upload-button #upload"
+  );
+  const noUpload = document.querySelector(
+    "#show-upload #upload-button #cancle"
+  );
 
   //   messageNotify.textContent = message;
-  // hideNotify.style.display = "block";
 
   hideNotify.classList.add("notify");
 
   const handleYes = function (event) {
     hideNotify.classList.remove("notify");
-    handler();
-    yesNotify.removeEventListener("click", handleYes);
+    yesHandler();
+    yesUpload.removeEventListener("click", handleYes);
+    noUpload.removeEventListener("click", handleNo);
   };
-  yesNotify.addEventListener("click", handleYes);
+  yesUpload.addEventListener("click", handleYes);
 
-  noNotify.addEventListener("click", function (event) {
-    yesNotify.removeEventListener("click", handleYes);
+  const handleNo = function (event) {
     hideNotify.classList.remove("notify");
-  });
+    noHandler();
+    yesUpload.removeEventListener("click", handleYes);
+    noUpload.removeEventListener("click", handleNo);
+  };
+  noUpload.addEventListener("click", handleNo);
 }
 
-const avatarForm = document.querySelector("#avatar");
+const avatarForm = document.querySelector("#avatar-form");
+const inputFile = avatarForm.querySelector("input");
 
-avatarForm.addEventListener("submit", (event) => {
+avatarForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  const formData = event.currentTarget;
+  if (inputFile.files.length === 0) return showNotify("Please Chose File");
+  const form = event.currentTarget;
+  // console.dir(form);
+  // console.dir(inputFile);
+  const formData = new FormData(form);
+
+  const urlUpload = "/users/auth/avatar/upload";
+
+  let response = await fetch(urlUpload, {
+    method: "POST",
+    body: formData,
+  });
+
+  const urlImage = await response.json();
+  // console.log(urlImage);
+  updateAvatar(urlImage.url);
+  inputFile.value = "";
 });
+
+function updateAvatar(url) {
+  const avatar = document.querySelector("#auth #avatar img");
+  avatar.setAttribute("src", url);
+}
+
+// const yesBtn = document.querySelector("#upload-button #yes");
+
+// yesBtn.addEventListener("click", function (event) {
+//   avatarForm.dispatchEvent(new Event("submit"));
+// });

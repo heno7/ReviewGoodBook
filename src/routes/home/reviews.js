@@ -3,7 +3,7 @@ const checkAuth = require("../../auth/checkAuth");
 const checkReviewExist = require("../../middlewares/checkReviewExist");
 const router = express.Router();
 const { reviews } = require("../../controllers/home");
-const { upload } = require("../../uploads/upload");
+const { upload } = require("../../uploads/uploadReviewImages");
 
 router.use(checkAuth.checkUser);
 

@@ -28,11 +28,11 @@ module.exports = {
           //   .status(403)
           //   .json({ message: "you do not have permission" });
           if (req.originalUrl === "/") {
-            return res.render("index", { userName: null });
+            return res.render("index", { user: null });
           }
 
           if (req.originalUrl.startsWith("/world")) {
-            req.user = { userName: null };
+            req.user = { user: null };
             return next();
           }
 
