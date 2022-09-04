@@ -50,7 +50,8 @@ async function hanldeClick(event) {
     renderReview(reviews);
     actionHandler();
   } catch (error) {
-    console.log(error);
+    // console.log(error);
+    showNotify("Failed to load resource");
   }
 }
 
@@ -81,7 +82,7 @@ function renderReview(reviews) {
 
           <button>View</button>
           ${
-            review.status === "Hide"
+            review.status === "Hide" || review.status === "In Progress"
               ? "<button disabled>Hide</button>"
               : "<button>Hide</button>"
           }
@@ -121,7 +122,7 @@ async function getReviews(url) {
 
     return reviews;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     throw error;
   }
 }
@@ -150,7 +151,7 @@ function actionHandler() {
           event.target.disabled = true;
         }
 
-        showNotify(
+        showDecision(
           "Do you really want hide this review from world?",
           yesHandler
         );
@@ -162,7 +163,7 @@ function actionHandler() {
           event.target.disabled = true;
         }
 
-        showNotify(
+        showDecision(
           "Do you really want to share this review with world?",
           yesHandler
         );
@@ -171,42 +172,16 @@ function actionHandler() {
         function yesHandler() {
           editHandler(reviewId);
         }
-        showNotify("Do you really want to edit this review?", yesHandler);
+        showDecision("Do you really want to edit this review?", yesHandler);
       }
 
       if (event.target.textContent === "Delete") {
         function yesHandler() {
           deleteHandler(reviewId, reviewCard);
         }
-        showNotify("Do you really want to delete this review?", yesHandler);
+        showDecision("Do you really want to delete this review?", yesHandler);
       }
     });
-  });
-}
-
-function showNotify(message, handler) {
-  const hideNotify = document.querySelector("#show-notify .modal");
-  const messageNotify = document.querySelector("#show-notify #notify-message");
-  const yesNotify = document.querySelector("#show-notify #yes");
-  const noNotify = document.querySelector("#show-notify #no");
-
-  messageNotify.textContent = message;
-  // hideNotify.style.display = "block";
-
-  hideNotify.classList.add("notify");
-
-  const handleYes = function (event) {
-    // hideNotify.style.display = "none";
-    hideNotify.classList.remove("notify");
-    handler();
-    yesNotify.removeEventListener("click", handleYes);
-  };
-  yesNotify.addEventListener("click", handleYes);
-
-  noNotify.addEventListener("click", function (event) {
-    yesNotify.removeEventListener("click", handleYes);
-    // hideNotify.style.display = "none";
-    hideNotify.classList.remove("notify");
   });
 }
 
@@ -222,10 +197,14 @@ function changeStatusHandler(id, status, statusDisplay) {
       "Content-Type": "application/json",
     },
   })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
+    .then((response) => {
+      if (response.status !== 200) throw Error();
+
+      showNotify(`Status of review has changed to ${status}`);
       statusDisplay.innerText = `Status: ${status}`;
+    })
+    .catch((error) => {
+      showNotify("Failed to change status of review");
     });
 }
 
@@ -236,9 +215,14 @@ function editHandler(id) {
 function deleteHandler(id, reviewCard) {
   fetch(`/home/reviews/${id}`, {
     method: "DELETE",
-  }).then((response) => {
-    if (response.status === 200) {
+  })
+    .then((response) => {
+      if (response.status !== 200) throw Error();
+
       reviewCard.remove();
-    }
-  });
+      showNotify("Review has deleted");
+    })
+    .catch((error) => {
+      showNotify("Failed to delete review");
+    });
 }

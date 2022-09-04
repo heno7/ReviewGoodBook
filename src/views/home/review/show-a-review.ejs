@@ -7,6 +7,7 @@
     <title>Home</title>
     <link rel="stylesheet" href="/static/reset.css" />
     <link rel="stylesheet" href="/static/base.css" />
+    <link rel="stylesheet" href="/static/common/show.css" />
     <link rel="stylesheet" href="/static/libs/github-markdown.min.css" />
     <link rel="stylesheet" href="/static/home/review/show-a-review.css" />
   </head>
@@ -65,6 +66,8 @@
       <div id="review-content" class="markdown-body"><%- review.content %></div>
     </div>
 
+    <%- include('../../common/show'); %>
+
     <!-- Footer -->
     <div id="footer">
       Lorem ipsum dolor, sit amet consectetur adipisicing elit. Enim,
@@ -72,6 +75,7 @@
       error saepe quisquam debitis modi, optio officia culpa molestiae,
       doloremque necessitatibus commodi.
     </div>
+    <script src="/static/common/show.js"></script>
     <script src="/static/common/avatar.js"></script>
     <!-- <script src="/static/world/review/show-a-review.js"></script> -->
   </body>

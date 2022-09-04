@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Review Generator</title>
     <link rel="stylesheet" href="/static/reset.css" />
+    <link rel="stylesheet" href="/static/common/show.css" />
     <link rel="stylesheet" href="/static/libs/github-markdown.min.css" />
     <link rel="stylesheet" href="/static/home/review/review-creator.css" />
   </head>
@@ -146,18 +147,9 @@
       </div>
     </div>
 
-    <div id="show-notify">
-      <div class="modal">
-        <div id="notify-container">
-          <p id="notify-message"></p>
-          <div id="button-container">
-            <button id="yes">Yes</button>
-            <button id="no">No</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <%- include('../../common/show'); %>
 
+    <script src="/static/common/show.js"></script>
     <script src="/static/common/avatar.js"></script>
     <script src="/static/libs/showdown.min.js"></script>
     <script src="/static/home/review/review-creator.js"></script>

@@ -13,6 +13,8 @@ function handleUpload(event) {
     avatarForm.dispatchEvent(new Event("submit"));
   }
   function noHandler(event) {
+    const imageInfo = document.querySelector("#form-container #image-info");
+    imageInfo.textContent = "No File Chosen";
     inputFile.value = "";
   }
   showUpload(yesHandler, noHandler);
@@ -51,6 +53,11 @@ function showUpload(yesHandler, noHandler) {
 
 const avatarForm = document.querySelector("#avatar-form");
 const inputFile = avatarForm.querySelector("input");
+
+avatarForm.addEventListener("change", (event) => {
+  const imageInfo = document.querySelector("#form-container #image-info");
+  imageInfo.textContent = inputFile.files.item(0).name;
+});
 
 avatarForm.addEventListener("submit", async (event) => {
   event.preventDefault();

@@ -57,3 +57,178 @@
 #right-side-bar #review #create-review a:hover {
   background-color: rgba(255, 0, 0, 0.3);
 }
+
+/* Notify Upload avatar*/
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 101; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+.modal.notify {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#upload-container {
+  width: 30%;
+  height: 20vh;
+  border: 2px solid;
+  border-radius: 5px;
+  background-color: white;
+}
+
+#upload-container #form-container {
+  height: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+#upload-container #form-container #avatar-form {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#upload-container #form-container #avatar-form label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 5vh;
+  padding: 5%;
+  border: 2px solid rgba(0, 0, 255, 0.7);
+  border-radius: 5px;
+  background-color: rgba(0, 255, 0, 0.7);
+  color: red;
+  cursor: pointer;
+}
+
+#upload-container #form-container #avatar-form label:hover {
+  background-color: rgba(0, 255, 0, 0.3);
+}
+
+#upload-container #upload-button {
+  height: 20%;
+  background-color: white;
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 10%;
+}
+
+#upload-container #upload-button #upload {
+  width: 20%;
+  border: 0;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 255, 0.7);
+  color: white;
+}
+
+#upload-container #upload-button #upload:hover {
+  background-color: rgba(0, 0, 255, 0.3);
+}
+
+#upload-container #upload-button #cancle {
+  width: 20%;
+  border: 0;
+  border-radius: 5px;
+  background-color: rgba(255, 0, 0, 0.7);
+  color: white;
+}
+
+#upload-container #upload-button #cancle:hover {
+  background-color: rgba(255, 0, 0, 0.3);
+}
+
+/* Notify */
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 101; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+.hidden {
+  display: none;
+}
+
+#show-notify #button-container.hidden {
+  display: none;
+}
+
+#notify-container #notify-message.full-height {
+  height: 100%;
+  text-align: center;
+}
+
+.modal.notify {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#notify-container {
+  width: 30%;
+  height: 20vh;
+  border: 2px solid;
+  border-radius: 5px;
+  background-color: white;
+}
+
+#notify-container #notify-message {
+  height: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#notify-container #button-container {
+  height: 20%;
+  background-color: white;
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 10%;
+}
+
+#notify-container #button-container #yes {
+  width: 20%;
+  border: 0;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 255, 0.7);
+  color: white;
+}
+
+#notify-container #button-container #yes:hover {
+  background-color: rgba(0, 0, 255, 0.3);
+}
+
+#notify-container #button-container #no {
+  width: 20%;
+  border: 0;
+  border-radius: 5px;
+  background-color: rgba(255, 0, 0, 0.7);
+  color: white;
+}
+
+#notify-container #button-container #no:hover {
+  background-color: rgba(255, 0, 0, 0.3);
+}

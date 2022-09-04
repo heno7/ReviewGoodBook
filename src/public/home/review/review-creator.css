@@ -109,6 +109,7 @@ button {
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
+  cursor: pointer;
 }
 
 #action {
@@ -232,6 +233,7 @@ button {
   padding-right: 1%;
   padding-top: 1%;
   overflow-y: scroll;
+  /* scroll-behavior: smooth; */
   border: 3px solid black;
   border-radius: 5px;
   border-top-left-radius: 0;
@@ -406,85 +408,6 @@ button {
   height: 10%;
   margin-left: auto;
   margin-right: 0;
-}
-
-/* Notify */
-
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 101; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0); /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-}
-
-.hidden {
-  display: none;
-}
-
-#show-notify #button-container.hidden {
-  display: none;
-}
-
-#notify-container #notify-message.full-height {
-  height: 100%;
-  text-align: center;
-}
-
-.modal.notify {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#notify-container {
-  width: 30%;
-  height: 20vh;
-  border: 2px solid;
-  border-radius: 5px;
-  background-color: white;
-}
-
-#notify-container #notify-message {
-  height: 70%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#notify-container #button-container {
-  height: 20%;
-  background-color: white;
-  display: flex;
-  justify-content: space-evenly;
-  margin-bottom: 10%;
-}
-
-#notify-container #button-container #yes {
-  width: 20%;
-  border: 0;
-  border-radius: 5px;
-  background-color: rgba(0, 0, 255, 0.7);
-}
-
-#notify-container #button-container #yes:hover {
-  background-color: rgba(0, 0, 255, 0.3);
-}
-
-#notify-container #button-container #no {
-  width: 20%;
-  border: 0;
-  border-radius: 5px;
-  background-color: rgba(255, 0, 0, 0.7);
-}
-
-#notify-container #button-container #no:hover {
-  background-color: rgba(255, 0, 0, 0.3);
 }
 
 /* Notify images info */

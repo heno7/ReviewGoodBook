@@ -57,34 +57,7 @@
       their books and you can raise a discussion with all people
     </div>
 
-    <div id="show-upload">
-      <div class="modal">
-        <div id="upload-container">
-          <div id="form-container">
-            <p>Select avatar image</p>
-            <form id="avatar-form" enctype="multipart/form-data">
-              <input type="file" name="avatar" />
-            </form>
-          </div>
-          <div id="upload-button">
-            <button id="upload">Upload</button>
-            <button id="cancle">Cancle</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="show-notify">
-      <div class="modal">
-        <div id="notify-container">
-          <p id="notify-message"></p>
-          <div id="button-container">
-            <button id="yes">Yes</button>
-            <button id="no">No</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <%- include('common/show'); %>
 
     <!-- Footer -->
     <div id="footer">
