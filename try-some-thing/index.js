@@ -1,17 +1,35 @@
-// const copyBtn = document.querySelector("#copy");
-// const content = document.querySelector("#content");
-// const pasteArea = document.querySelector("#paste-area");
+const moment = require("moment");
 
-// let copyContent = "";
+// let duration = moment([2022, 8, 1]).fromNow();
 
-// copyBtn.addEventListener("click", function (event) {
-//   copyContent = content.textContent;
-//   navigator.clipboard.writeText(copyContent);
-// });
+// console.log(duration);
 
-window.addEventListener("beforeunload", function (event) {
-  event.preventDefault();
-  // alert("This is a test");
-  console.log("This is a test");
-  return (event.returnValue = "Are you sure you want to exit?");
-});
+// duration = moment([2022, 7, 1]).fromNow(true);
+
+// console.log(duration);
+
+// const initDate = [2022, 8, 1];
+
+// const monthCount = moment().diff(moment(initDate), "month", true);
+
+// const startMonth = Math.random() * monthCount;
+
+// const endMonth = startMonth + Math.random() * (monthCount - startMonth);
+
+// const initDate = [2022, 8, 1];
+// const monthCount = moment().diff(moment(initDate), "days", true);
+// const startMonth = Math.random() * monthCount;
+// const endMonth = startMonth + Math.random() * (monthCount - startMonth);
+
+// let start = moment(initDate).add(startMonth, "days");
+// let end = moment(initDate).add(endMonth, "days");
+
+// console.log(monthCount);
+// console.log(startMonth);
+// console.log(endMonth);
+// console.log(start.toISOString());
+// console.log(end.toISOString());
+
+if (!NaN) {
+  console.log("true");
+}

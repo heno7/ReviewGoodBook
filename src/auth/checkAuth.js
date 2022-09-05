@@ -32,7 +32,7 @@ module.exports = {
           }
 
           if (req.originalUrl.startsWith("/world")) {
-            req.user = { user: null };
+            req.user = null;
             return next();
           }
 

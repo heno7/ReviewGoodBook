@@ -7,8 +7,18 @@ const showdown = require("showdown");
 
 async function getBestReviewIn(time) {
   try {
-    const start = moment().startOf(time).toDate();
-    const end = moment().endOf(time).toDate();
+    let start = moment().startOf(time).toDate();
+    let end = moment().endOf(time).toDate();
+
+    if (time === "random") {
+      const initDate = [2022, 8, 1];
+      const dayCount = moment().diff(moment(initDate), "days", true);
+      const startDay = Math.random() * dayCount;
+      const endDay = startDay + Math.random() * (dayCount - startDay);
+
+      start = moment(initDate).add(startDay, "days");
+      end = moment(initDate).add(endDay, "days");
+    }
 
     const reviews = await Review.find({
       status: "Publish",
@@ -32,6 +42,14 @@ async function getBestReviewIn(time) {
 }
 
 module.exports = {
+  getRandomReviews: async function (req, res, next) {
+    try {
+      const bestRandomReviews = await getBestReviewIn("random");
+      res.status(200).json(bestRandomReviews);
+    } catch (error) {
+      next(error);
+    }
+  },
   getAllReviews: async function (req, res, next) {
     try {
       const publishReviews = await Review.find({ status: "Publish" })

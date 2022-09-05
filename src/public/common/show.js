@@ -56,3 +56,22 @@ function showNotify(message, callback) {
 
   hideNotify.addEventListener("click", closeNotify);
 }
+
+// Show loading
+
+function showLoading() {
+  const html = `<div class="loadingio-spinner-spinner-6fowy36cgcc"><div class="ldio-15ylr6o1313">
+  <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+  </div></div>`;
+  const mainDisplay = document.querySelector("#main-display");
+  mainDisplay.classList.add("loading");
+
+  mainDisplay.innerHTML = html;
+}
+
+function clearLoading() {
+  const mainDisplay = document.querySelector("#main-display");
+  mainDisplay.classList.remove("loading");
+
+  mainDisplay.innerHTML = "";
+}

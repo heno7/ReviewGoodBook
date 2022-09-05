@@ -9,8 +9,27 @@ const checkCompleteReview = require("../../validations/completeReview.validation
 const { default: mongoose } = require("mongoose");
 const createError = require("http-errors");
 
-async function getReviewsByStatus(userId, statusInfo) {
+function getPaginationInfo(info) {
+  let paginationInfo = null;
+  const page = parseInt(info.page);
+  const limit = parseInt(info.limit);
+  if (page && limit) {
+    paginationInfo = {
+      page,
+      limit,
+    };
+  }
+  return paginationInfo;
+}
+
+async function getReviewsByStatus(userId, statusInfo, paginationInfo) {
   try {
+    function pagination(reviews) {
+      const reviewPerPage = paginationInfo.limit;
+      const start = (paginationInfo.page - 1) * reviewPerPage;
+      const end = start + reviewPerPage;
+      return reviews.slice(start, end);
+    }
     const reviews = await User.findById(userId)
       .populate({
         path: "listReviews",
@@ -20,12 +39,16 @@ async function getReviewsByStatus(userId, statusInfo) {
       .exec();
 
     // console.log(reviews);
-    if (!statusInfo) return reviews.listReviews;
+    if (!statusInfo) {
+      if (!paginationInfo) return reviews.listReviews;
+      return pagination(reviews.listReviews);
+    }
     filterReviews = reviews.listReviews.filter(function (review) {
       return review.status === statusInfo;
     });
 
-    return filterReviews;
+    if (!paginationInfo) return filterReviews;
+    return pagination(filterReviews);
   } catch (error) {
     throw createError(500, error);
   }
@@ -155,7 +178,13 @@ module.exports = {
 
   getAllReviews: async function (req, res, next) {
     try {
-      const allReviews = await getReviewsByStatus(req.user.id);
+      const paginationInfo = getPaginationInfo(req.query);
+
+      const allReviews = await getReviewsByStatus(
+        req.user.id,
+        null,
+        paginationInfo
+      );
 
       res.status(200).json(allReviews);
     } catch (error) {
@@ -165,9 +194,12 @@ module.exports = {
 
   getAllInProgressReviews: async function (req, res, next) {
     try {
+      const paginationInfo = getPaginationInfo(req.query);
+
       const inProgressReviews = await getReviewsByStatus(
         req.user.id,
-        "In Progress"
+        "In Progress",
+        paginationInfo
       );
 
       res.status(200).json(inProgressReviews);
@@ -178,7 +210,13 @@ module.exports = {
 
   getAllHideReviews: async function (req, res, next) {
     try {
-      const hideReviews = await getReviewsByStatus(req.user.id, "Hide");
+      const paginationInfo = getPaginationInfo(req.query);
+
+      const hideReviews = await getReviewsByStatus(
+        req.user.id,
+        "Hide",
+        paginationInfo
+      );
 
       res.status(200).json(hideReviews);
     } catch (error) {
@@ -188,7 +226,13 @@ module.exports = {
 
   getAllPublishReviews: async function (req, res, next) {
     try {
-      const publishReviews = await getReviewsByStatus(req.user.id, "Publish");
+      const paginationInfo = getPaginationInfo(req.query);
+
+      const publishReviews = await getReviewsByStatus(
+        req.user.id,
+        "Publish",
+        paginationInfo
+      );
 
       res.status(200).json(publishReviews);
     } catch (error) {
@@ -198,7 +242,13 @@ module.exports = {
 
   getAllCompleteReviews: async function (req, res, next) {
     try {
-      const completeReviews = await getReviewsByStatus(req.user.id, "Complete");
+      const paginationInfo = getPaginationInfo(req.query);
+
+      const completeReviews = await getReviewsByStatus(
+        req.user.id,
+        "Complete",
+        paginationInfo
+      );
 
       res.status(200).json(completeReviews);
     } catch (error) {

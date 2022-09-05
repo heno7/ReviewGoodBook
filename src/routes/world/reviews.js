@@ -8,6 +8,8 @@ router.use(checkUser);
 
 router.get("/", reviews.getAllReviews);
 
+router.get("/best-random", reviews.getRandomReviews);
+
 router.get("/best-of-day", reviews.getBestReviewsOfDay);
 
 router.get("/best-of-week", reviews.getBestReviewsOfWeek);

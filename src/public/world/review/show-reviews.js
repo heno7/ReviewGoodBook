@@ -1,3 +1,12 @@
+window.addEventListener("load", function (event) {
+  const loadCriteria = document.querySelector("#review .criteria .active");
+  loadCriteria.addEventListener("click", function handler(event) {
+    hanldeClick(event);
+    loadCriteria.removeEventListener("click", handler);
+  });
+  loadCriteria.dispatchEvent(new Event("click"));
+});
+
 const mainDisplay = document.querySelector("#main-display");
 const reviewNav = document.querySelectorAll("#review .criteria");
 
@@ -14,17 +23,23 @@ async function hanldeClick(event) {
     activeEle.classList.remove("active");
     event.target.classList.add("active");
     const url = event.target.href;
+    showLoading();
     const reviews = await getReviews(url);
-    renderReview(reviews);
-    handleReadReview();
+    setTimeout(() => {
+      clearLoading();
+      renderReview(reviews);
+      handleReadReview();
+    }, 1000);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
+    showNotify("Some thing went wrong when load reviews");
   }
 }
 
 function renderReview(reviews) {
   let reviewHtml = "";
-  if (reviews.length === 0) return (mainDisplay.innerHTML = reviewHtml);
+  if (reviews.length === 0)
+    return showNotify("Sorry we do not have any review today");
   reviews.forEach((review) => {
     reviewHtml += `<div class="review-card">
     <div class="content">
@@ -81,7 +96,7 @@ function handleReadReview() {
       // console.log(this);
       const reviewId = this.lastElementChild.firstElementChild.textContent;
 
-      console.log(this, reviewId);
+      // console.log(this, reviewId);
 
       window.location.href = `/world/reviews/${reviewId}`;
     });

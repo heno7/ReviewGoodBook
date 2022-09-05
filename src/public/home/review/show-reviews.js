@@ -43,21 +43,26 @@ async function hanldeClick(event) {
     activeEle.classList.remove("active");
     event.target.classList.add("active");
     // console.log(event.target);
-    const url = event.target.href;
+    const url = event.target.href + "?page=1&limit=7";
+
     // console.log(url);
+    showLoading();
     const reviews = await getReviews(url);
     // console.log(reviews);
-    renderReview(reviews);
-    actionHandler();
+    setTimeout(() => {
+      clearLoading();
+      renderReview(reviews);
+      actionHandler();
+    }, 1000);
   } catch (error) {
     // console.log(error);
-    showNotify("Failed to load resource");
+    showNotify("Failed to load reviews");
   }
 }
 
 function renderReview(reviews) {
   let reviewHtml = "";
-  if (reviews.length === 0) return (mainDisplay.innerHTML = reviewHtml);
+  if (reviews.length === 0) return showNotify("Nothing Here");
   reviews.forEach((review) => {
     reviewHtml += `<div class="review-card">
     <div class="content">
@@ -147,7 +152,12 @@ function actionHandler() {
       if (event.target.textContent === "Hide") {
         function yesHandler() {
           changeStatusHandler(reviewId, "Hide", statusDisplay);
-          event.target.nextElementSibling.disabled = false;
+          const publishBtn = event.target.nextElementSibling;
+          publishBtn.disabled = false;
+          const editBtn = publishBtn.nextElementSibling;
+          editBtn.disabled = false;
+          const deleteBtn = editBtn.nextElementSibling;
+          deleteBtn.disabled = false;
           event.target.disabled = true;
         }
 
@@ -161,6 +171,10 @@ function actionHandler() {
           changeStatusHandler(reviewId, "Publish", statusDisplay);
           event.target.previousElementSibling.disabled = false;
           event.target.disabled = true;
+          const editBtn = event.target.nextElementSibling;
+          editBtn.disabled = true;
+          const deleteBtn = editBtn.nextElementSibling;
+          deleteBtn.disabled = true;
         }
 
         showDecision(
