@@ -31,7 +31,7 @@ async function hanldeClick(event) {
       handleReadReview();
     }, 1000);
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     showNotify("Some thing went wrong when load reviews");
   }
 }

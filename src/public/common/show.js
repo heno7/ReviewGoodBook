@@ -63,15 +63,15 @@ function showLoading() {
   const html = `<div class="loadingio-spinner-spinner-6fowy36cgcc"><div class="ldio-15ylr6o1313">
   <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
   </div></div>`;
-  const mainDisplay = document.querySelector("#main-display");
-  mainDisplay.classList.add("loading");
+  const cardContainer = document.querySelector("#card-container");
+  cardContainer.classList.add("loading");
 
-  mainDisplay.innerHTML = html;
+  cardContainer.innerHTML = html;
 }
 
 function clearLoading() {
-  const mainDisplay = document.querySelector("#main-display");
-  mainDisplay.classList.remove("loading");
+  const cardContainer = document.querySelector("#card-container");
+  cardContainer.classList.remove("loading");
 
-  mainDisplay.innerHTML = "";
+  cardContainer.innerHTML = "";
 }

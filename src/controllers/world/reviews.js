@@ -41,6 +41,13 @@ async function getBestReviewIn(time) {
   }
 }
 
+async function getReviewsSearchBy(searchInput) {
+  try {
+    if (typeof sea) {
+    }
+  } catch (error) {}
+}
+
 module.exports = {
   getRandomReviews: async function (req, res, next) {
     try {

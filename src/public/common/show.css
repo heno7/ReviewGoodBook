@@ -177,7 +177,7 @@
 
 /* Show loading */
 
-#main-display.loading {
+#main-display #card-container.loading {
   display: flex;
   justify-content: center;
   align-items: center;
