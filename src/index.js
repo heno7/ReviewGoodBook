@@ -48,6 +48,7 @@ app.use("/world/reviews", worldRouter.reviews);
 app.use("/world/discussions", worldRouter.discussions);
 
 app.use((error, req, res, next) => {
+  console.log(error);
   const statusCode = error.statusCode || 500;
   let message = "Internal Server Error";
 

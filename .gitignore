@@ -1,2 +1,4 @@
 node_modules/
 .env
+avatar_images_store/
+review_images_store/

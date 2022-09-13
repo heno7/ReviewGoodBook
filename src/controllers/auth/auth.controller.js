@@ -1,8 +1,11 @@
+const UserRegister = require("../../models/UserRegister");
 const User = require("../../models/User");
 const loginValidation = require("../../validations/login.validation");
 const registerValidation = require("../../validations/register.validation");
 const bcrypt = require("bcrypt");
 const JWT = require("jsonwebtoken");
+const { ObjectId } = require("mongoose").Types;
+const sendEmail = require("../../email/sendEmail");
 
 // const randomDefaultImages = [
 //   "default-image-1.png",
@@ -36,24 +39,68 @@ module.exports = {
             .json({ message: "The given username has alraedy used." });
       }
 
-      bcrypt.hash(value.password, 10, async function (err, hash) {
-        if (err) throw err;
-        const user = new User({
-          username: value.username,
-          email: value.email,
-          password: hash,
-          avatar: "/users/avatar/default-dragon.png",
-        });
-        await user.save();
-        const token = JWT.sign(
-          { id: user._id, userName: user.username, admin: user.admin },
-          process.env.JWT_SECRECT
-        );
-        return res.status(200).json({ token });
+      const tempUser = new UserRegister({
+        username: value.username,
+        email: value.email,
+        password: value.password,
       });
+
+      await tempUser.save();
+
+      await sendEmail(value.email, tempUser.id);
+      // bcrypt.hash(value.password, 10, async function (err, hash) {
+      //   if (err) throw err;
+      //   const user = new User({
+      //     username: value.username,
+      //     email: value.email,
+      //     password: hash,
+      //     avatar: "/users/avatar/default-dragon.png",
+      //   });
+      //   await user.save();
+      //   const token = JWT.sign(
+      //     { id: user._id, userName: user.username, admin: user.admin },
+      //     process.env.JWT_SECRECT
+      //   );
+      //   return res.status(200).json({ token });
+      // });
+
+      res.send("We have seen you an email to verify. Please check your email!");
     } catch (error) {
       next(error);
     }
+  },
+
+  verifyEmail: async (req, res, next) => {
+    const verifyCode = req.params.verifyCode;
+    if (!ObjectId.isValid(verifyCode))
+      return res.status(400).json({ message: "Failed to verify email" });
+    const tempUser = await UserRegister.findById(verifyCode);
+    if (!tempUser) {
+      return res.status(400).json({ message: "Failed to verify email" });
+    }
+
+    bcrypt.hash(tempUser.password, 10, async function (err, hash) {
+      if (err) throw err;
+      const user = new User({
+        username: tempUser.username,
+        email: tempUser.email,
+        password: hash,
+        avatar: "/users/avatar/default-dragon.png",
+      });
+      await user.save();
+      await UserRegister.deleteOne({ _id: tempUser.id });
+      const token = JWT.sign(
+        { id: user._id, userName: user.username, admin: user.admin },
+        process.env.JWT_SECRECT
+      );
+      return res
+        .status(200)
+        .cookie("access_token", token, {
+          signed: true,
+          expires: new Date(Date.now() + 8 * 3600000), // cookie will be removed after 8 hours
+        })
+        .redirect("/home");
+    });
   },
 
   login: async (req, res, next) => {

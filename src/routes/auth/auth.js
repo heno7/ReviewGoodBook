@@ -11,6 +11,8 @@ router.get("/register", (req, res, next) => {
 
 router.post("/register", authController.register);
 
+router.get("/register/verify/:verifyCode", authController.verifyEmail);
+
 router.get("/login", (req, res, next) => {
   res.render("auth/login");
 });
