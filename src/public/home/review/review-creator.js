@@ -414,7 +414,9 @@ function generateReview(status) {
 
 function changePlaceTo(place, currentLoad) {
   return () => {
-    localStorage.setItem("current-load", currentLoad);
+    // localStorage.setItem("current-load", currentLoad);
+    localStorage.setItem("load-instruction", currentLoad);
+
     location.href = `/${place}`;
   };
 }

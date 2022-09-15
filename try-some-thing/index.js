@@ -196,28 +196,73 @@
 
 // // console.log(Math.floor(15 / 7));
 
-class Human {
-  _name;
-  _age;
-  constructor(name, age) {
-    this._name = name;
-    this._age = age;
-  }
+// class Human {
+//   _name;
+//   _age;
+//   constructor(name, age) {
+//     this._name = name;
+//     this._age = age;
+//   }
 
-  get name() {
-    return this._name;
-  }
+//   get name() {
+//     return this._name;
+//   }
 
-  set name(name) {
-    if (typeof name === "string" && name.length > 3) {
-      this._name = name;
-    } else {
-      throw new Error("The given name is invalid");
-    }
-  }
-}
+//   set name(name) {
+//     if (typeof name === "string" && name.length > 3) {
+//       this._name = name;
+//     } else {
+//       throw new Error("The given name is invalid");
+//     }
+//   }
+// }
 
-const person = new Human("test", 20);
-console.log(person.name);
-person.name = "Na";
-console.log(person.name);
+// const person = new Human("test", 20);
+// console.log(person.name);
+// person.name = "Na";
+// console.log(person.name);
+
+const searchClient = algoliasearch(
+  "WUZ790HWS6",
+  "08a5179090e0112471147b6b6c9558ea"
+);
+
+const search = instantsearch({
+  searchFunction(helper) {
+    const container = document.querySelector("#hits");
+    container.style.display = helper.state.query === "" ? "none" : "";
+
+    helper.search();
+  },
+  indexName: "world_reviews",
+  searchClient,
+});
+
+search.addWidgets([
+  instantsearch.widgets.searchBox({
+    container: "#searchbox",
+  }),
+
+  instantsearch.widgets.hits({
+    container: "#hits",
+    templates: {
+      empty(results, { html }) {
+        return html`No results for <q>${results.query}</q>`;
+      },
+
+      item(hit, { html }) {
+        return html`
+          <a href="http://localhost:7777${hit.url}">
+            <p>${hit.__hitIndex + 1}</p>
+            <p>${hit.bookInfo.name}</p>
+            <p>${hit.title}</p>
+            <p>Author: ${hit.author}</p>
+            <p>Stars: ${hit.stars}</p>
+          </a>
+        `;
+      },
+    },
+  }),
+]);
+
+search.start();

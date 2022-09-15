@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
+const index = require("../search/world_search");
 const { Schema } = mongoose;
+const wordIndex = require("../search/world_search");
 
 const reviewSchema = new Schema(
   {
@@ -46,5 +48,37 @@ const reviewSchema = new Schema(
   },
   { timestamps: true }
 );
+
+reviewSchema.post("save", async function (review) {
+  if (review.status === "Publish") {
+    // console.log("Here");
+    const reviewInfo = await review.populate(["bookInfo", "author"]);
+    const {
+      id,
+      bookInfo: { name, author, genre },
+      title,
+      stars,
+    } = reviewInfo;
+    const searchRecord = {
+      objectID: id,
+      url: `/world/reviews/${id}`,
+      bookInfo: {
+        name,
+        author,
+        genre,
+      },
+      title,
+      stars,
+      author: review.author.username,
+    };
+    await wordIndex.saveObject(searchRecord);
+    return;
+  }
+
+  const existReview = await wordIndex.getObjects([review.id]);
+  if (review.status === "Hide" && existReview.results[0]) {
+    await wordIndex.deleteObject(review.id);
+  }
+});
 
 module.exports = mongoose.model("Review", reviewSchema);
