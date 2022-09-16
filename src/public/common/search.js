@@ -1,23 +1,39 @@
-const searchClient = algoliasearch(
-  "WUZ790HWS6",
-  "08a5179090e0112471147b6b6c9558ea"
-);
+window.addEventListener("load", async () => {
+  await getSearchAPIKey();
+  const currentPlace = location.pathname;
+  if (currentPlace === "/" || currentPlace.startsWith("/world")) {
+    const searchClient = algoliasearch(
+      "WUZ790HWS6",
+      sessionStorage.getItem("worldSearchKey")
+    );
+    runSearch(searchClient);
+  }
 
-// const currentPlace = localStorage.getItem("current-place");
+  if (currentPlace.startsWith("/home")) {
+    const searchClient = algoliasearch(
+      "WUZ790HWS6",
+      sessionStorage.getItem("homeSearchKey")
+    );
+    runSearch(searchClient);
+  }
+});
 
-const currentPlace = location.pathname;
+async function getSearchAPIKey() {
+  try {
+    const url = "/search-API-key";
+    const response = await fetch(url, {
+      method: "GET",
+    });
 
-if (currentPlace === "home") {
-  const reviews = getHomeSearch(searchValue);
-  showLoading();
-  setTimeout(() => {
-    clearLoading();
-    renderReviews(reviews);
-    actionHandler();
-  }, 1000);
+    const data = await response.json();
+    sessionStorage.setItem("worldSearchKey", data.worldSearchAPIKey);
+    sessionStorage.setItem("homeSearchKey", data.homeSearchAPIKey);
+  } catch (error) {
+    console.error(error);
+  }
 }
 
-if (currentPlace === "/" || currentPlace.startsWith("/world")) {
+function runSearch(searchClient) {
   const worldSearch = instantsearch({
     searchFunction(helper) {
       const container = document.querySelector("#hits");
@@ -25,7 +41,7 @@ if (currentPlace === "/" || currentPlace.startsWith("/world")) {
 
       helper.search();
     },
-    indexName: "world_reviews",
+    indexName: "reviews",
     searchClient,
   });
 
@@ -38,10 +54,12 @@ if (currentPlace === "/" || currentPlace.startsWith("/world")) {
       container: "#hits",
       templates: {
         empty(results, { html }) {
+          console.log("here");
           return html`<p>No results for <q>${results.query}</q></p>`;
         },
 
         item(hit, { html }) {
+          console.log(hit);
           return html`
             <a href="http://localhost:7777${hit.url}">
               <div class="hit-element">

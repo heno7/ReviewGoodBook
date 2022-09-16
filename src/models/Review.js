@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const index = require("../search/world_search");
 const { Schema } = mongoose;
-const wordIndex = require("../search/world_search");
+
+const { reviewsIndex } = require("../search/search");
 
 const reviewSchema = new Schema(
   {
@@ -50,35 +50,50 @@ const reviewSchema = new Schema(
 );
 
 reviewSchema.post("save", async function (review) {
-  if (review.status === "Publish") {
-    // console.log("Here");
-    const reviewInfo = await review.populate(["bookInfo", "author"]);
-    const {
-      id,
-      bookInfo: { name, author, genre },
-      title,
-      stars,
-    } = reviewInfo;
-    const searchRecord = {
-      objectID: id,
+  const reviewInfo = await review.populate(["bookInfo", "author"]);
+  const {
+    id,
+    bookInfo: { name, author, genre },
+    title,
+    stars,
+  } = reviewInfo;
+
+  const existReview = await reviewsIndex.getObjects([review.id]);
+
+  if (existReview.results[0] && review.status === "Publish") {
+    await reviewsIndex.partialUpdateObject({
       url: `/world/reviews/${id}`,
-      bookInfo: {
-        name,
-        author,
-        genre,
-      },
-      title,
-      stars,
-      author: review.author.username,
-    };
-    await wordIndex.saveObject(searchRecord);
+      visible_by: [reviewInfo.author.id, "everybody"],
+      objectID: review.id,
+    });
     return;
   }
 
-  const existReview = await wordIndex.getObjects([review.id]);
-  if (review.status === "Hide" && existReview.results[0]) {
-    await wordIndex.deleteObject(review.id);
+  if (existReview.results[0] && review.status === "Hide") {
+    // await reviewsIndex.deleteObject(review.id);
+    await reviewsIndex.partialUpdateObject({
+      url: `/home/reviews/${id}`,
+      visible_by: [reviewInfo.author.id],
+      objectID: review.id,
+    });
+    return;
   }
+
+  const searchRecord = {
+    objectID: id,
+    visible_by: [reviewInfo.author.id],
+    url: `/home/reviews/${id}`,
+    bookInfo: {
+      name,
+      author,
+      genre,
+    },
+    title,
+    stars,
+    author: review.author.username,
+  };
+  await reviewsIndex.saveObject(searchRecord);
+  return;
 });
 
 module.exports = mongoose.model("Review", reviewSchema);

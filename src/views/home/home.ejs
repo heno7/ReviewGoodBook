@@ -5,6 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/instantsearch.css@7.4.5/themes/satellite-min.css"
+    />
+
     <link rel="stylesheet" href="/static/reset.css" />
     <link rel="stylesheet" href="/static/base.css" />
     <link rel="stylesheet" href="/static/common/show.css" />
@@ -83,9 +89,14 @@
     <%- include('../common/show'); %>
 
     <!-- <script src="/static/home/home.js"></script> -->
+
     <script src="/static/common/show.js"></script>
     <script src="/static/common/avatar.js"></script>
     <!-- <script src="/static/home/review/show-reviews.js"></script> -->
     <script src="/static/home/review/test.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.14.2/dist/algoliasearch-lite.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.46.1/dist/instantsearch.production.min.js"></script>
+    <script src="/static/common/search.js"></script>
   </body>
 </html>

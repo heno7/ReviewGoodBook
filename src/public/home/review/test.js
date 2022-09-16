@@ -1,6 +1,8 @@
-sessionStorage.clear();
+// sessionStorage.clear();
 
 window.addEventListener("load", () => {
+  sessionStorage.clear();
+
   const criteria = localStorage.getItem("load-instruction") || "in-progress";
   localStorage.clear();
 

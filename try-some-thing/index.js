@@ -224,7 +224,7 @@
 
 const searchClient = algoliasearch(
   "WUZ790HWS6",
-  "08a5179090e0112471147b6b6c9558ea"
+  "c693d91c90706fd0baeda523917f1bbd"
 );
 
 const worldSearch = instantsearch({
@@ -234,7 +234,7 @@ const worldSearch = instantsearch({
 
     helper.search();
   },
-  indexName: "world_reviews",
+  indexName: "reviews",
   searchClient,
 });
 
