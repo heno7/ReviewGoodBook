@@ -13,33 +13,7 @@
   </head>
   <body>
     <!-- Header -->
-    <div id="header">
-      <div id="left">
-        <a href="/">
-          <div id="logo">
-            <span>Review</span><span>Good</span><span>Boook</span>
-          </div>
-        </a>
-        <!-- <div>About</div> -->
-      </div>
-      <div id="right">
-        <div id="search">
-          <button id="search-btn">Search</button>
-          <input
-            id="search-input"
-            type="text"
-            placeholder="Search reviews discussions of books "
-          />
-        </div>
-        <div id="auth">
-          <div id="avatar">
-            <p><%= user.avatar %></p>
-            <img src="" alt="" />
-          </div>
-          <a href="/users/auth/logout">Log out</a>
-        </div>
-      </div>
-    </div>
+    <%- include('../../common/header'); %>
     <!-- Side Bar -->
 
     <!-- Space -->

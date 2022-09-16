@@ -177,6 +177,11 @@
 
 /* Show loading */
 
+#main-display #card-container {
+  width: 100%;
+  min-height: 59vh;
+}
+
 #main-display #card-container.loading {
   display: flex;
   justify-content: center;

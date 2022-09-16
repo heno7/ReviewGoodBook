@@ -227,7 +227,7 @@ const searchClient = algoliasearch(
   "08a5179090e0112471147b6b6c9558ea"
 );
 
-const search = instantsearch({
+const worldSearch = instantsearch({
   searchFunction(helper) {
     const container = document.querySelector("#hits");
     container.style.display = helper.state.query === "" ? "none" : "";
@@ -238,26 +238,31 @@ const search = instantsearch({
   searchClient,
 });
 
-search.addWidgets([
+worldSearch.addWidgets([
   instantsearch.widgets.searchBox({
-    container: "#searchbox",
+    container: "#search",
   }),
 
   instantsearch.widgets.hits({
     container: "#hits",
     templates: {
       empty(results, { html }) {
-        return html`No results for <q>${results.query}</q>`;
+        return html`<p>No results for <q>${results.query}</q></p>`;
       },
 
       item(hit, { html }) {
         return html`
           <a href="http://localhost:7777${hit.url}">
-            <p>${hit.__hitIndex + 1}</p>
-            <p>${hit.bookInfo.name}</p>
-            <p>${hit.title}</p>
-            <p>Author: ${hit.author}</p>
-            <p>Stars: ${hit.stars}</p>
+            <div class="hit-element">
+              <div class="book-info">
+                <p>Book: ${hit.bookInfo.name}</p>
+                <p>${hit.title.slice(0, 400) + "..."}</p>
+              </div>
+              <div class="add-info">
+                <p>Reviewer: ${hit.author}</p>
+                <p>Stars: ${hit.stars}</p>
+              </div>
+            </div>
           </a>
         `;
       },
@@ -265,4 +270,4 @@ search.addWidgets([
   }),
 ]);
 
-search.start();
+worldSearch.start();

@@ -72,10 +72,10 @@
   background-color: white;
 }
 
-#main-display #card-container {
+/* #main-display #card-container {
   width: 100%;
   min-height: 59vh;
-}
+} */
 
 #main-display #pagination {
   display: none;

@@ -65,7 +65,11 @@ function renderReview(reviews) {
     </div>
     `;
   });
-  mainDisplay.innerHTML = reviewHtml;
+  // mainDisplay.innerHTML = reviewHtml;
+
+  const cardContainer = document.querySelector("#card-container");
+  console.log(cardContainer);
+  if (cardContainer) cardContainer.innerHTML = reviewHtml;
 }
 
 async function getReviews(url) {

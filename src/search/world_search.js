@@ -17,9 +17,6 @@ const index = client.initIndex(WORLD_REVIEWS_INDEX);
       "bookInfo.genre",
       "title",
     ],
-  });
-
-  await index.setSettings({
     customRanking: ["desc(stars)"],
   });
 })();

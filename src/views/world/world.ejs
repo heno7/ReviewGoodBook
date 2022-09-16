@@ -5,6 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Landing Page</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/instantsearch.css@7.4.5/themes/satellite-min.css"
+    />
     <link rel="stylesheet" href="/static/reset.css" />
     <link rel="stylesheet" href="/static/base.css" />
     <link rel="stylesheet" href="/static/common/show.css" />
@@ -13,38 +18,7 @@
   </head>
   <body>
     <!-- Header -->
-    <div id="header">
-      <div id="left">
-        <a href="/">
-          <div id="logo">
-            <span>Review</span><span>Good</span><span>Book</span>
-          </div>
-        </a>
-        <!-- <div id="about">About</div> -->
-      </div>
-      <div id="right">
-        <div id="search">
-          <button id="search-btn">Search</button>
-          <input
-            id="search-input"
-            type="text"
-            placeholder="Search reviews discussions of books "
-          />
-        </div>
-        <div id="auth">
-          <% if(user) { %>
-          <div id="avatar">
-            <p><%= user.avatar %></p>
-            <img src="" alt="" />
-          </div>
-          <a href="/users/auth/logout">Log out</a>
-          <% } else { %>
-          <a href="/users/auth/login">Log in</a>
-          <a href="/users/auth/register">Sign up</a>
-          <% } %>
-        </div>
-      </div>
-    </div>
+    <%- include('../common/header'); %>
     <!-- Side Bar -->
     <div id="right-side-bar">
       <div id="title">Discover</div>
@@ -99,6 +73,9 @@
 
     <%- include('../common/show'); %>
 
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.14.2/dist/algoliasearch-lite.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.46.1/dist/instantsearch.production.min.js"></script>
+    <script src="/static/common/search.js"></script>
     <script src="/static/common/show.js"></script>
     <script src="/static/common/avatar.js"></script>
     <script src="/static/world/review/show-reviews.js"></script>

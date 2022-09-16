@@ -6,17 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Try something fun</title>
 
+    <link rel="stylesheet" href="http://localhost:7777/static/reset.css" />
+    <!-- <link rel="stylesheet" href="http://localhost:7777/static/base.css" /> -->
+
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/instantsearch.css@7.4.5/themes/satellite-min.css"
     />
+    <link rel="stylesheet" href="index.css" />
   </head>
   <body>
-    <div id="searchbox"></div>
-    <div id="hits"></div>
+    <div id="header">
+      <div id="left">
+        <a href="/">
+          <div id="logo">
+            <span>Review</span><span>Good</span><span>Book</span>
+          </div>
+        </a>
+      </div>
+      <div id="right">
+        <div id="search"></div>
+        <div id="hits"></div>
+        <div id="auth">
+          <div id="avatar">
+            <p></p>
+            <img src="" alt="" />
+          </div>
+          <a href="/users/auth/logout">Log out</a>
+        </div>
+      </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.14.2/dist/algoliasearch-lite.umd.js"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.44/dist/instantsearch.production.min.js"></script> -->
 
     <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.46.1/dist/instantsearch.production.min.js"></script>
 

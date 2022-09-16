@@ -71,6 +71,7 @@ function showLoading() {
 
 function clearLoading() {
   const cardContainer = document.querySelector("#card-container");
+  console.log(cardContainer);
   cardContainer.classList.remove("loading");
 
   cardContainer.innerHTML = "";

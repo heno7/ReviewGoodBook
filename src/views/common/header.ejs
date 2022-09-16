@@ -1,0 +1,30 @@
+<div id="header">
+  <div id="left">
+    <a href="/">
+      <div id="logo"><span>Review</span><span>Good</span><span>Book</span></div>
+    </a>
+  </div>
+  <div id="right">
+    <div id="search">
+      <!-- <button id="search-btn">Search</button>
+      <input
+        id="search-input"
+        type="text"
+        placeholder="Search reviews discussions of books "
+      /> -->
+    </div>
+    <div id="hits"></div>
+    <div id="auth">
+      <% if(user) { %>
+      <div id="avatar">
+        <p><%= user.avatar %></p>
+        <img src="" alt="" />
+      </div>
+      <a href="/users/auth/logout">Log out</a>
+      <% } else { %>
+      <a href="/users/auth/login">Log in</a>
+      <a href="/users/auth/register">Sign up</a>
+      <% } %>
+    </div>
+  </div>
+</div>
