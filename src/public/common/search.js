@@ -61,7 +61,7 @@ function runSearch(searchClient) {
         item(hit, { html }) {
           console.log(hit);
           return html`
-            <a href="http://localhost:7777${hit.url}">
+            <a href="${hit.url}">
               <div class="hit-element">
                 <div class="book-info">
                   <p>Book: ${hit.bookInfo.name}</p>
