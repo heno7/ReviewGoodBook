@@ -17,8 +17,10 @@ module.exports = {
   checkUser: function (req, res, next) {
     const token = req.signedCookies;
 
-    if (!token)
+    if (!token) {
       return res.status(401).json({ message: "you do not have permission" });
+    }
+
     JWT.verify(
       token.access_token,
       process.env.JWT_SECRECT,
@@ -27,12 +29,12 @@ module.exports = {
           // return res
           //   .status(403)
           //   .json({ message: "you do not have permission" });
-          if (req.originalUrl === "/") {
-            return res.render("index", { user: null });
+          if (req.originalUrl === "/" || req.originalUrl.startsWith("/world")) {
+            req.user = null;
+            return next();
           }
 
-          if (req.originalUrl.startsWith("/world")) {
-            req.user = null;
+          if (req.originalUrl === "/search-API-key") {
             return next();
           }
 

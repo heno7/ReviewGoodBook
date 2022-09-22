@@ -127,7 +127,7 @@ module.exports = {
             .redirect("/home");
         }
       }
-      res.status(400).json({ message: "Gửi Ngu." });
+      res.status(400).json({ message: "The given user doesn't exist!" });
     } catch (error) {
       next(error);
     }

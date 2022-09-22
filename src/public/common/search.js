@@ -26,6 +26,7 @@ async function getSearchAPIKey() {
     });
 
     const data = await response.json();
+
     sessionStorage.setItem("worldSearchKey", data.worldSearchAPIKey);
     sessionStorage.setItem("homeSearchKey", data.homeSearchAPIKey);
   } catch (error) {
@@ -59,7 +60,7 @@ function runSearch(searchClient) {
         },
 
         item(hit, { html }) {
-          console.log(hit);
+          // console.log(hit);
           return html`
             <a href="${hit.url}">
               <div class="hit-element">

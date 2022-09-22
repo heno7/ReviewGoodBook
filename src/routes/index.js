@@ -11,7 +11,6 @@ const {
 } = require("../search/search");
 
 router.get("/", checkUser, async (req, res) => {
-  const user = await User.findById(req.user.id);
   res.render("index", {
     user: req.user,
   });
@@ -19,6 +18,7 @@ router.get("/", checkUser, async (req, res) => {
 
 router.get("/search-API-key", checkUser, (req, res) => {
   const worldSearchAPIKey = generateWorldSearchKey();
+
   if (req.user) {
     const homeSearchAPIKey = generateHomeSearchKey(req.user.id);
     return res.status(200).json({

@@ -347,4 +347,23 @@ button {
   padding: 3px 0 3px 0;
   /* margin-top: 10vh; */
   background-color: rgb(244 244 244);
+  justify-content: center;
+  align-items: center;
+}
+
+#quote-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 6vh;
+}
+
+#quote-container #content {
+  font-size: 17px;
+  color: rgba(0, 0, 255, 0.7);
+}
+
+#quote-container #author {
+  align-self: flex-end;
+  color: rgba(255, 0, 0, 0.7);
 }

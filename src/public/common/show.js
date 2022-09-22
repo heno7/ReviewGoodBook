@@ -76,3 +76,43 @@ function clearLoading() {
 
   cardContainer.innerHTML = "";
 }
+
+// Show quote
+window.addEventListener("load", async () => {
+  try {
+    const MINUTE_TIME = 2 * 60 * 1000;
+    await showQuote();
+    setInterval(showQuote, MINUTE_TIME);
+  } catch (error) {
+    console.log(error);
+    showNotify("Opp! Failed to get quote!");
+  }
+});
+
+async function showQuote() {
+  try {
+    const quoteContainer = document.querySelector("#quote-container");
+
+    const quote = await getRandomQuote();
+
+    quoteContainer.firstElementChild.textContent = `\" ${quote.content}\ "`;
+    quoteContainer.lastElementChild.textContent = quote.author;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function getRandomQuote() {
+  try {
+    const url = "https://api.quotable.io/random?minLength=100&maxLength=140";
+    const response = await fetch(url, {
+      method: "GET",
+    });
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
