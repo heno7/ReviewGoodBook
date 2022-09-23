@@ -16,30 +16,58 @@ const sendEmail = require("../../email/sendEmail");
 //   "default-image-1.png",
 // ];
 
+async function checkSameEmailOrUserName(value) {
+  try {
+    const sameUser = await User.findOne({
+      $or: [{ email: value.email }, { username: value.username }],
+    });
+
+    const sameUserRegister = await UserRegister.findOne({
+      $or: [{ email: value.email }, { username: value.username }],
+    });
+
+    if (sameUser || sameUserRegister) {
+      if (
+        sameUser?.username == value.username ||
+        sameUserRegister?.username === value.username
+      ) {
+        return {
+          status: 400,
+          message: "The given username has alraedy used.",
+        };
+      }
+
+      if (
+        sameUser?.email == value.email ||
+        sameUserRegister?.email === value.email
+      ) {
+        return {
+          status: 400,
+          message: "The given email has already used.",
+        };
+      }
+    }
+
+    return {
+      status: 200,
+      message: "Ok",
+    };
+  } catch (error) {
+    throw error;
+  }
+}
+
 module.exports = {
   register: async (req, res, next) => {
     try {
       const { error, value } = registerValidation(req.body);
+
       if (error) {
         return res.status(400).json({ status: 400, message: error.message });
       }
 
-      const sameEmailOrUsername = await User.findOne({
-        $or: [{ email: value.email }, { username: value.username }],
-      });
-
-      if (sameEmailOrUsername) {
-        if (sameEmailOrUsername.email == value.email)
-          return res.status(400).json({
-            status: 400,
-            message: "The given email has already used.",
-          });
-        if (sameEmailOrUsername.username == value.username)
-          return res.status(400).json({
-            status: 400,
-            message: "The given username has alraedy used.",
-          });
-      }
+      const result = await checkSameEmailOrUserName(value);
+      if (result.status !== 200) return res.status(result.status).json(result);
 
       const tempUser = new UserRegister({
         username: value.username,
@@ -50,23 +78,12 @@ module.exports = {
       await tempUser.save();
 
       await sendEmail(value.email, tempUser.id);
-      // bcrypt.hash(value.password, 10, async function (err, hash) {
-      //   if (err) throw err;
-      //   const user = new User({
-      //     username: value.username,
-      //     email: value.email,
-      //     password: hash,
-      //     avatar: "/users/avatar/default-dragon.png",
-      //   });
-      //   await user.save();
-      //   const token = JWT.sign(
-      //     { id: user._id, userName: user.username, admin: user.admin },
-      //     process.env.JWT_SECRECT
-      //   );
-      //   return res.status(200).json({ token });
-      // });
 
-      res.send("We have seen you an email to verify. Please check your email!");
+      res.status(200).json({
+        status: 200,
+        message:
+          "We have seen you an email to verify. Please check your email to complete signup!",
+      });
     } catch (error) {
       next(error);
     }

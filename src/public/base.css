@@ -129,8 +129,21 @@ button {
   background-color: rgba(0, 0, 255, 0.3);
 }
 
+.ais-Hits {
+  border: 2px solid rgba(0, 0, 255, 0.7);
+  border-radius: 5px;
+}
+
+.ais-Hits.ais-Hits--empty {
+  background-color: rgba(0, 0, 255, 0.7);
+  color: white;
+  padding: 5px;
+  font-size: 17px;
+}
+
 .ais-Hits-item {
   padding: 0.7rem;
+  border-bottom: 2px solid green;
 }
 
 .ais-Hits-item a {
@@ -142,7 +155,7 @@ button {
   display: flex;
   width: 100%;
   justify-content: space-between;
-  background-color: green;
+  /* background-color: green; */
 }
 
 #hits .hit-element .book-info {

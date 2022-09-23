@@ -62,19 +62,28 @@ function showNotify(message, callback, color = "blue") {
 
 // Show loading
 
-function showLoading() {
+function showLoading(container) {
   const html = `<div class="loadingio-spinner-spinner-6fowy36cgcc"><div class="ldio-15ylr6o1313">
   <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
   </div></div>`;
+  if (container) {
+    container.classList.add("loading");
+    container.innerHTML = html;
+    return;
+  }
   const cardContainer = document.querySelector("#card-container");
   cardContainer.classList.add("loading");
 
   cardContainer.innerHTML = html;
 }
 
-function clearLoading() {
+function clearLoading(container) {
+  if (container) {
+    container.classList.remove("loading");
+    container.innerHTML = "";
+    return;
+  }
   const cardContainer = document.querySelector("#card-container");
-  console.log(cardContainer);
   cardContainer.classList.remove("loading");
 
   cardContainer.innerHTML = "";

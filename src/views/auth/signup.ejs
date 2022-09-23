@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sign up</title>
     <link rel="stylesheet" href="/static/reset.css" />
+    <link rel="stylesheet" href="/static/common/show.css" />
     <link rel="stylesheet" href="/static/auth/signup.css" />
   </head>
   <body>
@@ -29,12 +30,12 @@
           />
 
           <label for="email">Email</label>
-          <input type="text" placeholder="Enter Email" name="email" required />
+          <input type="email" placeholder="Enter Email" name="email" required />
 
           <label for="password">Password</label>
           <input
             type="password"
-            placeholder="Enter Password"
+            placeholder="Enter Password (at least 8 character)"
             name="password"
             required
           />
@@ -56,6 +57,14 @@
         </div>
       </form>
     </div>
-    <!-- <script src="/static/auth/signup.css"></script> -->
+
+    <div id="loading-container">
+      <div id="loading">Hello</div>
+    </div>
+
+    <%- include('../common/show'); %>
+
+    <script src="/static/common/show.js"></script>
+    <script src="/static/auth/signup.js"></script>
   </body>
 </html>
