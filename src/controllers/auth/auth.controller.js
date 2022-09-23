@@ -21,7 +21,7 @@ module.exports = {
     try {
       const { error, value } = registerValidation(req.body);
       if (error) {
-        return res.status(400).json({ message: error.message });
+        return res.status(400).json({ status: 400, message: error.message });
       }
 
       const sameEmailOrUsername = await User.findOne({
@@ -30,13 +30,15 @@ module.exports = {
 
       if (sameEmailOrUsername) {
         if (sameEmailOrUsername.email == value.email)
-          return res
-            .status(400)
-            .json({ message: "The given email has already used." });
+          return res.status(400).json({
+            status: 400,
+            message: "The given email has already used.",
+          });
         if (sameEmailOrUsername.username == value.username)
-          return res
-            .status(400)
-            .json({ message: "The given username has alraedy used." });
+          return res.status(400).json({
+            status: 400,
+            message: "The given username has alraedy used.",
+          });
       }
 
       const tempUser = new UserRegister({
@@ -73,10 +75,14 @@ module.exports = {
   verifyEmail: async (req, res, next) => {
     const verifyCode = req.params.verifyCode;
     if (!ObjectId.isValid(verifyCode))
-      return res.status(400).json({ message: "Failed to verify email" });
+      return res
+        .status(400)
+        .json({ status: 400, message: "Failed to verify email" });
     const tempUser = await UserRegister.findById(verifyCode);
     if (!tempUser) {
-      return res.status(400).json({ message: "Failed to verify email" });
+      return res
+        .status(400)
+        .json({ status: 400, message: "Failed to verify email" });
     }
 
     bcrypt.hash(tempUser.password, 10, async function (err, hash) {
@@ -107,7 +113,7 @@ module.exports = {
     try {
       const { error, value } = loginValidation(req.body);
       if (error) {
-        return res.status(400).json({ message: error.message });
+        return res.status(400).json({ status: 400, message: error.message });
       }
       const user = await User.findOne({ email: value.email });
       if (user) {
@@ -124,10 +130,13 @@ module.exports = {
               signed: true,
               expires: new Date(Date.now() + 8 * 3600000), // cookie will be removed after 8 hours
             })
-            .redirect("/home");
+            .json({ status: 200, message: "Ok" });
+          // .redirect("/home");
         }
       }
-      res.status(400).json({ message: "The given user doesn't exist!" });
+      res
+        .status(400)
+        .json({ status: 400, message: "The given user doesn't exist!" });
     } catch (error) {
       next(error);
     }

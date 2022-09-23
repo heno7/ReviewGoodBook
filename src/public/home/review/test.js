@@ -205,7 +205,7 @@ async function handlePagination(event) {
       actionHandler();
     });
   } catch (error) {
-    showNotify("Failed to load reviews");
+    showNotify("Failed to load reviews", null, "red");
   }
 }
 
@@ -261,7 +261,9 @@ function actionHandler() {
 
         showDecision(
           "Do you really want hide this review from world?",
-          yesHandler
+          yesHandler,
+          null,
+          "red"
         );
       }
       if (event.target.textContent === "Publish") {
@@ -291,7 +293,12 @@ function actionHandler() {
         function yesHandler() {
           deleteHandler(reviewId, reviewCard);
         }
-        showDecision("Do you really want to delete this review?", yesHandler);
+        showDecision(
+          "Do you really want to delete this review?",
+          yesHandler,
+          null,
+          "red"
+        );
       }
     });
   });

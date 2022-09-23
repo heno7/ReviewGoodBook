@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
     <link rel="stylesheet" href="/static/reset.css" />
+    <link rel="stylesheet" href="/static/common/show.css" />
     <link rel="stylesheet" href="/static/auth/login.css" />
   </head>
   <body>
@@ -23,7 +24,7 @@
           <div id="email-container">
             <label for="email">Email</label>
             <input
-              type="text"
+              type="email"
               placeholder="Enter Email"
               name="email"
               required
@@ -47,11 +48,18 @@
           <button type="button" class="cancelbtn">
             <a href="/">Cancel</a>
           </button>
-          <p>Not a member?<a href="/users/auth/register">Sign up</a></p>
-          <a href="#">Forgot password?</a>
+          <div>
+            <p>Not a member?</p>
+            <a href="/users/auth/register">Sign up</a>
+          </div>
+          <a href="#" class="forgot">Forgot password?</a>
         </div>
       </form>
     </div>
-    <!-- <script src="/static/auth/login.js"></script> -->
+
+    <%- include('../common/show'); %>
+
+    <script src="/static/common/show.js"></script>
+    <script src="/static/auth/login.js"></script>
   </body>
 </html>

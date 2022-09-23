@@ -1,16 +1,18 @@
 // Display decision or notify
 
-function showDecision(message, yesHandler, noHandler) {
+function showDecision(message, yesHandler, noHandler, color = "blue") {
   const hideNotify = document.querySelector("#show-notify .modal");
   const messageNotify = document.querySelector("#show-notify #notify-message");
   const yesNotify = document.querySelector("#show-notify #yes");
   const noNotify = document.querySelector("#show-notify #no");
 
   messageNotify.textContent = message;
+  messageNotify.classList.add(color);
 
   hideNotify.classList.add("notify");
 
   const handleNo = function (event) {
+    messageNotify.classList.remove(color);
     hideNotify.classList.remove("notify");
     if (noHandler) {
       noHandler();
@@ -21,6 +23,7 @@ function showDecision(message, yesHandler, noHandler) {
   noNotify.addEventListener("click", handleNo);
 
   const handleYes = function (event) {
+    messageNotify.classList.remove(color);
     hideNotify.classList.remove("notify");
     yesHandler();
     yesNotify.removeEventListener("click", handleYes);
@@ -29,7 +32,7 @@ function showDecision(message, yesHandler, noHandler) {
   yesNotify.addEventListener("click", handleYes);
 }
 
-function showNotify(message, callback) {
+function showNotify(message, callback, color = "blue") {
   const hideNotify = document.querySelector("#show-notify .modal");
   const messageNotify = document.querySelector("#show-notify #notify-message");
   const buttonContainer = document.querySelector(
@@ -42,14 +45,14 @@ function showNotify(message, callback) {
 
   buttonContainer.classList.add("hidden");
 
-  messageNotify.classList.add("full-height");
+  messageNotify.classList.add("full-height", color);
 
   function closeNotify() {
     hideNotify.classList.remove("notify");
 
     buttonContainer.classList.remove("hidden");
 
-    messageNotify.classList.remove("full-height");
+    messageNotify.classList.remove("full-height", color);
 
     if (callback) callback();
   }
@@ -80,19 +83,19 @@ function clearLoading() {
 // Show quote
 window.addEventListener("load", async () => {
   try {
+    const quoteContainer = document.querySelector("#quote-container");
+    if (!quoteContainer) return;
     const MINUTE_TIME = 2 * 60 * 1000;
-    await showQuote();
-    setInterval(showQuote, MINUTE_TIME);
+    await showQuote(quoteContainer);
+    setInterval(showQuote, MINUTE_TIME, quoteContainer);
   } catch (error) {
     console.log(error);
     showNotify("Opp! Failed to get quote!");
   }
 });
 
-async function showQuote() {
+async function showQuote(quoteContainer) {
   try {
-    const quoteContainer = document.querySelector("#quote-container");
-
     const quote = await getRandomQuote();
 
     quoteContainer.firstElementChild.textContent = `\" ${quote.content}\ "`;

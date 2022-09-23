@@ -140,7 +140,15 @@
   justify-content: center;
   align-items: center;
   font-size: 17px;
-  font-weight: 700;
+  font-weight: 500;
+}
+
+#notify-container #notify-message.blue {
+  color: rgba(0, 0, 255, 0.7);
+}
+
+#notify-container #notify-message.red {
+  color: red;
 }
 
 #notify-container #button-container {
