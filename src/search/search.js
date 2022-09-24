@@ -22,6 +22,8 @@ const reviewsIndex = client.initIndex(REVIEWS_INDEX);
     attributesForFaceting: ["filterOnly(visible_by)"],
 
     unretrievableAttributes: ["visible_by"],
+
+    hitsPerPage: 7,
   });
 })();
 

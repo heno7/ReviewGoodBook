@@ -85,6 +85,7 @@ button {
   top: 6vh;
   left: 23%;
   width: 62%;
+  max-height: 400px;
 }
 
 #header #right #auth {
@@ -129,6 +130,17 @@ button {
   background-color: rgba(0, 0, 255, 0.3);
 }
 
+.ais-Hits-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+/* .ais-Hits-list,
+.ais-Hits-item {
+  transform: rotateX(180deg);
+  -ms-transform: rotateX(180deg);
+  -webkit-transform: rotateX(180deg);
+} */
+
 .ais-Hits {
   border: 2px solid rgba(0, 0, 255, 0.7);
   border-radius: 5px;
@@ -141,7 +153,7 @@ button {
   font-size: 17px;
 }
 
-.ais-Hits-item {
+.ais-Hits-item:not(.ais-Hits-item:last-of-type) {
   padding: 0.7rem;
   border-bottom: 2px solid green;
 }
@@ -160,6 +172,10 @@ button {
 
 #hits .hit-element .book-info {
   width: 80%;
+}
+
+#hits .hit-element .book-info p {
+  margin-bottom: 5px;
 }
 
 #hits .hit-element .add-info {

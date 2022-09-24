@@ -29,6 +29,12 @@ module.exports = {
           // return res
           //   .status(403)
           //   .json({ message: "you do not have permission" });
+          if (req.originalUrl.endsWith("stars")) {
+            return res
+              .status(401)
+              .json({ status: 401, message: "You must login to give star!" });
+          }
+
           if (req.originalUrl === "/" || req.originalUrl.startsWith("/world")) {
             req.user = null;
             return next();

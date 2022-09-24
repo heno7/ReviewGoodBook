@@ -65,12 +65,14 @@ function runSearch(searchClient) {
             <a href="${hit.url}">
               <div class="hit-element">
                 <div class="book-info">
-                  <p>Book: ${hit.bookInfo.name}</p>
-                  <p>${hit.title.slice(0, 400) + "..."}</p>
+                  <p>
+                    <i class="fa-solid fa-book-atlas"></i> ${hit.bookInfo.name}
+                  </p>
+                  <p>${hit.title.slice(0, 500) + "..."}</p>
                 </div>
                 <div class="add-info">
-                  <p>Reviewer: ${hit.author}</p>
-                  <p>Stars: ${hit.stars}</p>
+                  <p><i class="fa-solid fa-user-pen"></i> ${hit.author}</p>
+                  <p><i class="fa-solid fa-star"></i> ${hit.stars}</p>
                 </div>
               </div>
             </a>

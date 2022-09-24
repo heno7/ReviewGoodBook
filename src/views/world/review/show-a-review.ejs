@@ -45,14 +45,23 @@
       <div id="meta-info">
         <p style="display: none" id="review-id"><%= review._id %></p>
         <div id="book-info">
-          <p>Book: <%= review.bookInfo.name %></p>
-          <p>Author: <%= review.bookInfo.author %></p>
-          <p>Genre: <%= review.bookInfo.genre %></p>
+          <p>
+            <i class="fa-solid fa-book-atlas"></i> <%= review.bookInfo.name %>
+          </p>
+          <p>
+            <i class="fa-solid fa-pen-nib"></i> <%= review.bookInfo.author %>
+          </p>
+          <p><i class="fa-solid fa-dna"></i> <%= review.bookInfo.genre %></p>
         </div>
         <div id="review-info">
-          <p>Reviewer: <%= review.author.username %></p>
+          <p>
+            <i class="fa-solid fa-user-pen"></i> <%= review.author.username %>
+          </p>
           <div id="star">
-            <p>Stars: <span id="star-num"><%= review.stars %></span></p>
+            <p>
+              <i class="fa-solid fa-star"></i>
+              <span id="star-num"><%= review.stars %></span>
+            </p>
             <button id="give-star">Give star</button>
           </div>
         </div>
@@ -62,6 +71,10 @@
 
     <!-- Footer -->
     <%- include('../../common/footer'); %>
+
+    <!-- Show -->
+
+    <%- include('../../common/show'); %>
 
     <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.14.2/dist/algoliasearch-lite.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.46.1/dist/instantsearch.production.min.js"></script>

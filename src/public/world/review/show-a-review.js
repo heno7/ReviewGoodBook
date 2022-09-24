@@ -2,7 +2,7 @@ const giveStar = document.querySelector("#give-star");
 
 giveStar.addEventListener("click", handleClick);
 
-function handleClick(event) {
+async function handleClick(event) {
   const reviewId = document.querySelector("#review-id").textContent;
   const starNum = document.querySelector("#star-num");
   const listStars = localStorage.getItem("stars");
@@ -16,10 +16,10 @@ function handleClick(event) {
   console.log(arrStars);
 
   if (arrStars.includes(reviewId)) {
-    return;
+    return showNotify("You can only send stars once!", null, "red");
   }
 
-  giveStar();
+  await giveStar();
 
   async function giveStar() {
     try {
@@ -27,12 +27,24 @@ function handleClick(event) {
         method: "PATCH",
       });
 
-      if (response.status === 200) {
+      const data = await response.json();
+
+      if (data.status === 401) {
+        return showNotify(data.message, null, "red");
+      }
+
+      if (data.status === 400) {
+        return showNotify(data.message, null, "red");
+      }
+
+      if (data.status === 200) {
         arrStars.push(reviewId);
         localStorage.setItem("stars", JSON.stringify(arrStars));
         starNum.textContent = `${Number(starNum.textContent) + 1}`;
+        showNotify(data.message);
       }
     } catch (error) {
+      showNotify("Opp something went wrong!");
       console.log(error);
     }
   }

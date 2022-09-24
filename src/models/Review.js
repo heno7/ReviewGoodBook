@@ -41,6 +41,12 @@ const reviewSchema = new Schema(
       required: true,
       enum: ["In Progress", "Publish", "Hide", "Complete"],
     },
+    likedBy: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     stars: {
       type: Number,
       default: 0,

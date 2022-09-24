@@ -1,6 +1,5 @@
 const Review = require("../../models/Review");
-const User = require("../../models/User");
-const checkId = require("../../validations/id.validation");
+
 const moment = require("moment");
 const fs = require("fs/promises");
 const showdown = require("showdown");
@@ -41,11 +40,35 @@ async function getBestReviewIn(time) {
   }
 }
 
-async function getReviewsSearchBy(searchInput) {
+// async function getReviewsSearchBy(searchInput) {
+//   try {
+//     if (typeof sea) {
+//     }
+//   } catch (error) {}
+// }
+
+async function checkGiveStar(reviewId, userId) {
   try {
-    if (typeof sea) {
+    const review = await Review.findById(reviewId);
+    if (review.author.toString() === userId) {
+      return {
+        status: 400,
+        message: "You can't give star to your review!",
+      };
     }
-  } catch (error) {}
+    if (review.likedBy.includes(userId)) {
+      return {
+        status: 400,
+        message: "You can only give star once!",
+      };
+    }
+    return {
+      status: 200,
+      message: "Ok",
+    };
+  } catch (error) {
+    throw error;
+  }
 }
 
 module.exports = {
@@ -107,11 +130,6 @@ module.exports = {
   },
 
   getReview: async function (req, res, next) {
-    const isValidId = checkId(req.params.id);
-    if (!isValidId)
-      return res
-        .status(400)
-        .json({ message: "The review with given Id is not exist." });
     const review = await Review.findById(req.params.id)
       .populate({ path: "bookInfo" })
       .populate({ path: "author", select: "username" })
@@ -135,20 +153,19 @@ module.exports = {
 
   giveStar: async function (req, res, next) {
     try {
-      const isValidId = checkId(req.params.id);
-      if (!isValidId)
-        return res
-          .status(400)
-          .json({ message: "The review with given Id is not exist." });
-      const review = await Review.findById(req.params.id);
-      if (!review) {
-        return res
-          .status(400)
-          .json({ message: "The review with given Id is not exist." });
+      const response = await checkGiveStar(req.reviewId, req.user.id);
+
+      if (response.status === 400) {
+        return res.status(response.status).json(response);
       }
+
+      const review = await Review.findById(req.params.id);
+      review.likedBy.push(req.user.id);
       review.stars += 1;
       await review.save();
-      res.status(200).json({ message: "Received star" });
+      res
+        .status(200)
+        .json({ status: 200, message: "Thank you for give star!" });
     } catch (error) {
       next(error);
     }
