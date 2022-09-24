@@ -40,6 +40,11 @@
   margin-bottom: 1vh;
 }
 
+.review-card .content .review-title p {
+  line-height: 20px;
+  padding-left: 10px;
+}
+
 .review-card .content .add-info {
   width: 100%;
   margin-left: auto;

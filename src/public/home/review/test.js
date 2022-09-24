@@ -95,7 +95,7 @@ function renderReview(reviews) {
       </div>
       <div class="add-info">
         <p>Status: ${review.status}</p>
-        <p>Updated-At: ${new Date(review.updatedAt).toString().slice(0, 24)}</p>
+        <p>Updated: ${new Date(review.updatedAt).toString().slice(0, 24)}</p>
         <p>Stars: ${review.stars}</p>
       </div>
     </div>
