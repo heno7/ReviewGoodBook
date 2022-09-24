@@ -4,7 +4,8 @@
   display: flex;
   flex-direction: row;
   width: 97%;
-  height: 17vh;
+  /* height: 17vh; */
+  height: 125px;
   margin: 2vh auto 0 auto;
   border: 1px solid gray;
   border-radius: 5px;
@@ -31,7 +32,7 @@
 .review-card .content .book-info p {
   width: 33.33%;
   padding-left: 1%;
-  border-left: 1px solid;
+  /* border-left: 1px solid; */
 }
 
 .review-card .content .review-title {
@@ -57,5 +58,5 @@
   justify-content: flex-start;
   width: 50%;
   padding-left: 1%;
-  border-left: 1px solid;
+  /* border-left: 1px solid; */
 }

@@ -86,17 +86,19 @@ function renderReview(reviews) {
     reviewHtml += `<div class="review-card">
     <div class="content">
       <div class="book-info">
-        <p>Book: ${review.bookInfo.name}</p>
-        <p>Author: ${review.bookInfo.author}</p>
-        <p>Genre: ${review.bookInfo.genre}</p>
+        <p><i class="fa-solid fa-book-atlas"></i> ${review.bookInfo.name}</p>
+        <p><i class="fa-solid fa-pen-nib"></i> ${review.bookInfo.author}</p>
+        <p><i class="fa-solid fa-dna"></i> ${review.bookInfo.genre}</p>
       </div>
       <div class="review-title">
         <p>${review.title}</p>
       </div>
       <div class="add-info">
-        <p>Status: ${review.status}</p>
-        <p>Updated: ${new Date(review.updatedAt).toString().slice(0, 24)}</p>
-        <p>Stars: ${review.stars}</p>
+        <p><i class="fa-solid fa-signal"></i> ${review.status}</p>
+        <p><i class="fa-solid fa-file-pen"></i> ${new Date(review.updatedAt)
+          .toString()
+          .slice(0, 24)}</p>
+        <p><i class="fa-solid fa-star"></i> ${review.stars}</p>
       </div>
     </div>
     <div class="action">
