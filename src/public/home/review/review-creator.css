@@ -232,11 +232,13 @@ button {
   padding-left: 1%;
   padding-right: 1%;
   padding-top: 1%;
+  padding-bottom: 300px;
   overflow-y: scroll;
   /* scroll-behavior: smooth; */
   border: 3px solid black;
   border-radius: 5px;
   border-top-left-radius: 0;
+  line-height: 20px;
 }
 
 #html-display {
@@ -244,6 +246,7 @@ button {
   padding-left: 1%;
   padding-right: 1%;
   padding-top: 1%;
+  padding-bottom: 300px;
   overflow-y: scroll;
   overflow-wrap: break-word;
   border: 3px solid black;
@@ -267,11 +270,11 @@ button {
 }
 
 #html-display img {
-  max-width: 70%;
+  /* max-width: 70%;
   display: block;
   margin-left: auto;
   margin-right: auto;
-  height: auto;
+  /* height: auto; */
 }
 
 .label {

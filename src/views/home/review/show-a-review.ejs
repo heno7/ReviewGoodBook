@@ -8,7 +8,14 @@
       name="description"
       content="A place where people find reviews of good book and discussion with other."
     />
+
     <title>Home</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/instantsearch.css@7.4.5/themes/satellite-min.css"
+    />
+
     <link rel="stylesheet" href="/static/reset.css" />
     <link rel="stylesheet" href="/static/base.css" />
     <link rel="stylesheet" href="/static/common/show.css" />
@@ -43,23 +50,32 @@
     <div id="main-display">
       <div id="meta-info">
         <div id="book-info">
-          <p>Book: <%= review.bookInfo.name %></p>
-          <p>Author: <%= review.bookInfo.author %></p>
-          <p>Genre: <%= review.bookInfo.genre %></p>
+          <p>
+            <i class="fa-solid fa-book-atlas"></i> <%= review.bookInfo.name %>
+          </p>
+          <p>
+            <i class="fa-solid fa-pen-nib"></i> <%= review.bookInfo.author %>
+          </p>
+          <p><i class="fa-solid fa-dna"></i> <%= review.bookInfo.genre %></p>
         </div>
         <div id="review-info">
-          <p>Reviewer: <%= user.username %></p>
-          <p>Stars: <%= review.stars %></p>
+          <p><i class="fa-solid fa-user-pen"></i> <%= user.username %></p>
+          <p><i class="fa-solid fa-star"></i> <%= review.stars %></p>
         </div>
       </div>
       <div id="review-content" class="markdown-body"><%- review.content %></div>
     </div>
 
-    <%- include('../../common/show'); %>
-
     <!-- Footer -->
     <%- include('../../common/footer'); %>
 
+    <!-- Show -->
+
+    <%- include('../../common/show'); %>
+
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.14.2/dist/algoliasearch-lite.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.46.1/dist/instantsearch.production.min.js"></script>
+    <script src="/static/common/search.js"></script>
     <script src="/static/common/show.js"></script>
     <script src="/static/common/avatar.js"></script>
     <!-- <script src="/static/world/review/show-a-review.js"></script> -->

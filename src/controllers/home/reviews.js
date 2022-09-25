@@ -58,33 +58,33 @@ async function updateProgress(reviewInfo, data) {
   const session = await mongoose.startSession();
   session.startTransaction();
   try {
-    const [review, book] = await Promise.all([
-      Review.findOneAndUpdate(
-        { _id: reviewInfo.id },
-        {
-          title: data.title,
-          status: data.status,
-          images: data.images,
-          updatedAt: new Date(),
-        },
-        {
-          new: true,
-          timestamps: false,
-        }
-      ).session(session),
+    // const [review, book] = await Promise.all([
+    const review = await Review.findByIdAndUpdate(
+      { _id: reviewInfo.id },
+      {
+        title: data.title,
+        status: data.status,
+        images: data.images,
+        updatedAt: new Date(),
+      },
+      {
+        new: true,
+        timestamps: false,
+      }
+    ).session(session);
 
-      Book.findOneAndUpdate(
-        { _id: reviewInfo.bookId },
-        {
-          name: data.book.name,
-          author: data.book.author,
-          genre: data.book.genre,
-        },
-        {
-          new: true,
-        }
-      ).session(session),
-    ]);
+    await Book.findByIdAndUpdate(
+      { _id: reviewInfo.bookId },
+      {
+        name: data.book.name,
+        author: data.book.author,
+        genre: data.book.genre,
+      },
+      {
+        new: true,
+      }
+    ).session(session);
+    // ]);
 
     await fs.writeFile(review.pathToContent, data.content);
 
@@ -284,6 +284,7 @@ module.exports = {
       // return res.status(200).json(review);
 
       const converter = new showdown.Converter();
+      converter.setFlavor("github");
       review.content = converter.makeHtml(
         await fs.readFile(review.pathToContent, {
           encoding: "utf8",

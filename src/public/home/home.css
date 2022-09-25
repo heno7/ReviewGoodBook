@@ -52,6 +52,7 @@
   align-items: center;
   padding-left: 7%;
   background-color: rgba(255, 0, 0, 0.7);
+  color: white;
 }
 
 #right-side-bar #review #create-review a:hover {

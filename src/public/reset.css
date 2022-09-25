@@ -28,7 +28,7 @@ cite,
 code,
 del,
 dfn,
-em,
+/* em, */
 img,
 ins,
 kbd,
@@ -42,9 +42,9 @@ sub,
 sup,
 tt,
 var,
-b,
+/* b, */
 u,
-i,
+/* i, */
 center,
 dl,
 dt,
@@ -108,7 +108,7 @@ section {
 body {
   line-height: 1;
 }
-ol,
+/* ol,
 ul {
   list-style: none;
 }
@@ -122,7 +122,7 @@ q:before,
 q:after {
   content: "";
   content: none;
-}
+} */
 table {
   border-collapse: collapse;
   border-spacing: 0;
