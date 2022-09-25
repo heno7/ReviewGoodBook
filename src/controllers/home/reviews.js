@@ -54,35 +54,39 @@ async function getReviewsByStatus(userId, statusInfo, paginationInfo) {
   }
 }
 
-async function updateProgress(reviewId, data) {
+async function updateProgress(reviewInfo, data) {
   const session = await mongoose.startSession();
   session.startTransaction();
   try {
-    let review = await Review.findById(reviewId).session(session);
-    let book = await Book.findById(review.bookInfo).session(session);
+    const [review, book] = await Promise.all([
+      Review.findOneAndUpdate(
+        { _id: reviewInfo.id },
+        {
+          title: data.title,
+          status: data.status,
+          images: data.images,
+          updatedAt: new Date(),
+        },
+        {
+          new: true,
+          timestamps: false,
+        }
+      ).session(session),
 
-    book.name = data.book.name;
-    book.author = data.book.author;
-    book.genre = data.book.genre;
-    await book.save();
+      Book.findOneAndUpdate(
+        { _id: reviewInfo.bookId },
+        {
+          name: data.book.name,
+          author: data.book.author,
+          genre: data.book.genre,
+        },
+        {
+          new: true,
+        }
+      ).session(session),
+    ]);
 
-    review.title = data.title;
-    review.status = data.status;
-    review.images = data.images;
     await fs.writeFile(review.pathToContent, data.content);
-
-    review = await Review.findOneAndUpdate(
-      { _id: review._id },
-      { updatedAt: new Date() },
-      {
-        new: true,
-        timestamps: false,
-      }
-    ).session(session);
-
-    // console.log(review);
-
-    await review.save();
 
     await session.commitTransaction();
     session.endSession();
@@ -94,7 +98,7 @@ async function updateProgress(reviewId, data) {
   }
 }
 
-async function completeUpdate(reviewId, data) {
+async function completeUpdate(reviewInfo, data) {
   const session = await mongoose.startSession();
   session.startTransaction();
   try {
@@ -102,20 +106,32 @@ async function completeUpdate(reviewId, data) {
     if (error) {
       throw createError(400, error.message);
     }
-    let review = await Review.findById(reviewId).session(session);
+    const [review, currentBook, existPreviousBook] = await Promise.all([
+      Review.findOneAndUpdate(
+        { _id: reviewInfo.id },
+        {
+          title: data.title,
+          status: data.status,
+          images: data.images,
+          updatedAt: new Date(),
+        },
+        {
+          new: true,
+          timestamps: false,
+        }
+      ).session(session),
 
-    review.title = data.title;
-    review.status = data.status;
-    review.images = data.images;
+      Book.findById(reviewInfo.bookId).session(session),
+      Book.findOne(data.book).session(session),
+    ]);
+
     await fs.writeFile(review.pathToContent, data.content);
 
-    let currentBook = await Book.findById(review.bookInfo).session(session);
-    let existPreviousBook = await Book.findOne(data.book).session(session);
     if (existPreviousBook) {
       if (currentBook._id.equals(existPreviousBook._id)) {
         currentBook.listReviews.push(review._id);
-        await currentBook.save();
-        await review.save();
+
+        await Promise.all([currentBook.save(), review.save()]);
 
         await session.commitTransaction();
         session.endSession();
@@ -124,10 +140,12 @@ async function completeUpdate(reviewId, data) {
 
       review.bookInfo = existPreviousBook._id;
       existPreviousBook.listReviews.push(review._id);
-      await Book.deleteOne({ _id: currentBook._id }).session(session);
-      await existPreviousBook.save();
 
-      await review.save();
+      await Promise.all([
+        Book.deleteOne({ _id: currentBook._id }).session(session),
+        existPreviousBook.save(),
+        review.save(),
+      ]);
 
       await session.commitTransaction();
       session.endSession();
@@ -141,11 +159,12 @@ async function completeUpdate(reviewId, data) {
     currentBook.author = data.book.author;
     currentBook.genre = data.book.genre;
     currentBook.listReviews.push(review._id);
-    await currentBook.save();
 
-    await review.save();
+    await Promise.all([currentBook.save(), review.save()]);
+
     await session.commitTransaction();
     session.endSession();
+
     return "Done";
   } catch (error) {
     await session.abortTransaction();
@@ -364,14 +383,14 @@ module.exports = {
   updateReview: async function (req, res, next) {
     try {
       if (req.body.status === "Complete") {
-        const done = await completeUpdate(req.reviewId, req.body);
+        const done = await completeUpdate(req.reviewInfo, req.body);
 
         if (done) {
           return res.status(200).json({ message: "Complete Review Saved" });
         }
       }
       if (req.body.status === "In Progress") {
-        const done = await updateProgress(req.reviewId, req.body);
+        const done = await updateProgress(req.reviewInfo, req.body);
         if (done) {
           return res.status(200).json({ message: "Progress Saved" });
         }

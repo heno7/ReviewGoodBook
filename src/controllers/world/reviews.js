@@ -47,9 +47,9 @@ async function getBestReviewIn(time) {
 //   } catch (error) {}
 // }
 
-async function checkGiveStar(reviewId, userId) {
+async function checkGiveStar(reviewInfo, userId) {
   try {
-    const review = await Review.findById(reviewId);
+    const review = await Review.findById(reviewInfo.id);
     if (review.author.toString() === userId) {
       return {
         status: 400,
@@ -153,7 +153,7 @@ module.exports = {
 
   giveStar: async function (req, res, next) {
     try {
-      const response = await checkGiveStar(req.reviewId, req.user.id);
+      const response = await checkGiveStar(req.reviewInfo, req.user.id);
 
       if (response.status === 400) {
         return res.status(response.status).json(response);

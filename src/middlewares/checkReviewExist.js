@@ -15,7 +15,8 @@ module.exports = async function (req, res, next) {
         .json({ message: "The review with given Id is not exist" });
     }
 
-    req.reviewId = review._id;
+    // req.reviewId = review._id;
+    req.reviewInfo = { id: review._id, bookId: review.bookInfo };
     next();
   } catch (error) {
     next(createError(500, error));
