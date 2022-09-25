@@ -102,4 +102,15 @@ reviewSchema.post("save", async function (review) {
   return;
 });
 
+reviewSchema.post("deleteOne", async function (review) {
+  // console.log("here");
+  const reviewId = this.getFilter()["_id"];
+  // console.log(reviewId);
+  const existReview = await reviewsIndex.getObjects([reviewId]);
+  if (existReview.results[0]) {
+    await reviewsIndex.deleteObject(reviewId);
+    // console.log("Deleted");
+  }
+});
+
 module.exports = mongoose.model("Review", reviewSchema);

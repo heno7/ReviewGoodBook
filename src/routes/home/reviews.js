@@ -1,6 +1,7 @@
 const express = require("express");
 const checkAuth = require("../../auth/checkAuth");
 const checkReviewExist = require("../../middlewares/checkReviewExist");
+const checkPublishReview = require("../../middlewares/checkPublishReview");
 const router = express.Router();
 const { reviews } = require("../../controllers/home");
 const { upload } = require("../../uploads/uploadReviewImages");
@@ -29,12 +30,22 @@ router.post("/images/upload", upload.array("images"), reviews.uploadImages);
 
 router.post("/", reviews.createReview);
 
-router.put("/:id", checkReviewExist, reviews.updateReview);
+router.put("/:id", checkReviewExist, checkPublishReview, reviews.updateReview);
 
 router.put("/:id/status", checkReviewExist, reviews.updateReviewStatus);
 
-router.put("/:id/images", checkReviewExist, reviews.updateReviewImages);
+router.put(
+  "/:id/images",
+  checkReviewExist,
+  checkPublishReview,
+  reviews.updateReviewImages
+);
 
-router.delete("/:id", checkReviewExist, reviews.deleteReview);
+router.delete(
+  "/:id",
+  checkReviewExist,
+  checkPublishReview,
+  reviews.deleteReview
+);
 
 module.exports = router;

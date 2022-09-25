@@ -427,6 +427,7 @@ module.exports = {
     session.startTransaction();
     try {
       const review = await Review.findById(req.params.id).session(session);
+
       let pathToContent = review.pathToContent;
       let images = JSON.parse(review.images);
 
@@ -456,7 +457,7 @@ module.exports = {
           return fs.unlink(
             path.join(
               process.cwd(),
-              "images_store",
+              "review_images_store",
               image.fileURL.split("/")[2]
             )
           );
