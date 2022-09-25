@@ -12,6 +12,12 @@ const cors = require("cors");
 
 const cookieParser = require("cookie-parser");
 
+const compression = require("compression");
+app.use(compression());
+
+const helmet = require("helmet");
+app.use(helmet({ contentSecurityPolicy: false }));
+
 const connectDB = require("./database/connect");
 
 connectDB();
