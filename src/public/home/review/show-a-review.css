@@ -29,6 +29,29 @@
   margin-top: 2vh;
 }
 
+#generator {
+  display: none;
+}
+
+#generator.display {
+  display: block;
+  position: fixed;
+  top: 20vh;
+  right: 5%;
+}
+
+#generator.display button {
+  padding: 10px;
+  background-color: rgba(255, 0, 0, 0.7);
+  color: white;
+  border-radius: 5px;
+  border: none;
+}
+
+#generator.display button:hover {
+  background-color: rgba(255, 0, 0, 0.3);
+}
+
 /* Notify Upload avatar*/
 
 .modal {

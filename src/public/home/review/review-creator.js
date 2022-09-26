@@ -86,10 +86,15 @@ homeLink.addEventListener("click", (event) => {
   );
 });
 
-// const publishMode = document.querySelector("#publish-mode");
-// publishMode.addEventListener("click", function () {
-//   document.body.innerHTML = html;
-// });
+const publishMode = document.querySelector("#publish-mode");
+publishMode.addEventListener("click", function () {
+  const reviewId = sessionStorage.getItem("review_id");
+  return updateReview(
+    reviewId,
+    "In Progress",
+    changePlaceTo(`home/reviews/${reviewId}`, "review-generator")
+  );
+});
 
 const fillBookInfoBtn = document.querySelector("#fill-book-info");
 const hideBookInfo = document.querySelector("#book-info .modal");

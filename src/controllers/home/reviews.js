@@ -106,24 +106,24 @@ async function completeUpdate(reviewInfo, data) {
     if (error) {
       throw createError(400, error.message);
     }
-    const [review, currentBook, existPreviousBook] = await Promise.all([
-      Review.findOneAndUpdate(
-        { _id: reviewInfo.id },
-        {
-          title: data.title,
-          status: data.status,
-          images: data.images,
-          updatedAt: new Date(),
-        },
-        {
-          new: true,
-          timestamps: false,
-        }
-      ).session(session),
+    // const [review, currentBook, existPreviousBook] = await Promise.all([
+    const review = await Review.findOneAndUpdate(
+      { _id: reviewInfo.id },
+      {
+        title: data.title,
+        status: data.status,
+        images: data.images,
+        updatedAt: new Date(),
+      },
+      {
+        new: true,
+        timestamps: false,
+      }
+    ).session(session);
 
-      Book.findById(reviewInfo.bookId).session(session),
-      Book.findOne(data.book).session(session),
-    ]);
+    const currentBook = await Book.findById(reviewInfo.bookId).session(session);
+    const existPreviousBook = await Book.findOne(data.book).session(session);
+    // ]);
 
     await fs.writeFile(review.pathToContent, data.content);
 
@@ -131,7 +131,10 @@ async function completeUpdate(reviewInfo, data) {
       if (currentBook._id.equals(existPreviousBook._id)) {
         currentBook.listReviews.push(review._id);
 
-        await Promise.all([currentBook.save(), review.save()]);
+        // await Promise.all([currentBook.save(), review.save()]);
+
+        await currentBook.save();
+        await review.save();
 
         await session.commitTransaction();
         session.endSession();
@@ -141,11 +144,11 @@ async function completeUpdate(reviewInfo, data) {
       review.bookInfo = existPreviousBook._id;
       existPreviousBook.listReviews.push(review._id);
 
-      await Promise.all([
-        Book.deleteOne({ _id: currentBook._id }).session(session),
-        existPreviousBook.save(),
-        review.save(),
-      ]);
+      // await Promise.all([
+      await Book.deleteOne({ _id: currentBook._id }).session(session);
+      await existPreviousBook.save();
+      await review.save();
+      // ]);
 
       await session.commitTransaction();
       session.endSession();

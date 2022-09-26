@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const path = require("path");
-const User = require("../models/User");
+
+const fs = require("fs/promises");
+const showdown = require("showdown");
 
 const { checkUser } = require("../auth/checkAuth");
 
@@ -11,8 +13,24 @@ const {
 } = require("../search/search");
 
 router.get("/", checkUser, async (req, res) => {
+  const converter = new showdown.Converter();
+  converter.setFlavor("github");
+  const indexPath = path.join(
+    process.cwd(),
+    "reviews_store",
+    "admin",
+    "index.md"
+  );
+
+  const indexContent = converter.makeHtml(
+    await fs.readFile(indexPath, {
+      encoding: "utf8",
+    })
+  );
+
   res.render("index", {
     user: req.user,
+    content: indexContent,
   });
 });
 

@@ -16,6 +16,7 @@
     />
     <link rel="stylesheet" href="/static/reset.css" />
     <link rel="stylesheet" href="/static/base.css" />
+    <link rel="stylesheet" href="/static/libs/github-markdown.min.css" />
     <link rel="stylesheet" href="/static/index.css" />
 
     <script
@@ -40,7 +41,9 @@
         <a href="/home"><i class="fa-solid fa-house fa-lg"></i>Home</a>
       </div>
     </div>
-    <div id="main-display"></div>
+    <div id="main-display">
+      <div id="review-content" class="markdown-body"><%- content %></div>
+    </div>
 
     <!-- Footer -->
     <%- include('common/footer'); %>
@@ -53,5 +56,6 @@
     <script src="/static/common/search.js"></script>
     <script src="/static/common/show.js"></script>
     <script src="/static/common/avatar.js"></script>
+    <!-- <script src="/static/index.js"></script> -->
   </body>
 </html>

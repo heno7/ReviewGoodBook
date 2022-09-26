@@ -5,6 +5,11 @@
   margin-left: 5%;
 }
 
+#main-display {
+  padding: 3vh 10% 3vh 10%;
+  background-color: white;
+}
+
 /* Notify Upload*/
 
 .modal {
