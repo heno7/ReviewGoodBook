@@ -7,18 +7,18 @@
 > **This is place you can read the reviews of people about the books that they read**
 
 You can see the world symbol on the top of the page when you click this symbol you will see the reviews that you want.
-![](/images/1665020809410.png)
+![](static/images/world.png)
 
 ## Home
 
 > **This is place you can create the reviews and then share them with other people**
 
 You can see the home symbol on the top of the page when you click this symbol you will see your home. Note that you must login to go home.
-![](/images/1664363041178.png)
+![](static/images/home.png)
 
 When you in home you can easily create a review by click to the create review in the left side bar.
 
-![](/images/1664728452573.png)
+![](static/images/create.png)
 
 > This tool is very easy to use, you just know the **markdown syntax** then you can use it. Don't worry about the markdown syntax if you haven't know it, markdown is the simplest syntax that help you can create a good text document in the web.The last but very helpful that here we use the **Github flavor** The followings are some resources can help you learn the markdown syntax.
 
@@ -28,7 +28,7 @@ When you in home you can easily create a review by click to the create review in
 ## Search 
 
 > This is a powerful feature that help you can explore the reviews that you want instant you can type one of the keywords**(name of the book, author of the book, genre of the book)** to find your expect results
-> ![](/images/1664931374944.png)
+> ![](static/images/search.png)
 
 \*:100: Note that when you in **_world all your search results is about the reviews that people share_** and when you in your **_home all results you give about your reviews that you created_**. These can help you instant find reviews that you want.\*
 

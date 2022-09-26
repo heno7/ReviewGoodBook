@@ -119,6 +119,8 @@ async function getRandomQuote() {
     const url = "https://api.quotable.io/random?minLength=100&maxLength=140";
     const response = await fetch(url, {
       method: "GET",
+      // credentials: "same-origin",
+      // mode: "no-cors",
     });
 
     const data = await response.json();
