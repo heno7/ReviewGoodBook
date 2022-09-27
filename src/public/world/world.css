@@ -46,6 +46,30 @@
   color: white;
 }
 
+#right-side-bar #discussion {
+  height: 34vh;
+}
+
+#right-side-bar #discussion div:first-of-type {
+  height: 4vh;
+  line-height: 4vh;
+  text-align: center;
+  background-color: rgb(177, 177, 177);
+}
+
+#right-side-bar #discussion .discussion-criteria {
+  display: flex;
+  height: 5vh;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 7%;
+}
+
+#right-side-bar #discussion .discussion-criteria:hover {
+  background-color: rgba(0, 0, 255, 0.3);
+  color: white;
+}
+
 /* Main display */
 
 #main-display {

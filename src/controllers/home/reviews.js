@@ -43,8 +43,12 @@ async function getReviewsByStatus(userId, statusInfo, paginationInfo) {
       if (!paginationInfo) return reviews.listReviews;
       return pagination(reviews.listReviews);
     }
-    filterReviews = reviews.listReviews.filter(function (review) {
+    let filterReviews = reviews.listReviews.filter(function (review) {
       return review.status === statusInfo;
+    });
+
+    filterReviews = filterReviews.sort((a, b) => {
+      return b.updatedAt.getTime() - a.updatedAt.getTime();
     });
 
     if (!paginationInfo) return filterReviews;
@@ -475,17 +479,19 @@ module.exports = {
       session.endSession();
       await fs.unlink(pathToContent);
 
-      await Promise.all(
-        images.map((image) => {
-          return fs.unlink(
-            path.join(
-              process.cwd(),
-              "review_images_store",
-              image.fileURL.split("/")[2]
-            )
-          );
-        })
-      );
+      if (images.length > 0) {
+        await Promise.all(
+          images.map((image) => {
+            return fs.unlink(
+              path.join(
+                process.cwd(),
+                "review_images_store",
+                image.fileURL.split("/")[2]
+              )
+            );
+          })
+        );
+      }
 
       res.status(200).json({ message: "Deleted" });
     } catch (error) {
