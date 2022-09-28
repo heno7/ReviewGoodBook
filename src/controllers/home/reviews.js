@@ -92,6 +92,8 @@ async function updateProgress(reviewInfo, data) {
 
     await fs.writeFile(review.pathToContent, data.content);
 
+    await review.save();
+
     await session.commitTransaction();
     session.endSession();
     return "Done";
