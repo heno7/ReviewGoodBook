@@ -58,7 +58,7 @@ app.use((error, req, res, next) => {
   const statusCode = error.statusCode || 500;
   let message = "Internal Server Error";
 
-  if (statusCode >= 500) console.log(error);
+  // if (statusCode >= 500) console.log(error);
 
   if (statusCode === 400) message = error.message;
   res.status(statusCode).json({ message });
